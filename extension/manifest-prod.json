@@ -5,8 +5,7 @@
   "description": "Extract page information and PDF URLs for monitoring",
   "permissions": [
     "activeTab",
-    "clipboardWrite",
-    "scripting"
+    "clipboardWrite"
   ],
   "action": {
     "default_popup": "popup.html",

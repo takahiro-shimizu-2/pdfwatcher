@@ -79,6 +79,34 @@ feature/xxx → develop → main
    npm run build
    ```
 
+### Chrome拡張機能の開発
+
+Chrome拡張機能の開発では、esbuildを使用した高速ビルドシステムを採用しています：
+
+1. 開発時のビルド
+   ```bash
+   cd extension
+   npm run build
+   ```
+
+2. ファイル監視モード（開発中）
+   ```bash
+   cd extension
+   npm run watch  # 未実装の場合は手動でビルド
+   ```
+
+3. 本番用パッケージ作成
+   ```bash
+   cd extension
+   npm run build
+   npm run package  # extension.zipを作成
+   ```
+
+**注意事項:**
+- 開発時は`manifest.json`を使用（scriptingパーミッション付き）
+- 本番ビルドでは`manifest-prod.json`を使用（最小限のパーミッション）
+- ビルド成果物は`dist/`ディレクトリに出力される
+
 ## テスト
 
 テストを実行する前に必ずlintを実行してください：

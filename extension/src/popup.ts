@@ -7,16 +7,34 @@ document.addEventListener('DOMContentLoaded', () => {
   
   extractBtn.addEventListener('click', async () => {
     try {
+      console.log('Extract button clicked');
       statusDiv.textContent = 'Extracting...';
       statusDiv.className = 'status';
       
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      console.log('Active tab:', tab);
       
       if (!tab.id) {
         throw new Error('No active tab found');
       }
       
+      // Try to inject content script first
+      try {
+        await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['content.js']
+        });
+        console.log('Content script injected');
+      } catch (injectionError) {
+        console.log('Content script might already be injected:', injectionError);
+      }
+      
+      // Wait a bit for the script to initialize
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      console.log('Sending message to tab:', tab.id);
       const response = await chrome.tabs.sendMessage(tab.id, { action: 'extractPageInfo' }) as ExtractResult;
+      console.log('Received response:', response);
       
       if (!response.success || !response.pageInfo) {
         throw new Error(response.error || 'Failed to extract page info');

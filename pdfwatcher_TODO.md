@@ -10,6 +10,9 @@
 - ✅ サーバーライブラリのデプロイ完了
 - ✅ クライアントGASのデプロイ完了
 - ✅ Chrome拡張機能のビルド完了
+- ✅ マスターGASプロジェクトのclasp管理移行
+- ✅ Chrome拡張のビルドシステム構築（esbuild導入）
+- ✅ 本番用manifest分離（manifest-prod.json）
 
 ### 現在のタスク
 - 🚀 **動作確認テスト実施中** ← 今ここ
@@ -125,6 +128,12 @@
 - [x] popup.html作成
 - [x] スタイル設定
 - [x] アイコン作成
+
+### 4.4 ビルドシステム
+- [x] esbuild導入
+- [x] build.js作成
+- [x] 本番用manifest分離（manifest-prod.json）
+- [x] packageスクリプト追加
 
 ## フェーズ5: スプレッドシート作成（優先度：中）
 
