@@ -3,7 +3,7 @@ import { Message } from './types';
 chrome.runtime.onMessage.addListener((
   message: Message,
   _sender: chrome.runtime.MessageSender,
-  sendResponse: (response: any) => void
+  sendResponse: (response: { success: boolean; error?: string }) => void
 ) => {
   if (message.action === 'copyToClipboard' && message.data) {
     copyToClipboard(message.data)

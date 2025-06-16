@@ -39,8 +39,8 @@ export class SheetArchiveRepository implements IArchiveRepository {
       existingMap.set(key, i + 1);
     }
     
-    const updates: { row: number; values: any[] }[] = [];
-    const appends: any[][] = [];
+    const updates: { row: number; values: unknown[] }[] = [];
+    const appends: unknown[][] = [];
     
     for (const pdf of pdfs) {
       const key = `${pdf.pageUrl}|${pdf.pdfUrl}`;

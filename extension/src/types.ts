@@ -6,7 +6,7 @@ export interface PageInfo {
 
 export interface Message {
   action: 'extractPageInfo' | 'copyToClipboard';
-  data?: any;
+  data?: string;
 }
 
 export interface ExtractResult {
