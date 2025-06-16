@@ -19,6 +19,7 @@ PDF Watcherは、Webページ上のPDFファイルの追加・更新を自動的
 ├── extension/        # Chrome拡張機能
 ├── client-gas/      # クライアント側Google Apps Script
 ├── server-gas/      # サーバー側Google Apps Script（ライブラリ）
+├── master-gas/      # マスタースプレッドシート用Google Apps Script
 └── core/           # 共通インターフェース・モデル
 ```
 
@@ -38,15 +39,18 @@ npm run build
 
 ### 3. Google Apps Scriptのデプロイ
 
+#### マスタースプレッドシートの初期設定
+1. `cd master-gas && clasp push`
+2. GASエディタで`setupMasterSpreadsheet`関数を実行
+
 #### サーバーライブラリ
-1. `server-gas/.clasp.json`のscriptIdを設定
-2. `cd server-gas && npm run deploy`
-3. GASエディタでライブラリとして公開
+1. `cd server-gas && npm run build && clasp push`
+2. GASエディタでライブラリとして公開
+3. デプロイIDを取得
 
 #### クライアントスクリプト
-1. `client-gas/.clasp.json`のscriptIdを設定
-2. `client-gas/src/config.ts`の設定を更新
-3. `cd client-gas && npm run deploy`
+1. `client-gas/src/config.ts`のSERVER_LIBRARY_IDを確認・更新
+2. `cd client-gas && npm run build && clasp push`
 
 ### 4. Chrome拡張機能のインストール
 
