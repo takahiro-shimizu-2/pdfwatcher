@@ -1,0 +1,14 @@
+{
+  "timeZone": "Asia/Tokyo",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "PdfWatcherServer",
+        "libraryId": "14oyw3dxeRB04LpXdn9fsU45V1QZ_rJsEwBZ-2PRNSsSIIMb-kyYbO0tM",
+        "version": "HEAD"
+      }
+    ]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}

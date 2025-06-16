@@ -1,0 +1,31 @@
+{
+  "name": "pdf-watcher",
+  "version": "1.0.0",
+  "description": "PDF Watcher - Monitor page updates and PDF changes",
+  "private": true,
+  "workspaces": [
+    "core",
+    "extension",
+    "client-gas",
+    "server-gas"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "format": "prettier --write \"**/*.{js,ts,json,md}\"",
+    "clean": "npm run clean --workspaces"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

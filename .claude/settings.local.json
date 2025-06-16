@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(clasp login:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx clasp:*)"
+    ],
+    "deny": []
+  }
+}

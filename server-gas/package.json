@@ -1,0 +1,25 @@
+{
+  "name": "@pdf-watcher/server-gas",
+  "version": "1.0.0",
+  "description": "Server library for PDF Watcher (Google Apps Script)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "push": "clasp push",
+    "deploy": "npm run build && npm run push"
+  },
+  "dependencies": {
+    "@pdf-watcher/core": "file:../core"
+  },
+  "devDependencies": {
+    "@google/clasp": "^2.4.0",
+    "@types/google-apps-script": "^1.0.0",
+    "@types/jest": "^29.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0"
+  }
+}
