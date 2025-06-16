@@ -6,7 +6,8 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "watch": "tsc --watch",
-    "package": "npm run build && zip -r pdf-watcher-extension.zip dist manifest.json assets"
+    "package": "npm run build && zip -r pdf-watcher-extension.zip dist manifest.json assets",
+    "lint": "eslint src --ext .ts"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.246",

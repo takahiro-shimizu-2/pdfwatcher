@@ -89,11 +89,11 @@ function getServerLibrary(): ServerLibrary {
 }
 
 // Export functions for Google Apps Script
-(globalThis as any).onOpen = function(): void {
+(globalThis as Record<string, unknown>).onOpen = function(): void {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('PDF Watcher')
     .addItem('Run Judge', 'runJudge')
     .addToUi();
 };
 
-(globalThis as any).runJudge = runJudge;
+(globalThis as Record<string, unknown>).runJudge = runJudge;
