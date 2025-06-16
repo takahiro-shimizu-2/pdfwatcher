@@ -16,12 +16,18 @@ PDF Watcherは、Webページ上のPDFファイルの追加・更新を自動的
 ## システム構成
 
 ```
-├── extension/        # Chrome拡張機能
+├── extension/        # Chrome拡張機能（esbuildビルドシステム採用）
 ├── client-gas/      # クライアント側Google Apps Script
 ├── server-gas/      # サーバー側Google Apps Script（ライブラリ）
-├── master-gas/      # マスタースプレッドシート用Google Apps Script
+├── master-gas/      # マスタースプレッドシート用Google Apps Script（clasp管理）
 └── core/           # 共通インターフェース・モデル
 ```
+
+### 技術スタック
+
+- **Chrome拡張機能**: TypeScript, esbuild, Manifest V3
+- **Google Apps Script**: TypeScript, clasp
+- **ビルドツール**: npm workspaces, esbuild（拡張機能）, TypeScript compiler（GAS）
 
 ## セットアップ
 
@@ -54,9 +60,16 @@ npm run build
 
 ### 4. Chrome拡張機能のインストール
 
-1. `cd extension && npm run package`
-2. Chromeの拡張機能管理ページでデベロッパーモードを有効化
-3. 「パッケージ化されていない拡張機能を読み込む」で`extension/dist`を選択
+#### 開発環境
+1. `cd extension && npm install && npm run build`
+2. Chromeの拡張機能管理ページ（chrome://extensions/）を開く
+3. デベロッパーモードを有効化
+4. 「パッケージ化されていない拡張機能を読み込む」で`extension`フォルダを選択
+
+#### 本番環境
+1. `cd extension && npm run build && npm run package`
+2. `extension.zip`ファイルが生成される
+3. Chrome Web Storeへの公開、または内部配布用に使用
 
 ## 使用方法
 

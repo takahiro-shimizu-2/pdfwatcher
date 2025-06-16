@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Chrome extension for PDF Watcher",
   "scripts": {
-    "build": "tsc",
+    "build": "node build.js",
+    "build:tsc": "tsc",
     "clean": "rm -rf dist",
     "watch": "tsc --watch",
     "package": "npm run build && zip -r pdf-watcher-extension.zip dist manifest.json assets",
@@ -12,6 +13,7 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.246",
+    "esbuild": "^0.25.5",
     "typescript": "^5.0.0"
   }
 }
