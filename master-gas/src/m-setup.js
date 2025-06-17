@@ -12,26 +12,26 @@ function setupMasterSpreadsheet() {
   
   // ArchivePDFシートの作成
   createOrUpdateSheet(spreadsheet, 'ArchivePDF', [
-    ['PageURL', 'PDFURL', 'FirstSeen', 'LastSeen']
+    ['ページURL', 'PDF URL', '初回発見日時', '最終確認日時']
   ]);
   
   // PageHistoryシートの作成
   createOrUpdateSheet(spreadsheet, 'PageHistory', [
-    ['RunDate', 'PageURL', 'PageUpd?', 'PDFUpd?', 'AddedCnt', 'User']
+    ['実行日時', 'ページURL', 'ページ更新', 'PDF更新', '追加数', 'ユーザー']
   ]);
   
   // PageSummaryシートの作成
   createOrUpdateSheet(spreadsheet, 'PageSummary', [
-    ['PageURL', 
-     'Run-1 Date', 'Run-1 PU', 'Run-1 PFU', 'Run-1 Cnt',
-     'Run-2 Date', 'Run-2 PU', 'Run-2 PFU', 'Run-2 Cnt',
-     'Run-3 Date', 'Run-3 PU', 'Run-3 PFU', 'Run-3 Cnt']
+    ['ページURL', 
+     '実行1-日時', '実行1-ページ', '実行1-PDF', '実行1-追加数',
+     '実行2-日時', '実行2-ページ', '実行2-PDF', '実行2-追加数',
+     '実行3-日時', '実行3-ページ', '実行3-PDF', '実行3-追加数']
   ]);
   
   // RunLogシートの作成
   createOrUpdateSheet(spreadsheet, 'RunLog', [
-    ['ExecID', 'Timestamp', 'User', 'Dur s', 'PagesProc', 
-     'PagesUpd', 'PDFsAdd', 'Result', 'ErrorMsg', 'ScriptVer']
+    ['実行ID', 'タイムスタンプ', 'ユーザー', '実行時間(秒)', '処理ページ数', 
+     '更新ページ数', '追加PDF数', '結果', 'エラーメッセージ', 'スクリプトVer']
   ]);
   
   // デフォルトシートを削除（必要に応じて）

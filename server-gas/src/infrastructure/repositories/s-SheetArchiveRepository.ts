@@ -93,7 +93,7 @@ class SheetArchiveRepository implements IArchiveRepository {
     if (!sheet) {
       sheet = this.spreadsheet.insertSheet(SHEET_NAMES.ARCHIVE_PDF);
       sheet.getRange(1, 1, 1, 4).setValues([
-        ['PageURL', 'PDFURL', 'FirstSeen', 'LastSeen']
+        ['ページURL', 'PDF URL', '初回発見日時', '最終確認日時']
       ]);
       sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
     }
