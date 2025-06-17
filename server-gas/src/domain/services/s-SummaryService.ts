@@ -1,6 +1,8 @@
-import { DiffResult, PageHistoryEntry, ISummaryRepository, IHistoryRepository } from '@pdf-watcher/core';
-
-export class SummaryService {
+/**
+ * サマリーサービス
+ * ページサマリーと履歴の更新を管理する
+ */
+class SummaryService {
   constructor(
     private readonly summaryRepo: ISummaryRepository,
     private readonly historyRepo: IHistoryRepository

@@ -188,11 +188,15 @@ extension/
 ```
 client-gas/
 ├── src/
-│   ├── main.ts          # runJudge()エントリ
-│   ├── batch.ts         # バッチ分割ロジック
-│   ├── ui.ts            # UI更新ロジック
-│   └── types.ts         # 型定義
+│   ├── c-00-globals.ts    # グローバル型定義
+│   ├── c-01-parser.ts     # データパース処理
+│   ├── c-02-ui.ts         # UI更新ロジック
+│   ├── c-03-batch.ts      # バッチ分割ロジック
+│   ├── c-04-setup.ts      # 初期設定関数
+│   ├── c-05-main.ts       # runJudge()エントリ
+│   └── c-99-gas-entry.ts  # GASエントリポイント
 ├── clasp.json
+├── tsconfig.json    # target: ES5, module: none
 └── tests/
 ```
 
@@ -200,27 +204,41 @@ client-gas/
 ```
 server-gas/
 ├── src/
-│   ├── index.ts         # ライブラリエントリ
-│   ├── config.ts        # DI設定
+│   ├── s-00-globals.ts     # グローバル型定義
+│   ├── s-01-config.ts      # DI設定
+│   ├── s-02-index.ts       # ライブラリエントリ
+│   ├── s-03-setup.ts       # 初期設定関数
 │   ├── domain/
 │   │   ├── services/
-│   │   │   ├── DiffService.ts
-│   │   │   └── SummaryService.ts
+│   │   │   ├── s-DiffService.ts
+│   │   │   └── s-SummaryService.ts
 │   │   └── models/
 │   ├── infrastructure/
 │   │   ├── repositories/
-│   │   │   ├── SheetArchiveRepo.ts
-│   │   │   ├── SheetHistoryRepo.ts
-│   │   │   └── SheetRunLogRepo.ts
+│   │   │   ├── s-SheetArchiveRepository.ts
+│   │   │   ├── s-SheetHistoryRepository.ts
+│   │   │   ├── s-SheetRunLogRepository.ts
+│   │   │   └── s-SheetSummaryRepository.ts
 │   │   ├── lock/
-│   │   │   └── DocumentLock.ts
+│   │   │   └── s-DocumentLock.ts
 │   │   └── utils/
+│   │       └── s-uuid.ts
 │   └── interfaces/
 ├── clasp.json
+├── tsconfig.json    # target: ES5, module: none
 └── tests/
 ```
 
-### 4.4 共通コア
+### 4.4 Master GAS
+```
+master-gas/
+├── src/
+│   ├── m-setup.js      # スプレッドシート初期設定
+│   └── appsscript.json
+└── clasp.json
+```
+
+### 4.5 共通コア
 ```
 core/
 ├── src/
@@ -305,19 +323,37 @@ core/
 - Cloud Functions実行
 - 通知機能（Slack/Mail）
 
-## 10. 運用考慮事項
+## 10. GAS互換性設計
 
-### 10.1 監視
+### 10.1 コード構造
+- **import/export文の不使用**
+  - すべてのクラス・関数はグローバルスコープで定義
+  - 型定義は専用のglobalsファイルに集約
+- **ファイル命名規則**
+  - プレフィックスで読み込み順序を制御
+  - 数字で依存関係を明示（00が最初に読み込まれる）
+- **TypeScript設定**
+  - target: ES5（GAS実行環境に合わせる）
+  - module: none（モジュールシステム無効化）
+
+### 10.2 ライブラリ管理
+- サーバー側はライブラリとして公開
+- クライアント側はversion: "HEAD"で最新版を参照
+- 更新時は手動でライブラリ更新が必要（キャッシュ対策）
+
+## 11. 運用考慮事項
+
+### 11.1 監視
 - RunLogで実行状況把握
 - エラー率の監視
 - 性能劣化の検知
 
-### 10.2 メンテナンス
+### 11.2 メンテナンス
 - 定期的なアーカイブ
 - 不要データの削除
 - インデックス最適化
 
-### 10.3 障害対応
+### 11.3 障害対応
 - エラーログから原因特定
 - 部分再実行可能な設計
 - データ整合性の検証ツール

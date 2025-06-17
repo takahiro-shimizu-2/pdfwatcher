@@ -1,8 +1,8 @@
-import { Page, BatchResult } from '@pdf-watcher/core';
-import { CLIENT_CONFIG } from './config';
-import { ServerLibrary } from './types';
+/**
+ * バッチ処理関数（グローバル関数として定義）
+ */
 
-export function splitIntoBatches<T>(items: T[], batchSize: number): T[][] {
+function splitIntoBatches<T>(items: T[], batchSize: number): T[][] {
   const batches: T[][] = [];
   
   for (let i = 0; i < items.length; i += batchSize) {
@@ -12,13 +12,13 @@ export function splitIntoBatches<T>(items: T[], batchSize: number): T[][] {
   return batches;
 }
 
-export async function executeBatchesInParallel(
+async function executeBatchesInParallel(
   pageBatches: Page[][],
   user: string,
   serverLib: ServerLibrary
 ): Promise<BatchResult[]> {
   const results: BatchResult[] = [];
-  const maxConcurrent = CLIENT_CONFIG.MAX_CONCURRENT_BATCHES;
+  const maxConcurrent = PDFWatcher.CLIENT_CONFIG.MAX_CONCURRENT_BATCHES;
   
   for (let i = 0; i < pageBatches.length; i += maxConcurrent) {
     const currentBatches = pageBatches.slice(i, i + maxConcurrent);
@@ -42,7 +42,7 @@ async function executeSingleBatch(
     return await serverLib.runBatch({
       pages,
       user,
-      masterSpreadsheetId: CLIENT_CONFIG.MASTER_SPREADSHEET_ID,
+      masterSpreadsheetId: PDFWatcher.CLIENT_CONFIG.MASTER_SPREADSHEET_ID,
     });
   } catch (error) {
     return {
@@ -50,8 +50,7 @@ async function executeSingleBatch(
       processedPages: 0,
       updatedPages: 0,
       addedPdfs: 0,
-      duration: 0,
-      errors: [error as Error],
+      errors: [{ message: String(error) }],
     };
   }
 }

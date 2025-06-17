@@ -17,17 +17,18 @@ PDF Watcherは、Webページ上のPDFファイルの追加・更新を自動的
 
 ```
 ├── extension/        # Chrome拡張機能（esbuildビルドシステム採用）
-├── client-gas/      # クライアント側Google Apps Script
-├── server-gas/      # サーバー側Google Apps Script（ライブラリ）
-├── master-gas/      # マスタースプレッドシート用Google Apps Script（clasp管理）
+├── client-gas/      # クライアント側Google Apps Script（c-プレフィックス）
+├── server-gas/      # サーバー側Google Apps Script（s-プレフィックス、ライブラリ）
+├── master-gas/      # マスタースプレッドシート用Google Apps Script（m-プレフィックス、clasp管理）
 └── core/           # 共通インターフェース・モデル
 ```
 
 ### 技術スタック
 
 - **Chrome拡張機能**: TypeScript, esbuild, Manifest V3
-- **Google Apps Script**: TypeScript, clasp
+- **Google Apps Script**: TypeScript (ES5ターゲット), clasp
 - **ビルドツール**: npm workspaces, esbuild（拡張機能）, TypeScript compiler（GAS）
+- **コード構造**: GAS互換のグローバル変数形式（import/export不使用）
 
 ## セットアップ
 
@@ -55,8 +56,8 @@ npm run build
 3. デプロイIDを取得
 
 #### クライアントスクリプト
-1. `client-gas/src/config.ts`のSERVER_LIBRARY_IDを確認・更新
-2. `cd client-gas && npm run build && clasp push`
+1. `cd client-gas && npm run build && clasp push`
+2. サーバー側を更新した場合は、GASエディタでライブラリを「更新」
 
 ### 4. Chrome拡張機能のインストール
 
@@ -90,6 +91,15 @@ npm run build
 
 開発に参加する際は、[CONTRIBUTING.md](./CONTRIBUTING.md)を必ず確認してください。
 ブランチ戦略、コーディング規約、プルリクエストの作成方法などが記載されています。
+
+### GASプロジェクトのコーディング規約
+
+- **import/export文は使用不可**（GAS制約）
+- ファイル名にプレフィックスを付ける：
+  - クライアント: `c-`
+  - サーバー: `s-`
+  - マスター: `m-`
+- TypeScriptはtarget: ES5でコンパイル
 
 ### テスト実行
 

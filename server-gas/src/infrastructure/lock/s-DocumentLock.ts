@@ -1,6 +1,8 @@
-import { CONSTANTS } from '@pdf-watcher/core';
-
-export class DocumentLock {
+/**
+ * ドキュメントロッククラス
+ * 同時実行を防ぐためのロック機構
+ */
+class DocumentLock {
   private lock: GoogleAppsScript.Lock.Lock | null = null;
 
   constructor(_spreadsheetId: string) {

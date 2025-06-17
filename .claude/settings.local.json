@@ -4,7 +4,10 @@
       "Bash(mkdir:*)",
       "Bash(clasp login:*)",
       "Bash(npm run build:*)",
-      "Bash(npx clasp:*)"
+      "Bash(npx clasp:*)",
+      "Bash(npx @google/clasp push:*)",
+      "Bash(npx @google/clasp login:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

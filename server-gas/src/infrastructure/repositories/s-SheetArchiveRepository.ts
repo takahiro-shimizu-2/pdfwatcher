@@ -1,6 +1,7 @@
-import { IArchiveRepository, PDF, SHEET_NAMES } from '@pdf-watcher/core';
-
-export class SheetArchiveRepository implements IArchiveRepository {
+/**
+ * PDFアーカイブのSheetリポジトリ実装
+ */
+class SheetArchiveRepository implements IArchiveRepository {
   constructor(
     private readonly spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet
   ) {}

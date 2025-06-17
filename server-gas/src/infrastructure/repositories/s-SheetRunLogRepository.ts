@@ -1,6 +1,8 @@
-import { IRunLogRepository, RunLogEntry, SHEET_NAMES } from '@pdf-watcher/core';
-
-export class SheetRunLogRepository implements IRunLogRepository {
+/**
+ * 実行ログをスプレッドシートで管理するリポジトリ
+ * バッチ処理の実行ログを記録・取得する
+ */
+class SheetRunLogRepository implements IRunLogRepository {
   constructor(
     private readonly spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet
   ) {}

@@ -1,13 +1,10 @@
-import { SHEET_NAMES, DiffResult } from '@pdf-watcher/core';
-import { CLIENT_CONFIG } from './config';
-import { parseCurrentSheet, convertToPages } from './parser';
-import { splitIntoBatches, executeBatchesInParallel } from './batch';
-import { updateChangesSheet, updateUserLog, clearCurrentSheet, initializeSheets } from './ui';
-import { ServerLibrary } from './types';
+/**
+ * メイン処理関数（グローバル関数として定義）
+ */
 
 declare const PDFWatcherServerLib: ServerLibrary;
 
-export async function runJudge(): Promise<void> {
+async function runJudge(): Promise<void> {
   const startTime = Date.now();
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const user = Session.getActiveUser().getEmail();
@@ -15,7 +12,7 @@ export async function runJudge(): Promise<void> {
   try {
     initializeSheets(spreadsheet);
     
-    const currentSheet = spreadsheet.getSheetByName(SHEET_NAMES.CURRENT);
+    const currentSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CURRENT);
     if (!currentSheet) {
       throw new Error('Current sheet not found');
     }
@@ -27,7 +24,7 @@ export async function runJudge(): Promise<void> {
     }
     
     const pages = convertToPages(parsedRows);
-    const pageBatches = splitIntoBatches(pages, CLIENT_CONFIG.BATCH_SIZE);
+    const pageBatches = splitIntoBatches(pages, PDFWatcher.CLIENT_CONFIG.BATCH_SIZE);
     
     SpreadsheetApp.getActiveSpreadsheet().toast(
       `Processing ${pages.length} pages in ${pageBatches.length} batches...`,
@@ -42,14 +39,15 @@ export async function runJudge(): Promise<void> {
       serverLib
     );
     
+    // TODO: DiffResultsの取得処理を追加
     const allDiffResults: DiffResult[] = [];
     
-    const changesSheet = spreadsheet.getSheetByName(SHEET_NAMES.CHANGES);
+    const changesSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CHANGES);
     if (changesSheet) {
       updateChangesSheet(changesSheet, allDiffResults);
     }
     
-    const userLogSheet = spreadsheet.getSheetByName(SHEET_NAMES.USER_LOG);
+    const userLogSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.USER_LOG);
     if (userLogSheet) {
       const totalDuration = (Date.now() - startTime) / 1000;
       updateUserLog(userLogSheet, batchResults, totalDuration);
@@ -70,7 +68,7 @@ export async function runJudge(): Promise<void> {
     console.error('Error in runJudge:', error);
     SpreadsheetApp.getUi().alert(`Error: ${error}`);
     
-    const userLogSheet = spreadsheet.getSheetByName(SHEET_NAMES.USER_LOG);
+    const userLogSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.USER_LOG);
     if (userLogSheet) {
       const totalDuration = (Date.now() - startTime) / 1000;
       updateUserLog(userLogSheet, [], totalDuration);
@@ -87,13 +85,3 @@ function getServerLibrary(): ServerLibrary {
     );
   }
 }
-
-// Export functions for Google Apps Script
-(globalThis as Record<string, unknown>).onOpen = function(): void {
-  const ui = SpreadsheetApp.getUi();
-  ui.createMenu('PDF Watcher')
-    .addItem('Run Judge', 'runJudge')
-    .addToUi();
-};
-
-(globalThis as Record<string, unknown>).runJudge = runJudge;

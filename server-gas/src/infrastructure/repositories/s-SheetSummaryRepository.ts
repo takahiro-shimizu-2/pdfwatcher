@@ -1,6 +1,8 @@
-import { ISummaryRepository, PageSummary, DiffResult, SHEET_NAMES } from '@pdf-watcher/core';
-
-export class SheetSummaryRepository implements ISummaryRepository {
+/**
+ * ページサマリをスプレッドシートで管理するリポジトリ
+ * 各ページの直近3回分の実行結果を保持する
+ */
+class SheetSummaryRepository implements ISummaryRepository {
   constructor(
     private readonly spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet
   ) {}

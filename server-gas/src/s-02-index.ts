@@ -1,22 +1,7 @@
-import { 
-  BatchResult, 
-  Page, 
-  PDF, 
-  DiffResult,
-  RunLogEntry,
-  CONSTANTS 
-} from '@pdf-watcher/core';
-import { DIContainer } from './config';
-import { DocumentLock } from './infrastructure/lock/DocumentLock';
-import { generateUUID } from './utils/uuid';
-
-export interface RunBatchOptions {
-  pages: Page[];
-  user: string;
-  masterSpreadsheetId: string;
-}
-
-export async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
+/**
+ * バッチ処理のメイン関数
+ */
+async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
   const startTime = Date.now();
   const execId = generateUUID();
   const errors: Error[] = [];
@@ -119,6 +104,6 @@ export async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
   }
 }
 
-export function configure(config: 'sheet' | 'drive' | 'bq', spreadsheetId: string): void {
+function configure(config: ConfigType, spreadsheetId: string): void {
   DIContainer.configure(config, spreadsheetId);
 }

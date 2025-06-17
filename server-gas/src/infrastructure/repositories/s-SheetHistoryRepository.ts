@@ -1,6 +1,8 @@
-import { IHistoryRepository, PageHistoryEntry, SHEET_NAMES } from '@pdf-watcher/core';
-
-export class SheetHistoryRepository implements IHistoryRepository {
+/**
+ * ページ履歴をスプレッドシートで管理するリポジトリ
+ * PDFの更新履歴を記録・取得する
+ */
+class SheetHistoryRepository implements IHistoryRepository {
   constructor(
     private readonly spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet
   ) {}

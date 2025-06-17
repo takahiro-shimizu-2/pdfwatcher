@@ -1,7 +1,8 @@
-import { ParsedRow } from './types';
-import { Page } from '@pdf-watcher/core';
+/**
+ * パーサー関数（グローバル関数として定義）
+ */
 
-export function parseCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): ParsedRow[] {
+function parseCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): ParsedRow[] {
   const data = sheet.getDataRange().getValues();
   const parsedRows: ParsedRow[] = [];
   
@@ -26,7 +27,7 @@ export function parseCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): Pa
   return parsedRows;
 }
 
-export function convertToPages(parsedRows: ParsedRow[]): Page[] {
+function convertToPages(parsedRows: ParsedRow[]): Page[] {
   return parsedRows.map(row => ({
     url: row.pageUrl,
     hash: row.pageHash,

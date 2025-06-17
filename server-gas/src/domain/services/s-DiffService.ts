@@ -1,6 +1,8 @@
-import { DiffResult, Page, PDF, IArchiveRepository } from '@pdf-watcher/core';
-
-export class DiffService {
+/**
+ * 差分検出サービス
+ * ページとPDFの変更を検出する
+ */
+class DiffService {
   constructor(private readonly archiveRepo: IArchiveRepository) {}
 
   async calculateDiff(currentPage: Page): Promise<DiffResult> {

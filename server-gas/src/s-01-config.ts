@@ -1,21 +1,7 @@
-import { ConfigType, IArchiveRepository, IHistoryRepository, ISummaryRepository, IRunLogRepository } from '@pdf-watcher/core';
-import { SheetArchiveRepository } from './infrastructure/repositories/SheetArchiveRepository';
-import { SheetHistoryRepository } from './infrastructure/repositories/SheetHistoryRepository';
-import { SheetSummaryRepository } from './infrastructure/repositories/SheetSummaryRepository';
-import { SheetRunLogRepository } from './infrastructure/repositories/SheetRunLogRepository';
-import { DiffService } from './domain/services/DiffService';
-import { SummaryService } from './domain/services/SummaryService';
-
-export interface ServiceContainer {
-  archiveRepo: IArchiveRepository;
-  historyRepo: IHistoryRepository;
-  summaryRepo: ISummaryRepository;
-  runLogRepo: IRunLogRepository;
-  diffService: DiffService;
-  summaryService: SummaryService;
-}
-
-export class DIContainer {
+/**
+ * DIコンテナ - サービスの依存性注入管理
+ */
+class DIContainer {
   static configure(
     config: ConfigType,
     spreadsheetId: string

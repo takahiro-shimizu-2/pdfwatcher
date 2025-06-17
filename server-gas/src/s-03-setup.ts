@@ -1,10 +1,8 @@
-import { SHEET_NAMES } from '@pdf-watcher/core';
-
 /**
  * 中央ブック（PDF_Watcher_Master）の初期設定
  * この関数をGASエディタから実行してシートとヘッダーを作成
  */
-export function setupMasterSpreadsheet(): void {
+function setupMasterSpreadsheet(): void {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   
   // ArchivePDFシートの作成
@@ -44,9 +42,11 @@ export function setupMasterSpreadsheet(): void {
  * クライアントテンプレートの初期設定
  * この関数をGASエディタから実行してシートとヘッダーを作成
  */
-export function setupClientSpreadsheet(): void {
+function setupClientSpreadsheet(masterSpreadsheetId?: string): void {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const masterSpreadsheetId = '1Sk2Z2eDbj-LRspGzIB4zg6X1ERNELdUz3TdWwEZEUa0';
+  if (!masterSpreadsheetId) {
+    masterSpreadsheetId = '1Sk2Z2eDbj-LRspGzIB4zg6X1ERNELdUz3TdWwEZEUa0';
+  }
   
   // Currentシートの作成（ヘッダーなし）
   let currentSheet = spreadsheet.getSheetByName(SHEET_NAMES.CURRENT);

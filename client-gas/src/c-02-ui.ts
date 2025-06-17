@@ -1,24 +1,21 @@
-import { BatchResult, SHEET_NAMES, CONSTANTS } from '@pdf-watcher/core';
-import { ChangeRow, UserLogEntry } from './types';
-import { DiffResult } from '@pdf-watcher/core';
+/**
+ * UI関連関数（グローバル関数として定義）
+ */
 
-export function updateChangesSheet(
-  sheet: GoogleAppsScript.Spreadsheet.Sheet,
-  results: DiffResult[]
-): void {
+function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: DiffResult[]): void {
   sheet.clear();
   
   const headers = ['PageURL', 'AddedCnt', 'NewPDFs'];
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   
-  const changes: ChangeRow[] = [];
+  const changes: Array<{pageUrl: string; addedCount: number; newPdfs: string}> = [];
   
   for (const result of results) {
     if (result.pdfUpdated && result.addedPdfUrls.length > 0) {
       changes.push({
         pageUrl: result.pageUrl,
-        addedCount: result.addedCount,
+        addedCount: result.addedPdfUrls.length,
         newPdfs: result.addedPdfUrls.join('\n'),
       });
     }
@@ -34,7 +31,7 @@ export function updateChangesSheet(
   }
 }
 
-export function updateUserLog(
+function updateUserLog(
   sheet: GoogleAppsScript.Spreadsheet.Sheet,
   batchResults: BatchResult[],
   totalDuration: number
@@ -53,44 +50,34 @@ export function updateUserLog(
     if (result.errors.length > 0) {
       hasError = true;
       if (!errorMessage) {
-        errorMessage = result.errors[0].message.substring(0, CONSTANTS.MAX_ERROR_MESSAGE_LENGTH);
+        errorMessage = result.errors[0].message.substring(0, PDFWatcher.CONSTANTS.MAX_ERROR_MESSAGE_LENGTH);
       }
     }
   }
   
-  const logEntry: UserLogEntry = {
-    timestamp: new Date(),
-    durationSeconds: totalDuration,
-    pagesProcessed: totalProcessed,
-    pagesUpdated: totalUpdated,
-    pdfsAdded: totalPdfsAdded,
-    result: hasError ? 'ERROR' : 'SUCCESS',
-    errorMessage: errorMessage,
-  };
-  
   const row = [
-    logEntry.timestamp,
-    logEntry.durationSeconds,
-    logEntry.pagesProcessed,
-    logEntry.pagesUpdated,
-    logEntry.pdfsAdded,
-    logEntry.result,
-    logEntry.errorMessage,
+    new Date(),
+    totalDuration,
+    totalProcessed,
+    totalUpdated,
+    totalPdfsAdded,
+    hasError ? 'Error' : 'Success',
+    errorMessage,
   ];
   
   sheet.appendRow(row);
 }
 
-export function clearCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): void {
+function clearCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): void {
   sheet.clear();
 }
 
-export function initializeSheets(spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet): void {
+function initializeSheets(spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet): void {
   const sheetNames = [
-    SHEET_NAMES.CURRENT,
-    SHEET_NAMES.CHANGES,
-    SHEET_NAMES.SUMMARY,
-    SHEET_NAMES.USER_LOG,
+    PDFWatcher.SHEET_NAMES.CURRENT,
+    PDFWatcher.SHEET_NAMES.CHANGES,
+    PDFWatcher.SHEET_NAMES.SUMMARY,
+    PDFWatcher.SHEET_NAMES.USER_LOG,
   ];
   
   for (const name of sheetNames) {
@@ -99,7 +86,7 @@ export function initializeSheets(spreadsheet: GoogleAppsScript.Spreadsheet.Sprea
     }
   }
   
-  const userLogSheet = spreadsheet.getSheetByName(SHEET_NAMES.USER_LOG);
+  const userLogSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.USER_LOG);
   if (userLogSheet && userLogSheet.getLastRow() === 0) {
     const headers = ['Timestamp', 'Duration s', 'PagesProc', 'PagesUpd', 'PDFsAdd', 'Result', 'ErrorMsg'];
     userLogSheet.getRange(1, 1, 1, headers.length).setValues([headers]);
