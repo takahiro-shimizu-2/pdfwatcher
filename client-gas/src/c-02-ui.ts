@@ -5,29 +5,23 @@
 function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: DiffResult[]): void {
   sheet.clear();
   
-  const headers = ['PageURL', 'AddedCnt', 'NewPDFs'];
+  const headers = ['PageURL', 'PDFのURL'];
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   
-  const changes: Array<{pageUrl: string; addedCount: number; newPdfs: string}> = [];
+  const rows: string[][] = [];
   
   for (const result of results) {
     if (result.pdfUpdated && result.addedPdfUrls.length > 0) {
-      changes.push({
-        pageUrl: result.pageUrl,
-        addedCount: result.addedPdfUrls.length,
-        newPdfs: result.addedPdfUrls.join('\n'),
-      });
+      // 各PDFのURLを個別の行として追加
+      for (const pdfUrl of result.addedPdfUrls) {
+        rows.push([result.pageUrl, pdfUrl]);
+      }
     }
   }
   
-  if (changes.length > 0) {
-    const rows = changes.map(change => [
-      change.pageUrl,
-      change.addedCount,
-      change.newPdfs,
-    ]);
-    sheet.getRange(2, 1, rows.length, 3).setValues(rows);
+  if (rows.length > 0) {
+    sheet.getRange(2, 1, rows.length, 2).setValues(rows);
   }
 }
 

@@ -68,6 +68,7 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
       addedPdfs: stats.totalPdfsAdded,
       duration,
       errors,
+      diffResults,
     };
     
   } catch (error) {

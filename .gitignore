@@ -43,3 +43,6 @@ lerna-debug.log*
 
 # OS generated
 Thumbs.db
+
+# Test data
+test/

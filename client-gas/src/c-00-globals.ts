@@ -51,6 +51,7 @@ interface BatchResult {
   updatedPages: number;
   addedPdfs: number;
   errors: Array<{ message: string }>;
+  diffResults?: DiffResult[];
 }
 
 interface DiffResult {

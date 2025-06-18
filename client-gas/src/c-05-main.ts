@@ -39,8 +39,27 @@ async function runJudge(): Promise<void> {
       serverLib
     );
     
-    // TODO: DiffResultsの取得処理を追加
+    // BatchResultsからDiffResultsを抽出
     const allDiffResults: DiffResult[] = [];
+    for (const batchResult of batchResults) {
+      if (batchResult.diffResults) {
+        allDiffResults.push(...batchResult.diffResults);
+      }
+    }
+    
+    // デバッグ用ログ
+    console.log('BatchResults count:', batchResults.length);
+    console.log('All DiffResults count:', allDiffResults.length);
+    if (allDiffResults.length > 0) {
+      console.log('First DiffResult:', JSON.stringify(allDiffResults[0]));
+    }
+    
+    // エラーハンドリングテスト用の詳細ログ
+    for (const batchResult of batchResults) {
+      if (batchResult.errors && batchResult.errors.length > 0) {
+        console.log('Batch errors:', batchResult.errors);
+      }
+    }
     
     const changesSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CHANGES);
     if (changesSheet) {

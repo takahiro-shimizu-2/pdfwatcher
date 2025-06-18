@@ -1,3 +1,5 @@
+import { DiffResult } from './DiffResult';
+
 export interface BatchResult {
   execId: string;
   processedPages: number;
@@ -5,4 +7,5 @@ export interface BatchResult {
   addedPdfs: number;
   duration: number;
   errors: Error[];
+  diffResults?: DiffResult[];
 }

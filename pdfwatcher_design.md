@@ -97,6 +97,7 @@ interface BatchResult {
   addedPdfs: number;
   duration: number;
   errors: Error[];
+  diffResults?: DiffResult[];  // 詳細情報を含む
 }
 ```
 
@@ -156,7 +157,7 @@ interface IRunLogRepository {
    - RunLog追記
 
 5. **結果反映**
-   - Changesシート再生成
+   - Changesシート再生成（1行1URLの縦並び形式）
    - UserLog追記
    - Currentシートクリア
 
@@ -263,7 +264,12 @@ core/
 - 待機時間：最大10秒
 - AppendRowはロック不要
 
-### 5.3 メモリ管理
+### 5.3 実装最適化
+- BatchResultにdiffResultsフィールドを追加
+- 1回のAPI呼び出しで詳細情報を取得
+- URLの有効性チェックは行わない（認証ページ対応）
+
+### 5.4 メモリ管理
 - 1ファイル400行制限
 - 大量データは分割処理
 - ストリーミング処理優先
