@@ -4,7 +4,7 @@
 
 function setupClientSpreadsheet(): void {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const masterSpreadsheetId = PDFWatcher.CLIENT_CONFIG.MASTER_SPREADSHEET_ID;
+  const masterSpreadsheetId = PDFWatcher.CONSTANTS.MASTER_SPREADSHEET_ID;
   
   // Currentシートの作成（ヘッダーなし）
   let currentSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CURRENT);

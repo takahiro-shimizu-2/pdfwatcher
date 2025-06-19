@@ -34,11 +34,11 @@ class SheetArchiveRepository implements IArchiveRepository {
     
     const sheet = this.getOrCreateSheet();
     const existingData = sheet.getDataRange().getValues();
-    const existingMap = new Map<string, number>();
+    const existingMap = new Map<string, { row: number; data: unknown[] }>();
     
     for (let i = 1; i < existingData.length; i++) {
       const key = `${existingData[i][0]}|${existingData[i][1]}`;
-      existingMap.set(key, i + 1);
+      existingMap.set(key, { row: i + 1, data: existingData[i] });
     }
     
     const updates: { row: number; values: unknown[] }[] = [];
@@ -46,12 +46,27 @@ class SheetArchiveRepository implements IArchiveRepository {
     
     for (const pdf of pdfs) {
       const key = `${pdf.pageUrl}|${pdf.pdfUrl}`;
-      const existingRow = existingMap.get(key);
+      const existing = existingMap.get(key);
       
-      if (existingRow) {
+      if (existing) {
+        // 既存レコードの場合
+        const existingFirstSeen = existing.data[2]; // 既存のfirstSeenを保持
+        const existingLastSeen = existing.data[3];  // 既存のlastSeen
+        const existingStatus = existing.data[4];    // 既存のstatus
+        
+        // firstSeenは常に既存の値を保持
+        // lastSeenは「ページから削除」への変更時は更新しない
+        const shouldUpdateLastSeen = !(existingStatus !== 'ページから削除' && pdf.status === 'ページから削除');
+        
         updates.push({
-          row: existingRow,
-          values: [pdf.pageUrl, pdf.pdfUrl, pdf.firstSeen, pdf.lastSeen, pdf.status],
+          row: existing.row,
+          values: [
+            pdf.pageUrl, 
+            pdf.pdfUrl, 
+            existingFirstSeen, // 既存のfirstSeenを保持
+            shouldUpdateLastSeen ? pdf.lastSeen : existingLastSeen, // 条件に応じてlastSeenを更新
+            pdf.status
+          ],
         });
       } else {
         appends.push([pdf.pageUrl, pdf.pdfUrl, pdf.firstSeen, pdf.lastSeen, pdf.status]);

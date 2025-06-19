@@ -12,7 +12,7 @@ function setupMasterSpreadsheet() {
   
   // ArchivePDFシートの作成
   createOrUpdateSheet(spreadsheet, 'ArchivePDF', [
-    ['ページURL', 'PDF URL', '初回発見日時', '最終確認日時']
+    ['ページURL', 'PDF URL', '初回発見日時', '最終確認日時', 'ステータス']
   ]);
   
   // PageHistoryシートの作成

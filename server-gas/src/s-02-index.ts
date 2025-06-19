@@ -46,7 +46,7 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
             pdfsToUpdate.push({
               pageUrl: result.pageUrl,
               pdfUrl,
-              firstSeen: now, // これはリポジトリ側で上書きされない
+              firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
               lastSeen: now,
               status: 'ページ内に存在',
             });
@@ -59,8 +59,8 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
         pdfsToUpdate.push({
           pageUrl: result.pageUrl,
           pdfUrl,
-          firstSeen: now, // これはリポジトリ側で上書きされない
-          lastSeen: now, // これも上書きされない
+          firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
+          lastSeen: now, // リポジトリ側で既存のlastSeenが保持される（削除時は更新されない）
           status: 'ページから削除',
         });
       }
