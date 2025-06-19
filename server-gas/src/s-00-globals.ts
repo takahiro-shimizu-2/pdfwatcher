@@ -35,7 +35,7 @@ interface DiffResult {
   pageUpdated: boolean;
   pdfUpdated: boolean;
   addedPdfUrls: string[];
-  removedPdfUrls?: string[];
+  removedPdfUrls: string[];
   addedCount: number;
 }
 
@@ -99,11 +99,14 @@ interface RunLogEntry {
   scriptVersion: string;
 }
 
+type PDFStatus = 'ページ内に存在' | 'ページから削除';
+
 interface PDF {
   pageUrl: string;
   pdfUrl: string;
   firstSeen: Date;
   lastSeen: Date;
+  status: PDFStatus;
 }
 
 // ConfigType定義

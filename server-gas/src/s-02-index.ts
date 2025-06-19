@@ -24,13 +24,44 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
     const pdfsToUpdate: PDF[] = [];
     const now = new Date();
     
+    // 新規PDFと既存PDFの更新を処理
     for (const result of diffResults) {
+      // 新規PDFを追加
       for (const pdfUrl of result.addedPdfUrls) {
         pdfsToUpdate.push({
           pageUrl: result.pageUrl,
           pdfUrl,
           firstSeen: now,
           lastSeen: now,
+          status: 'ページ内に存在',
+        });
+      }
+      
+      // 現在存在するPDFのlastSeenを更新
+      const page = options.pages.find(p => p.url === result.pageUrl);
+      if (page) {
+        for (const pdfUrl of page.pdfUrls) {
+          if (!result.addedPdfUrls.includes(pdfUrl)) {
+            // 既存のPDFのlastSeenを更新
+            pdfsToUpdate.push({
+              pageUrl: result.pageUrl,
+              pdfUrl,
+              firstSeen: now, // これはリポジトリ側で上書きされない
+              lastSeen: now,
+              status: 'ページ内に存在',
+            });
+          }
+        }
+      }
+      
+      // 削除されたPDFのステータスを更新
+      for (const pdfUrl of result.removedPdfUrls) {
+        pdfsToUpdate.push({
+          pageUrl: result.pageUrl,
+          pdfUrl,
+          firstSeen: now, // これはリポジトリ側で上書きされない
+          lastSeen: now, // これも上書きされない
+          status: 'ページから削除',
         });
       }
     }

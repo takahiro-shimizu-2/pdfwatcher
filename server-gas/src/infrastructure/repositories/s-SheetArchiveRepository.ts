@@ -21,6 +21,7 @@ class SheetArchiveRepository implements IArchiveRepository {
           pdfUrl: row[1] as string,
           firstSeen: new Date(row[2] as string),
           lastSeen: new Date(row[3] as string),
+          status: (row[4] as string) === 'ページから削除' ? 'ページから削除' : 'ページ内に存在',
         });
       }
     }
@@ -50,20 +51,20 @@ class SheetArchiveRepository implements IArchiveRepository {
       if (existingRow) {
         updates.push({
           row: existingRow,
-          values: [pdf.pageUrl, pdf.pdfUrl, pdf.firstSeen, pdf.lastSeen],
+          values: [pdf.pageUrl, pdf.pdfUrl, pdf.firstSeen, pdf.lastSeen, pdf.status],
         });
       } else {
-        appends.push([pdf.pageUrl, pdf.pdfUrl, pdf.firstSeen, pdf.lastSeen]);
+        appends.push([pdf.pageUrl, pdf.pdfUrl, pdf.firstSeen, pdf.lastSeen, pdf.status]);
       }
     }
     
     for (const update of updates) {
-      sheet.getRange(update.row, 1, 1, 4).setValues([update.values]);
+      sheet.getRange(update.row, 1, 1, 5).setValues([update.values]);
     }
     
     if (appends.length > 0) {
       const lastRow = sheet.getLastRow();
-      sheet.getRange(lastRow + 1, 1, appends.length, 4).setValues(appends);
+      sheet.getRange(lastRow + 1, 1, appends.length, 5).setValues(appends);
     }
   }
 
@@ -81,6 +82,7 @@ class SheetArchiveRepository implements IArchiveRepository {
         pdfUrl: row[1] as string,
         firstSeen: new Date(row[2] as string),
         lastSeen: new Date(row[3] as string),
+        status: (row[4] as string) === 'ページから削除' ? 'ページから削除' : 'ページ内に存在',
       });
     }
     
@@ -92,10 +94,10 @@ class SheetArchiveRepository implements IArchiveRepository {
     
     if (!sheet) {
       sheet = this.spreadsheet.insertSheet(SHEET_NAMES.ARCHIVE_PDF);
-      sheet.getRange(1, 1, 1, 4).setValues([
-        ['ページURL', 'PDF URL', '初回発見日時', '最終確認日時']
+      sheet.getRange(1, 1, 1, 5).setValues([
+        ['ページURL', 'PDF URL', '初回発見日時', '最終確認日時', 'ステータス']
       ]);
-      sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
+      sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
     }
     
     return sheet;
