@@ -47,6 +47,7 @@ interface DiffResult {
   addedPdfUrls: string[];
   removedPdfUrls: string[];
   addedCount: number;
+  pageHash?: string;
 }
 
 interface BatchResult {
@@ -68,6 +69,7 @@ interface RunBatchOptions {
 // NOTE: core/src/models/PageSummary.tsからビルド時にコピー
 interface PageSummary {
   pageUrl: string;
+  lastHash?: string;
   run1?: {
     date: Date;
     pageUpdated: boolean;

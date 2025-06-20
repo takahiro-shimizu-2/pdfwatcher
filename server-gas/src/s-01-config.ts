@@ -39,7 +39,7 @@ class DIContainer {
     const summaryRepo = new SheetSummaryRepository(spreadsheet);
     const runLogRepo = new SheetRunLogRepository(spreadsheet);
     
-    const diffService = new DiffService(archiveRepo);
+    const diffService = new DiffService(archiveRepo, summaryRepo);
     const summaryService = new SummaryService(summaryRepo, historyRepo);
 
     return {

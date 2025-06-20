@@ -3,9 +3,29 @@
  * ページとPDFの変更を検出する
  */
 class DiffService {
-  constructor(private readonly archiveRepo: IArchiveRepository) {}
+  constructor(
+    private readonly archiveRepo: IArchiveRepository,
+    private readonly summaryRepo: ISummaryRepository
+  ) {}
 
   async calculateDiff(currentPage: Page): Promise<DiffResult> {
+    // 前回実行時のハッシュ値を取得
+    const pageSummary = await this.summaryRepo.getPageSummary(currentPage.url);
+    const lastPageHash = pageSummary?.lastHash;
+    
+    // ハッシュ値が同じ場合は変更なしとして早期リターン
+    if (currentPage.hash && lastPageHash && currentPage.hash === lastPageHash) {
+      return {
+        pageUrl: currentPage.url,
+        pageUpdated: false,
+        pdfUpdated: false,
+        addedPdfUrls: [],
+        removedPdfUrls: [],
+        addedCount: 0,
+        pageHash: currentPage.hash,
+      };
+    }
+    
     const existingPdfs = await this.archiveRepo.getPdfsByPage(currentPage.url);
     const existingPdfUrls = new Set(existingPdfs.map(pdf => pdf.pdfUrl));
     const currentPdfUrls = new Set(currentPage.pdfUrls);
@@ -35,6 +55,7 @@ class DiffService {
       addedPdfUrls,
       removedPdfUrls,
       addedCount: addedPdfUrls.length,
+      pageHash: currentPage.hash,
     };
   }
 
@@ -60,8 +81,9 @@ class DiffService {
     };
   }
 
-  private hasPageChanged(_currentPage: Page, _existingPdfs: PDF[]): boolean {
-    // TODO: Implement actual page change detection logic
+  private hasPageChanged(currentPage: Page, _existingPdfs: PDF[]): boolean {
+    // ハッシュ値による変更検知は既にcalculateDiffで行っているため、
+    // ここでは常にtrueを返す（ハッシュが異なる場合のみここに到達する）
     return true;
   }
 }

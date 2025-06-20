@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         await chrome.scripting.executeScript({
           target: { tabId: tab.id },
-          files: ['content.js']
+          files: ['dist/content.js']
         });
         console.log('Content script injected');
       } catch (injectionError) {

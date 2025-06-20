@@ -24,7 +24,7 @@ function setupClientSpreadsheet(): void {
     summarySheet = spreadsheet.insertSheet(PDFWatcher.SHEET_NAMES.SUMMARY);
   }
   summarySheet.clear();
-  const importRangeFormula = `=IMPORTRANGE("${masterSpreadsheetId}", "PageSummary!A:M")`;
+  const importRangeFormula = `=IMPORTRANGE("${masterSpreadsheetId}", "PageSummary!A:N")`;
   summarySheet.getRange('A1').setFormula(importRangeFormula);
   summarySheet.getRange('A1').setNote(
     'このシートは中央ブックのPageSummaryを参照しています。\n' +

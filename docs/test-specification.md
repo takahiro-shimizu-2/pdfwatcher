@@ -81,9 +81,11 @@
 | TC-SERVER-003-01 | updatePageSummary - 新規 | 新規サマリ | 1行追加 | High |
 | TC-SERVER-003-02 | updatePageSummary - 更新 | 既存ページ | 該当行更新 | High |
 | TC-SERVER-003-03 | updatePageSummary - 統計値 | カウント情報 | 正確な計算 | High |
-| TC-SERVER-003-04 | getPageSummary - 存在 | pageUrl | サマリ取得 | High |
-| TC-SERVER-003-05 | getPageSummary - 非存在 | 未登録URL | null | High |
-| TC-SERVER-003-06 | 一括更新 | 10ページ | 全て更新 | Medium |
+| TC-SERVER-003-04 | updatePageSummary - ハッシュ保存 | pageHash含む | LastHashフィールド更新 | High |
+| TC-SERVER-003-05 | getPageSummary - 存在 | pageUrl | サマリ取得 | High |
+| TC-SERVER-003-06 | getPageSummary - 非存在 | 未登録URL | null | High |
+| TC-SERVER-003-07 | getPageSummary - ハッシュ取得 | 既存ページ | lastHash含む | High |
+| TC-SERVER-003-08 | 一括更新 | 10ページ | 全て更新 | Medium |
 
 #### TC-SERVER-004: SheetRunLogRepository テスト
 | ID | テスト項目 | 入力 | 期待結果 | 優先度 |
@@ -111,8 +113,10 @@
 | TC-SERVER-006-02 | calculateDiff - 追加のみ | 新規PDF | added=新規分 | High |
 | TC-SERVER-006-03 | calculateDiff - 削除のみ | 一部削除 | deleted=削除分 | High |
 | TC-SERVER-006-04 | calculateDiff - 混在 | 追加・削除混在 | 正確なカウント | High |
-| TC-SERVER-006-05 | mergeDiffResults - 2結果 | 2つのDiff | 合計値正確 | High |
-| TC-SERVER-006-06 | mergeDiffResults - 空配列 | [] | 空のDiff | Medium |
+| TC-SERVER-006-05 | calculateDiff - ハッシュ一致 | 前回と同じハッシュ | 早期リターン、スキップ | High |
+| TC-SERVER-006-06 | calculateDiff - ハッシュ不一致 | 異なるハッシュ | 通常の差分計算実行 | High |
+| TC-SERVER-006-07 | mergeDiffResults - 2結果 | 2つのDiff | 合計値正確 | High |
+| TC-SERVER-006-08 | mergeDiffResults - 空配列 | [] | 空のDiff | Medium |
 
 #### TC-SERVER-007: SummaryService テスト
 | ID | テスト項目 | 入力 | 期待結果 | 優先度 |
@@ -232,6 +236,8 @@
 | TC-E2E-003-02 | 中規模実行 | 500PDF | 3分以内 | High |
 | TC-E2E-003-03 | 大規模実行 | 2000PDF | 6分以内 | Medium |
 | TC-E2E-003-04 | 同時実行 | 3クライアント | 干渉なし | Medium |
+| TC-E2E-003-05 | ハッシュ値スキップ | 変更なし1000ページ | 30秒以内 | High |
+| TC-E2E-003-06 | ハッシュ値比較 | 50%変更あり | 処理時間50%削減 | High |
 
 ### 1.7 受入テスト
 

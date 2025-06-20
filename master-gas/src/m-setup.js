@@ -22,7 +22,7 @@ function setupMasterSpreadsheet() {
   
   // PageSummaryシートの作成
   createOrUpdateSheet(spreadsheet, 'PageSummary', [
-    ['ページURL', 
+    ['ページURL', '最新ハッシュ',
      '実行1-日時', '実行1-ページ', '実行1-PDF', '実行1-追加数',
      '実行2-日時', '実行2-ページ', '実行2-PDF', '実行2-追加数',
      '実行3-日時', '実行3-ページ', '実行3-PDF', '実行3-追加数']
