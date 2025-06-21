@@ -4,6 +4,6 @@ export interface PDF {
   pageUrl: string;
   pdfUrl: string;
   firstSeen: Date;
-  lastSeen: Date;
+  deletedAt: Date | null;  // 削除確認日時（削除されていない場合はnull）
   status: PDFStatus;
 }
