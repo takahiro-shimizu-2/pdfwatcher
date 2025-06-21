@@ -1,0 +1,3 @@
+https://this-domain-does-not-exist-12345.com	test123	https://fake.com/file1.pdf	https://fake.com/file2.pdf
+https://www.google.com/404-not-found-page	test456	https://example.com/missing.pdf
+www.example.com	test789	https://example.com/no-protocol.pdf

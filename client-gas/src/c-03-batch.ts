@@ -18,7 +18,7 @@ async function executeBatchesInParallel(
   serverLib: ServerLibrary
 ): Promise<BatchResult[]> {
   const results: BatchResult[] = [];
-  const maxConcurrent = PDFWatcher.CLIENT_CONFIG.MAX_CONCURRENT_BATCHES;
+  const maxConcurrent = PDFWatcher.CONSTANTS.MAX_CONCURRENT_BATCHES;
   
   for (let i = 0; i < pageBatches.length; i += maxConcurrent) {
     const currentBatches = pageBatches.slice(i, i + maxConcurrent);
@@ -42,7 +42,7 @@ async function executeSingleBatch(
     return await serverLib.runBatch({
       pages,
       user,
-      masterSpreadsheetId: PDFWatcher.CLIENT_CONFIG.MASTER_SPREADSHEET_ID,
+      masterSpreadsheetId: PDFWatcher.CONSTANTS.MASTER_SPREADSHEET_ID,
     });
   } catch (error) {
     return {
@@ -50,7 +50,8 @@ async function executeSingleBatch(
       processedPages: 0,
       updatedPages: 0,
       addedPdfs: 0,
-      errors: [{ message: String(error) }],
+      duration: 0,
+      errors: [new Error(String(error))],
     };
   }
 }

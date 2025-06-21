@@ -7,7 +7,21 @@ class DIContainer {
     spreadsheetId: string
   ): void {
     (DIContainer as unknown as Record<string, unknown>)._config = config;
-    (DIContainer as unknown as Record<string, unknown>)._spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    
+    try {
+      (DIContainer as unknown as Record<string, unknown>)._spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    } catch (error) {
+      // アクセス権限エラーの場合、より具体的なメッセージを提供
+      const errorMessage = (error as Error).toString();
+      if (errorMessage.includes('permission') || errorMessage.includes('access')) {
+        throw new Error(`マスタースプレッドシートへのアクセス権限がありません。スプレッドシートID: ${spreadsheetId}. 管理者に共有権限の付与を依頼してください。`);
+      } else if (errorMessage.includes('not found')) {
+        throw new Error(`マスタースプレッドシートが見つかりません。スプレッドシートID: ${spreadsheetId}. IDが正しいか確認してください。`);
+      } else {
+        throw new Error(`マスタースプレッドシートを開けませんでした: ${errorMessage}`);
+      }
+    }
+    
     (DIContainer as unknown as Record<string, unknown>)._instance = null;
   }
 
@@ -39,7 +53,7 @@ class DIContainer {
     const summaryRepo = new SheetSummaryRepository(spreadsheet);
     const runLogRepo = new SheetRunLogRepository(spreadsheet);
     
-    const diffService = new DiffService(archiveRepo);
+    const diffService = new DiffService(archiveRepo, summaryRepo);
     const summaryService = new SummaryService(summaryRepo, historyRepo);
 
     return {

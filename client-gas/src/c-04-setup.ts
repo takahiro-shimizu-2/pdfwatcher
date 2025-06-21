@@ -4,7 +4,7 @@
 
 function setupClientSpreadsheet(): void {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const masterSpreadsheetId = PDFWatcher.CLIENT_CONFIG.MASTER_SPREADSHEET_ID;
+  const masterSpreadsheetId = PDFWatcher.CONSTANTS.MASTER_SPREADSHEET_ID;
   
   // Currentシートの作成（ヘッダーなし）
   let currentSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CURRENT);
@@ -24,7 +24,7 @@ function setupClientSpreadsheet(): void {
     summarySheet = spreadsheet.insertSheet(PDFWatcher.SHEET_NAMES.SUMMARY);
   }
   summarySheet.clear();
-  const importRangeFormula = `=IMPORTRANGE("${masterSpreadsheetId}", "PageSummary!A:M")`;
+  const importRangeFormula = `=IMPORTRANGE("${masterSpreadsheetId}", "PageSummary!A:N")`;
   summarySheet.getRange('A1').setFormula(importRangeFormula);
   summarySheet.getRange('A1').setNote(
     'このシートは中央ブックのPageSummaryを参照しています。\n' +

@@ -37,7 +37,7 @@
 │           Master Spreadsheet (中央)              │
 │  ├─ ArchivePDF (PDFマスタ)                       │
 │  ├─ PageHistory (実行履歴)                       │
-│  ├─ PageSummary (3世代サマリ)                    │
+│  ├─ PageSummary (3世代サマリ + 最新ハッシュ)      │
 │  └─ RunLog (実行ログ)                            │
 └─────────────────────────────────────────────────┘
 ```
@@ -87,6 +87,7 @@ interface DiffResult {
   addedPdfUrls: string[];
   removedPdfUrls: string[];
   addedCount: number;
+  pageHash?: string;  // ページハッシュ値
 }
 
 // バッチ実行結果
@@ -120,7 +121,7 @@ interface IHistoryRepository {
 // サマリーリポジトリ
 interface ISummaryRepository {
   updatePageSummary(pageUrl: string, result: DiffResult): Promise<void>;
-  getPageSummary(pageUrl: string): Promise<PageSummary>;
+  getPageSummary(pageUrl: string): Promise<PageSummary | null>;
 }
 
 // 実行ログリポジトリ
@@ -146,13 +147,16 @@ interface IRunLogRepository {
    - 並列実行（最大10バッチ同時）
 
 3. **差分計算**（ロック外）
-   - 現在のPDFリストを取得
-   - 新旧比較で追加・削除を検出
-   - DiffResultを生成
+   - 前回のページハッシュと比較
+   - ハッシュが同一の場合はスキップ（高速化）
+   - 変更がある場合のみ：
+     - 現在のPDFリストを取得
+     - 新旧比較で追加・削除を検出
+     - DiffResultを生成
 
 4. **データ更新**（DocumentLock内）
    - ArchivePDF更新（80ms/URL）
-   - PageSummary更新（3世代管理）
+   - PageSummary更新（3世代管理 + 最新ハッシュ保存）
    - PageHistory追記
    - RunLog追記
 
@@ -268,6 +272,10 @@ core/
 - BatchResultにdiffResultsフィールドを追加
 - 1回のAPI呼び出しで詳細情報を取得
 - URLの有効性チェックは行わない（認証ページ対応）
+- **ページハッシュ値による高速化（2025-06-20実装）**
+  - ページ内容が変更されていない場合は差分検出をスキップ
+  - PageSummaryシートにLastHashフィールドを追加
+  - DiffServiceで前回ハッシュと比較して早期リターン
 
 ### 5.4 メモリ管理
 - 1ファイル400行制限

@@ -5,4 +5,5 @@ export interface DiffResult {
   addedPdfUrls: string[];
   removedPdfUrls: string[];
   addedCount: number;
+  pageHash?: string;
 }

@@ -24,7 +24,7 @@ async function runJudge(): Promise<void> {
     }
     
     const pages = convertToPages(parsedRows);
-    const pageBatches = splitIntoBatches(pages, PDFWatcher.CLIENT_CONFIG.BATCH_SIZE);
+    const pageBatches = splitIntoBatches(pages, PDFWatcher.CONSTANTS.BATCH_SIZE);
     
     SpreadsheetApp.getActiveSpreadsheet().toast(
       `Processing ${pages.length} pages in ${pageBatches.length} batches...`,
