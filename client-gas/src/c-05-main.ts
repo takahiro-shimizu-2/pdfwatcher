@@ -93,11 +93,12 @@ async function initializeProcessing(pages: Page[], user: string): Promise<void> 
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const changesSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CHANGES);
   if (changesSheet) {
-    const lastRow = changesSheet.getLastRow();
-    if (lastRow > 1) {
-      changesSheet.getRange(2, 1, lastRow - 1, changesSheet.getLastColumn()).clearContent();
-      console.log('Changesシートをクリアしました（新規処理のため）');
-    }
+    changesSheet.clear();
+    // ヘッダーを設定
+    const headers = ['PageURL', 'PDFのURL'];
+    changesSheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    changesSheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+    console.log('Changesシートをクリアしました（新規処理のため）');
   }
   
   SpreadsheetApp.getActiveSpreadsheet().toast(
@@ -127,29 +128,15 @@ async function processNextGroup(): Promise<boolean> {
   console.log(`\n=== グループ ${state.currentGroupIndex + 1}/${state.totalGroups} の処理 ===`);
   
   try {
-    // グループを処理
+    // グループを処理（stateを渡す）
     const serverLib = getServerLibrary();
-    const groupResult = await GroupProcessor.processGroup(currentGroup, serverLib);
+    const groupResult = await GroupProcessor.processGroup(currentGroup, serverLib, state);
     
-    // 結果をシートに追記
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    // 注：Changesシート・UserLogの更新は、processGroup内で
+    // ミニバッチごとに実行されるため、ここでは不要
     
-    // Changesシートに追記（継続実行時はクリアしない）
-    const changesSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CHANGES);
-    if (changesSheet && groupResult.diffResults) {
-      updateChangesSheet(changesSheet, groupResult.diffResults);
-    }
-    
-    // UserLogシートに追記
-    const userLogSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.USER_LOG);
-    if (userLogSheet) {
-      const groupDuration = groupResult.duration;
-      updateUserLog(userLogSheet, [groupResult], groupDuration);
-    }
-    
-    // 進捗を更新
-    const processedPages = state.processedPages + currentGroup.pages.length;
-    StateManager.updateProgress(processedPages);
+    // 進捗は既にprocessGroup内で更新されているため、
+    // ここでは更新しない（重複を避ける）
     
     // 進捗を表示
     GroupProcessor.showProgress(processingGroups, state.currentGroupIndex);
@@ -198,12 +185,14 @@ async function runJudgeContinuation(): Promise<void> {
   processingStartTime = Date.now();
   
   try {
-    // ロックを取得
+    // ロックを取得（30秒待機）
     const lock = LockService.getScriptLock();
     try {
-      lock.waitLock(10000);
+      lock.waitLock(30000);
     } catch (e) {
-      console.log('別の処理が実行中です');
+      console.log('別の処理が実行中です - 30秒待機しましたが取得できませんでした');
+      // 2分後に再試行するトリガーを設定
+      TriggerManager.scheduleNextExecution(2);
       return;
     }
     
@@ -243,14 +232,24 @@ async function runJudgeContinuation(): Promise<void> {
       const delayMinutes = PDFWatcher.CONSTANTS.TRIGGER_DELAY_MS / 60000;
       TriggerManager.scheduleNextExecution(delayMinutes);
       
-      // 次のグループへ進む
-      StateManager.moveToNextGroup();
-      
-      SpreadsheetApp.getActiveSpreadsheet().toast(
-        `処理を再開します（グループ ${state.currentGroupIndex + 2}/${state.totalGroups}）`,
-        'PDF Watcher - 継続実行',
-        5
-      );
+      // statusがprocessingの場合は同じグループを再実行
+      if (state.status === 'processing') {
+        console.log(`前回の処理が中断されたため、グループ ${state.currentGroupIndex + 1} を再実行します`);
+        console.log('注：既に処理済みのページは「変更なし」と判定されます（重複防止のため）');
+        SpreadsheetApp.getActiveSpreadsheet().toast(
+          `中断されたグループ ${state.currentGroupIndex + 1}/${state.totalGroups} を再実行します\n※既に処理済みのページはスキップされます`,
+          'PDF Watcher - 継続実行',
+          10
+        );
+      } else {
+        // pausedの場合は次のグループへ
+        StateManager.moveToNextGroup();
+        SpreadsheetApp.getActiveSpreadsheet().toast(
+          `処理を再開します（グループ ${state.currentGroupIndex + 2}/${state.totalGroups}）`,
+          'PDF Watcher - 継続実行',
+          5
+        );
+      }
       
       // 処理を継続
       await processNextGroup();

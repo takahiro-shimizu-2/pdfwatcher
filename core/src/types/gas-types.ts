@@ -10,6 +10,8 @@ export interface RunBatchOptions {
   pages: Page[];
   user: string;
   masterSpreadsheetId: string;
+  execId?: string;  // 再実行時は前回と同じIDを使用
+  isRetry?: boolean;  // 再実行フラグ
 }
 
 // client-gasで使用される型

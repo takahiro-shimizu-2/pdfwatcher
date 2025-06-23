@@ -3,13 +3,22 @@
  */
 async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
   const startTime = Date.now();
-  const execId = generateUUID();
+  // クライアントから渡されたexecIdを使用、なければ新規生成
+  const execId = options.execId || generateUUID();
   const errors: Error[] = [];
+  
+  // エラーハンドリング用にservicesを事前に取得
+  let services: ServiceContainer | null = null;
   
   try {
     DIContainer.configure('sheet', options.masterSpreadsheetId);
-    const services = DIContainer.getServices();
+    services = DIContainer.getServices();
     const lock = new DocumentLock(options.masterSpreadsheetId);
+    
+    // 再実行モードを設定
+    if (options.isRetry) {
+      services.diffService.setRetryMode(true);
+    }
     
     const diffResults: DiffResult[] = [];
     for (const page of options.pages) {
@@ -68,13 +77,13 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
     
     await lock.executeWithLock(async () => {
       if (pdfsToUpdate.length > 0) {
-        await services.archiveRepo.upsertPdfs(pdfsToUpdate);
+        await services!.archiveRepo.upsertPdfs(pdfsToUpdate);
       }
       
-      await services.summaryService.updateBatchSummaries(diffResults, options.user);
+      await services!.summaryService.updateBatchSummaries(diffResults, options.user);
     });
     
-    const stats = await services.diffService.mergeDiffResults(diffResults);
+    const stats = await services!.diffService.mergeDiffResults(diffResults);
     const duration = (Date.now() - startTime) / 1000;
     
     const runLog: RunLogEntry = {
@@ -90,7 +99,7 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
       scriptVersion: CONSTANTS.SCRIPT_VERSION,
     };
     
-    await services.runLogRepo.addRunLog(runLog);
+    await services!.runLogRepo.addRunLog(runLog);
     
     return {
       execId,
@@ -107,8 +116,9 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
     errors.push(error as Error);
     
     try {
-      const services = DIContainer.getServices();
-      const runLog: RunLogEntry = {
+      // エラー処理中は既に取得済みのservicesを使用、なければスキップ
+      if (services) {
+        const runLog: RunLogEntry = {
         execId,
         timestamp: new Date(),
         user: options.user,
@@ -119,10 +129,18 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
         result: 'ERROR',
         errorMessage: (error as Error).message.substring(0, CONSTANTS.MAX_ERROR_MESSAGE_LENGTH),
         scriptVersion: CONSTANTS.SCRIPT_VERSION,
-      };
-      await services.runLogRepo.addRunLog(runLog);
+        };
+        await services.runLogRepo.addRunLog(runLog);
+      } else {
+        console.error('Services not available for error logging');
+      }
     } catch (logError) {
       console.error('Failed to write error log:', logError);
+      console.error('Error details:', {
+        message: (logError as Error).message,
+        stack: (logError as Error).stack,
+        toString: (logError as Error).toString()
+      });
     }
     
     return {

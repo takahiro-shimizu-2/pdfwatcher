@@ -6,6 +6,12 @@ class DIContainer {
     config: ConfigType,
     spreadsheetId: string
   ): void {
+    // 既に同じspreadsheetIdで設定済みの場合はスキップ（並行実行対策）
+    const currentSpreadsheet = (DIContainer as unknown as Record<string, unknown>)._spreadsheet as GoogleAppsScript.Spreadsheet.Spreadsheet | null;
+    if (currentSpreadsheet && currentSpreadsheet.getId() === spreadsheetId) {
+      return;
+    }
+    
     (DIContainer as unknown as Record<string, unknown>)._config = config;
     
     try {

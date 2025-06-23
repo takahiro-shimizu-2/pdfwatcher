@@ -3,18 +3,24 @@
  * ページとPDFの変更を検出する
  */
 class DiffService {
+  private isRetry: boolean = false;
+  
   constructor(
     private readonly archiveRepo: IArchiveRepository,
     private readonly summaryRepo: ISummaryRepository
   ) {}
+  
+  setRetryMode(isRetry: boolean): void {
+    this.isRetry = isRetry;
+  }
 
   async calculateDiff(currentPage: Page): Promise<DiffResult> {
     // 前回実行時のハッシュ値を取得
     const pageSummary = await this.summaryRepo.getPageSummary(currentPage.url);
     const lastPageHash = pageSummary?.lastHash;
     
-    // ハッシュ値が同じ場合は変更なしとして早期リターン
-    if (currentPage.hash && lastPageHash && currentPage.hash === lastPageHash) {
+    // 再実行モードでない場合のみ、ハッシュ値が同じなら変更なしとして早期リターン
+    if (!this.isRetry && currentPage.hash && lastPageHash && currentPage.hash === lastPageHash) {
       return {
         pageUrl: currentPage.url,
         pageUpdated: false,

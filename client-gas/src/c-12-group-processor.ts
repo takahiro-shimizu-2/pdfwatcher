@@ -44,30 +44,88 @@ class GroupProcessor {
   }
   
   /**
-   * 1グループを処理
+   * 1グループを処理（ミニバッチに分割して処理）
    * @param group 処理するページグループ
    * @param serverLib サーバーライブラリ
+   * @param state 現在の処理状態
    * @returns バッチ処理結果
    */
-  static async processGroup(group: PageGroup, serverLib: ServerLibrary): Promise<BatchResult> {
+  static async processGroup(
+    group: PageGroup, 
+    serverLib: ServerLibrary,
+    state: ProcessingState
+  ): Promise<BatchResult> {
     console.log(`グループ${group.groupIndex + 1}の処理を開始します（${group.pages.length}ページ）`);
     const groupStartTime = Date.now();
     
     try {
-      // 既存のバッチ処理機能を活用
-      // グループ内のページをさらに小さなバッチに分割
-      const batches = splitIntoBatches(group.pages, PDFWatcher.CONSTANTS.BATCH_SIZE);
-      console.log(`グループを${batches.length}バッチに分割しました`);
+      // グループをミニバッチに分割（5ページずつ）
+      const miniBatches = splitIntoBatches(group.pages, PDFWatcher.CONSTANTS.PAGES_PER_MINI_BATCH);
+      console.log(`グループを${miniBatches.length}ミニバッチに分割しました（各${PDFWatcher.CONSTANTS.PAGES_PER_MINI_BATCH}ページ）`);
       
-      // バッチを並列処理
-      const batchResults = await executeBatchesInParallel(
-        batches,
-        Session.getActiveUser().getEmail(),
-        serverLib
-      );
+      const allResults: BatchResult[] = [];
+      let processedInGroup = 0;
+      
+      // 各ミニバッチを処理
+      for (let i = 0; i < miniBatches.length; i++) {
+        // 既に完了したミニバッチはスキップ
+        const completedInGroup = state.completedMiniBatches?.[group.groupIndex] || [];
+        if (completedInGroup.includes(i)) {
+          console.log(`  ミニバッチ ${i + 1}/${miniBatches.length} は処理済みのためスキップ`);
+          processedInGroup += miniBatches[i].length;
+          continue;
+        }
+        
+        const miniBatch = miniBatches[i];
+        console.log(`  ミニバッチ ${i + 1}/${miniBatches.length} を処理中...`);
+        
+        // ミニバッチを処理
+        const batchResults = await executeBatchesInParallel(
+          [miniBatch],  // 1つのミニバッチを処理
+          Session.getActiveUser().getEmail(),
+          serverLib,
+          state.execId,  // 実行IDを渡す
+          false  // 再実行フラグは常にfalse（新規として処理）
+        );
+        
+        allResults.push(...batchResults);
+        processedInGroup += miniBatch.length;
+        
+        // ミニバッチごとにChangesシートとUserLogを更新
+        const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+        const changesSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.CHANGES);
+        const userLogSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.USER_LOG);
+        
+        if (changesSheet && batchResults[0].diffResults) {
+          updateChangesSheet(changesSheet, batchResults[0].diffResults);
+        }
+        
+        if (userLogSheet) {
+          updateUserLog(userLogSheet, batchResults, batchResults[0].duration);
+        }
+        
+        // 処理済みページ数とミニバッチ完了状態を更新
+        const completedBatches = state.completedMiniBatches || {};
+        if (!completedBatches[group.groupIndex]) {
+          completedBatches[group.groupIndex] = [];
+        }
+        completedBatches[group.groupIndex].push(i);
+        
+        const updatedState = {
+          ...state,
+          processedPages: state.processedPages + miniBatch.length,
+          completedMiniBatches: completedBatches
+        };
+        StateManager.saveState(updatedState);
+        
+        // 更新されたstateを次のループで使用するために反映
+        state = updatedState;
+        
+        console.log(`  ミニバッチ ${i + 1} 完了（累計: ${updatedState.processedPages}ページ）`);
+      }
       
       // 結果を統合
-      const mergedResult = this.mergeBatchResults(batchResults);
+      const mergedResult = this.mergeBatchResults(allResults);
       
       const groupDuration = (Date.now() - groupStartTime) / 1000;
       console.log(`グループ${group.groupIndex + 1}の処理が完了しました（${groupDuration.toFixed(1)}秒）`);

@@ -15,7 +15,9 @@ function splitIntoBatches<T>(items: T[], batchSize: number): T[][] {
 async function executeBatchesInParallel(
   pageBatches: Page[][],
   user: string,
-  serverLib: ServerLibrary
+  serverLib: ServerLibrary,
+  execId?: string,
+  isRetry?: boolean
 ): Promise<BatchResult[]> {
   const results: BatchResult[] = [];
   const maxConcurrent = PDFWatcher.CONSTANTS.MAX_CONCURRENT_BATCHES;
@@ -23,7 +25,7 @@ async function executeBatchesInParallel(
   for (let i = 0; i < pageBatches.length; i += maxConcurrent) {
     const currentBatches = pageBatches.slice(i, i + maxConcurrent);
     const promises = currentBatches.map(batch => 
-      executeSingleBatch(batch, user, serverLib)
+      executeSingleBatch(batch, user, serverLib, execId, isRetry)
     );
     
     const batchResults = await Promise.all(promises);
@@ -36,13 +38,17 @@ async function executeBatchesInParallel(
 async function executeSingleBatch(
   pages: Page[],
   user: string,
-  serverLib: ServerLibrary
+  serverLib: ServerLibrary,
+  execId?: string,
+  isRetry?: boolean
 ): Promise<BatchResult> {
   try {
     return await serverLib.runBatch({
       pages,
       user,
       masterSpreadsheetId: PDFWatcher.CONSTANTS.MASTER_SPREADSHEET_ID,
+      execId: execId,  // 実行IDを渡す
+      isRetry: isRetry  // 再実行フラグを渡す
     });
   } catch (error) {
     return {

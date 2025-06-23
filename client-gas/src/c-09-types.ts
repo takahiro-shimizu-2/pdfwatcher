@@ -31,6 +31,8 @@ interface ProcessingState {
   errorCount: number;                 // エラー発生回数
   lastError?: string;                 // 最後のエラーメッセージ
   sessionId: string;                  // 処理セッションID（新規処理の判定用）
+  execId?: string;                    // サーバー側の実行ID（再実行時も同じIDを使用）
+  completedMiniBatches?: {[groupIndex: number]: number[]};  // 各グループの完了済みミニバッチ
 }
 
 /**

@@ -9,6 +9,21 @@ class SheetRunLogRepository implements IRunLogRepository {
 
   async addRunLog(log: RunLogEntry): Promise<void> {
     const sheet = this.getOrCreateSheet();
+    
+    // 同じexecIdの既存レコードを検索
+    const lastRow = sheet.getLastRow();
+    let existingRow = -1;
+    
+    if (lastRow > 1) {
+      const execIds = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+      for (let i = 0; i < execIds.length; i++) {
+        if (execIds[i][0] === log.execId) {
+          existingRow = i + 2; // 1-indexed, ヘッダー行を考慮
+          break;
+        }
+      }
+    }
+    
     const row = [
       log.execId,
       log.timestamp,
@@ -22,7 +37,19 @@ class SheetRunLogRepository implements IRunLogRepository {
       log.scriptVersion,
     ];
     
-    sheet.appendRow(row);
+    if (existingRow > 0) {
+      // 既存レコードを更新（累積値を加算）
+      const existingData = sheet.getRange(existingRow, 1, 1, 10).getValues()[0];
+      row[4] = (row[4] as number) + (existingData[4] as number); // pagesProcessed
+      row[5] = (row[5] as number) + (existingData[5] as number); // pagesUpdated
+      row[6] = (row[6] as number) + (existingData[6] as number); // pdfsAdded
+      row[3] = (row[3] as number) + (existingData[3] as number); // durationSeconds
+      
+      sheet.getRange(existingRow, 1, 1, 10).setValues([row]);
+    } else {
+      // 新規レコードとして追加
+      sheet.appendRow(row);
+    }
   }
 
   async getRunLogs(limit: number): Promise<RunLogEntry[]> {
@@ -57,18 +84,33 @@ class SheetRunLogRepository implements IRunLogRepository {
   }
 
   private getOrCreateSheet(): GoogleAppsScript.Spreadsheet.Sheet {
-    let sheet = this.spreadsheet.getSheetByName(SHEET_NAMES.RUN_LOG);
-    
-    if (!sheet) {
-      sheet = this.spreadsheet.insertSheet(SHEET_NAMES.RUN_LOG);
-      const headers = [
-        'ExecID', 'Timestamp', 'User', 'Dur s', 'PagesProc',
-        'PagesUpd', 'PDFsAdd', 'Result', 'ErrorMsg', 'ScriptVer'
-      ];
-      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-      sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+    try {
+      let sheet = this.spreadsheet.getSheetByName(SHEET_NAMES.RUN_LOG);
+      
+      if (!sheet) {
+        // シートが存在しない場合は作成
+        console.log(`シート "${SHEET_NAMES.RUN_LOG}" が見つからないため、新規作成します`);
+        sheet = this.spreadsheet.insertSheet(SHEET_NAMES.RUN_LOG);
+        const headers = [
+          'ExecID', 'Timestamp', 'User', 'Dur s', 'PagesProc',
+          'PagesUpd', 'PDFsAdd', 'Result', 'ErrorMsg', 'ScriptVer'
+        ];
+        sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+        sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+      }
+      
+      return sheet;
+    } catch (error) {
+      // エラーの詳細情報を記録
+      console.error(`RunLogシートの取得/作成でエラーが発生しました:`, error);
+      console.error(`スプレッドシートID: ${this.spreadsheet.getId()}`);
+      console.error(`期待するシート名: ${SHEET_NAMES.RUN_LOG}`);
+      
+      // 全シート名を列挙してデバッグ
+      const sheets = this.spreadsheet.getSheets();
+      console.error(`現在のシート一覧: ${sheets.map(s => s.getName()).join(', ')}`);
+      
+      throw error;
     }
-    
-    return sheet;
   }
 }

@@ -153,7 +153,9 @@ class StateManager {
       totalPages: totalPages,
       user: user,
       errorCount: 0,
-      sessionId: Utilities.getUuid()
+      sessionId: Utilities.getUuid(),
+      execId: Utilities.getUuid(),  // サーバー用の実行IDも生成
+      completedMiniBatches: {}  // 初期化時は空
     };
   }
   

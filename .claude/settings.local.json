@@ -122,7 +122,7 @@
       "Bash(env)",
       "Bash(printenv:*)",
       "mcp__*",
-      "Bash(clasp login:*)"
+      "Bash(clasp:*)"
     ],
     "deny": [
       "Bash(rm -rf /*)",
