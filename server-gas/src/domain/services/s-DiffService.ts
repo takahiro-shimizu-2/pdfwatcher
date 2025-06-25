@@ -87,7 +87,7 @@ class DiffService {
     };
   }
 
-  private hasPageChanged(currentPage: Page, _existingPdfs: PDF[]): boolean {
+  private hasPageChanged(_currentPage: Page, _existingPdfs: PDF[]): boolean {
     // ハッシュ値による変更検知は既にcalculateDiffで行っているため、
     // ここでは常にtrueを返す（ハッシュが異なる場合のみここに到達する）
     return true;

@@ -64,7 +64,7 @@ class GroupProcessor {
       console.log(`グループを${miniBatches.length}ミニバッチに分割しました（各${PDFWatcher.CONSTANTS.PAGES_PER_MINI_BATCH}ページ）`);
       
       const allResults: BatchResult[] = [];
-      let processedInGroup = 0;
+      // let processedInGroup = 0;
       
       // 各ミニバッチを処理
       for (let i = 0; i < miniBatches.length; i++) {
@@ -72,7 +72,7 @@ class GroupProcessor {
         const completedInGroup = state.completedMiniBatches?.[group.groupIndex] || [];
         if (completedInGroup.includes(i)) {
           console.log(`  ミニバッチ ${i + 1}/${miniBatches.length} は処理済みのためスキップ`);
-          processedInGroup += miniBatches[i].length;
+          // processedInGroup += miniBatches[i].length;
           continue;
         }
         
@@ -89,7 +89,7 @@ class GroupProcessor {
         );
         
         allResults.push(...batchResults);
-        processedInGroup += miniBatch.length;
+        // processedInGroup += miniBatch.length;
         
         // ミニバッチごとにChangesシートとUserLogを更新
         const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();

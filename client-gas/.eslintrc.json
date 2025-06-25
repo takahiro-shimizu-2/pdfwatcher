@@ -1,0 +1,31 @@
+{
+  "extends": "../.eslintrc.json",
+  "env": {
+    "node": false,
+    "es6": true
+  },
+  "globals": {
+    "SpreadsheetApp": "readonly",
+    "UrlFetchApp": "readonly",
+    "Utilities": "readonly",
+    "PropertiesService": "readonly",
+    "ScriptApp": "readonly",
+    "Logger": "readonly",
+    "console": "readonly"
+  },
+  "rules": {
+    "no-console": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^(onOpen|setupMenu|runJudge|runJudgeContinuation|setupClientSpreadsheet|logTestResult_.*|showDevLogSummary|checkResultsWithStatistics|logTestResult|getDevLogSummary|PDFWatcher|ParsedRow|ServerLibrary|parseCurrentSheet|convertToPages|updateChangesSheet|updateUserLog|clearCurrentSheet|initializeSheets|splitIntoBatches|executeBatchesInParallel|ProcessingState|PageGroup|ProcessingSession|StateManager|TriggerManager|GroupProcessor)$",
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": false
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}

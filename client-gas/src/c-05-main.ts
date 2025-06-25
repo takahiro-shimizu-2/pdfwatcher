@@ -9,7 +9,7 @@ let processingGroups: PageGroup[] = [];
 let processingStartTime: number = 0;
 
 async function runJudge(): Promise<void> {
-  const startTime = Date.now();
+  // const startTime = Date.now();
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const user = Session.getActiveUser().getEmail();
   
@@ -86,7 +86,7 @@ async function initializeProcessing(pages: Page[], user: string): Promise<void> 
   
   // 次回実行トリガーを先行設定
   const delayMinutes = PDFWatcher.CONSTANTS.TRIGGER_DELAY_MS / 60000;
-  const triggerId = TriggerManager.scheduleNextExecution(delayMinutes);
+  TriggerManager.scheduleNextExecution(delayMinutes);
   console.log(`次回実行トリガーを設定しました（${delayMinutes}分後）`);
   
   // 初回実行時はChangesシートをクリア
@@ -130,7 +130,7 @@ async function processNextGroup(): Promise<boolean> {
   try {
     // グループを処理（stateを渡す）
     const serverLib = getServerLibrary();
-    const groupResult = await GroupProcessor.processGroup(currentGroup, serverLib, state);
+    await GroupProcessor.processGroup(currentGroup, serverLib, state);
     
     // 注：Changesシート・UserLogの更新は、processGroup内で
     // ミニバッチごとに実行されるため、ここでは不要
