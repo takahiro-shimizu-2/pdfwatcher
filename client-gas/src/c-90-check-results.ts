@@ -406,7 +406,7 @@ function getDevLogSummary(): string {
   const startRow = Math.max(2, lastRow - 4);
   const numRows = lastRow - startRow + 1;
   const data = devLogSheet.getRange(startRow, 1, numRows, devLogSheet.getLastColumn()).getValues();
-  const headers = devLogSheet.getRange(1, 1, 1, devLogSheet.getLastColumn()).getValues()[0];
+  // const headers = devLogSheet.getRange(1, 1, 1, devLogSheet.getLastColumn()).getValues()[0];
   
   let summary = '=== DevLog 最新記録 ===\n\n';
   

@@ -1,0 +1,31 @@
+{
+  "extends": "../.eslintrc.json",
+  "env": {
+    "node": false,
+    "es6": true
+  },
+  "globals": {
+    "SpreadsheetApp": "readonly",
+    "UrlFetchApp": "readonly",
+    "Utilities": "readonly",
+    "PropertiesService": "readonly",
+    "ScriptApp": "readonly",
+    "Logger": "readonly",
+    "LockService": "readonly",
+    "console": "readonly"
+  },
+  "rules": {
+    "no-console": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^(runBatch|configure|generateUUID|DiffService|SummaryService|DocumentLock|SheetArchiveRepository|SheetHistoryRepository|SheetRunLogRepository|SheetSummaryRepository|SHEET_NAMES|CONSTANTS|ServiceContainer)$",
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": false
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off"
+  }
+}
