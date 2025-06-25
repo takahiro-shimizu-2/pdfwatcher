@@ -33,7 +33,8 @@ const CONSTANTS = {
   // 6分制限対策用の定数
   MAX_EXECUTION_TIME_MS: 5 * 60 * 1000,      // 5分（安全マージン1分）
   PAGES_PER_GROUP: 30,                       // 1グループあたりのページ数
-  TRIGGER_DELAY_MS: 5 * 60 * 1000,          // トリガー実行までの遅延（5分）
+  PAGES_PER_MINI_BATCH: 5,                   // ミニバッチあたりのページ数
+  TRIGGER_DELAY_MS: 7 * 60 * 1000,          // トリガー実行までの遅延（7分）
   STATE_EXPIRY_MS: 24 * 60 * 60 * 1000      // 状態の有効期限（24時間）
 };
 
