@@ -3,12 +3,15 @@
   "dependencies": {
     "libraries": [
       {
-        "userSymbol": "PdfWatcherServer",
+        "userSymbol": "PDFWatcherServerLib",
         "libraryId": "14oyw3dxeRB04LpXdn9fsU45V1QZ_rJsEwBZ-2PRNSsSIIMb-kyYbO0tM",
         "version": "HEAD"
       }
     ]
   },
   "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8"
+  "runtimeVersion": "V8",
+  "executionApi": {
+    "access": "MYSELF"
+  }
 }

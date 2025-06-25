@@ -1,4 +1,5 @@
 {
   "scriptId": "18r9JpA-m18Uq5Z4UW58T8bCcjSmanGFtQHr7FyIQFgoUdkZftFeaEFLt",
-  "rootDir": "./dist"
+  "rootDir": "./dist",
+  "fileExtension": "js"
 }

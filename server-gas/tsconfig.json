@@ -1,15 +1,18 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
     "target": "ES5",
+    "module": "none",
     "lib": ["ES2022"],
     "types": ["google-apps-script"],
     "declaration": false,
     "declarationMap": false,
     "sourceMap": false,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "removeComments": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "tests"]
