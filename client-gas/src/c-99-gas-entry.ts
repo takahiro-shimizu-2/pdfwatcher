@@ -39,3 +39,9 @@ function showDevLogSummary(): void {
 function setupMenu(): void {
   onOpen();
 }
+
+/**
+ * 継続実行用のエントリーポイント（トリガーから呼び出される）
+ * この関数はc-05-main.tsのrunJudgeContinuationを呼び出す
+ */
+// runJudgeContinuation関数はc-05-main.tsで定義されているため、ここでは定義不要

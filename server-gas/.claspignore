@@ -1,0 +1,19 @@
+# Ignore TypeScript source files
+src/**/*.ts
+
+# Ignore node_modules
+node_modules/
+
+# Ignore test files
+**/*.test.js
+**/*.spec.js
+
+# Ignore TypeScript config
+tsconfig.json
+
+# Ignore package files
+package.json
+package-lock.json
+
+# Ignore gas-types.js if it exists
+dist/gas-types.js

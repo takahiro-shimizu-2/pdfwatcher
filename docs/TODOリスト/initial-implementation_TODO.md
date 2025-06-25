@@ -1,4 +1,6 @@
-# PDF Watcher 実装状況メモ
+# PDF Watcher 初期実装ログ（2025/06/17-20）
+
+このドキュメントは、PDF Watcherの初期実装時の作業記録です。プロジェクトの立ち上げから基本機能の実装完了までの経緯を記録しています。
 
 ## ✅ 完了した作業
 
@@ -177,3 +179,10 @@ clasp status
 # ログイン状態確認
 clasp login --status
 ```
+
+---
+
+**注記**: このドキュメントは歴史的記録として保存されています。最新の情報については以下を参照してください：
+- セットアップ手順: [README.md](/README.md)
+- プロジェクト進捗: [pdfwatcher_TODO.md](pdfwatcher_TODO.md)
+- テスト結果: [docs/test/](../test/)

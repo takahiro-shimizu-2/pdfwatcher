@@ -3,11 +3,16 @@
  */
 
 function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: DiffResult[]): void {
-  sheet.clear();
+  // ヘッダー行が存在しない場合のみ追加
+  if (sheet.getLastRow() === 0) {
+    const headers = ['PageURL', 'PDFのURL'];
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  }
   
-  const headers = ['PageURL', 'PDFのURL'];
-  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
+  // 既存のデータの最終行を取得
+  const lastRow = sheet.getLastRow();
+  const startRow = lastRow > 0 ? lastRow + 1 : 1;
   
   const rows: string[][] = [];
   
@@ -21,7 +26,7 @@ function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: 
   }
   
   if (rows.length > 0) {
-    sheet.getRange(2, 1, rows.length, 2).setValues(rows);
+    sheet.getRange(startRow, 1, rows.length, 2).setValues(rows);
   }
 }
 
