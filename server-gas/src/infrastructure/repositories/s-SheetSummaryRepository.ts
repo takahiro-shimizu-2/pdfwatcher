@@ -127,14 +127,14 @@ class SheetSummaryRepository implements ISummaryRepository {
     if (!sheet) {
       sheet = this.spreadsheet.insertSheet(SHEET_NAMES.PAGE_SUMMARY);
       const headers = [
-        'PageURL', 'LastHash',
-        'Run-1 Date', 'Run-1 PU', 'Run-1 PFU', 'Run-1 Cnt',
-        'Run-2 Date', 'Run-2 PU', 'Run-2 PFU', 'Run-2 Cnt',
-        'Run-3 Date', 'Run-3 PU', 'Run-3 PFU', 'Run-3 Cnt',
-        'Run-4 Date', 'Run-4 PU', 'Run-4 PFU', 'Run-4 Cnt',
-        'Run-5 Date', 'Run-5 PU', 'Run-5 PFU', 'Run-5 Cnt',
-        'Run-6 Date', 'Run-6 PU', 'Run-6 PFU', 'Run-6 Cnt',
-        'Run-7 Date', 'Run-7 PU', 'Run-7 PFU', 'Run-7 Cnt'
+        'ページURL', '最新ハッシュ',
+        '実行1-日時', '実行1-ページ', '実行1-PDF', '実行1-追加数',
+        '実行2-日時', '実行2-ページ', '実行2-PDF', '実行2-追加数',
+        '実行3-日時', '実行3-ページ', '実行3-PDF', '実行3-追加数',
+        '実行4-日時', '実行4-ページ', '実行4-PDF', '実行4-追加数',
+        '実行5-日時', '実行5-ページ', '実行5-PDF', '実行5-追加数',
+        '実行6-日時', '実行6-ページ', '実行6-PDF', '実行6-追加数',
+        '実行7-日時', '実行7-ページ', '実行7-PDF', '実行7-追加数'
       ];
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
       sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
@@ -154,7 +154,7 @@ class SheetSummaryRepository implements ISummaryRepository {
   private hasLegacyFormat(sheet: GoogleAppsScript.Spreadsheet.Sheet): boolean {
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
     // 旧形式は14列、新形式は30列
-    return sheet.getLastColumn() === 14 && headers[0] === 'PageURL';
+    return sheet.getLastColumn() === 14 && (headers[0] === 'PageURL' || headers[0] === 'ページURL');
   }
 
   /**
@@ -175,14 +175,14 @@ class SheetSummaryRepository implements ISummaryRepository {
       
       // 新しいヘッダーを設定
       const newHeaders = [
-        'PageURL', 'LastHash',
-        'Run-1 Date', 'Run-1 PU', 'Run-1 PFU', 'Run-1 Cnt',
-        'Run-2 Date', 'Run-2 PU', 'Run-2 PFU', 'Run-2 Cnt',
-        'Run-3 Date', 'Run-3 PU', 'Run-3 PFU', 'Run-3 Cnt',
-        'Run-4 Date', 'Run-4 PU', 'Run-4 PFU', 'Run-4 Cnt',
-        'Run-5 Date', 'Run-5 PU', 'Run-5 PFU', 'Run-5 Cnt',
-        'Run-6 Date', 'Run-6 PU', 'Run-6 PFU', 'Run-6 Cnt',
-        'Run-7 Date', 'Run-7 PU', 'Run-7 PFU', 'Run-7 Cnt'
+        'ページURL', '最新ハッシュ',
+        '実行1-日時', '実行1-ページ', '実行1-PDF', '実行1-追加数',
+        '実行2-日時', '実行2-ページ', '実行2-PDF', '実行2-追加数',
+        '実行3-日時', '実行3-ページ', '実行3-PDF', '実行3-追加数',
+        '実行4-日時', '実行4-ページ', '実行4-PDF', '実行4-追加数',
+        '実行5-日時', '実行5-ページ', '実行5-PDF', '実行5-追加数',
+        '実行6-日時', '実行6-ページ', '実行6-PDF', '実行6-追加数',
+        '実行7-日時', '実行7-ページ', '実行7-PDF', '実行7-追加数'
       ];
       
       // 新しいデータ配列を作成
