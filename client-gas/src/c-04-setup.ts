@@ -36,6 +36,11 @@ function setupClientSpreadsheet(): void {
     ['タイムスタンプ', '実行時間(秒)', '処理ページ数', '更新ページ数', '追加PDF数', '結果', 'エラーメッセージ']
   ]);
   
+  // ChangesHistoryシートの作成
+  createOrUpdateSheet(spreadsheet, PDFWatcher.SHEET_NAMES.CHANGES_HISTORY, [
+    ['保存日時', '実行ID', 'PDFのURL', 'ページURL', '削除予定日時']
+  ]);
+  
   // デフォルトシートを削除（必要に応じて）
   const defaultSheet = spreadsheet.getSheetByName('シート1');
   if (defaultSheet && spreadsheet.getSheets().length > 1) {

@@ -23,7 +23,7 @@ const HISTORY_RETENTION_DAYS = 5;
 /**
  * ChangesHistoryシート名
  */
-const CHANGES_HISTORY_SHEET_NAME = 'ChangesHistory';
+const CHANGES_HISTORY_SHEET_NAME = PDFWatcher.SHEET_NAMES.CHANGES_HISTORY;
 
 /**
  * ChangesシートのデータをChangesHistoryシートに転写する
@@ -57,10 +57,11 @@ function transferChangesToHistory(runId: string): number {
       return 0;
     }
     
-    // ChangesHistoryシートを取得または作成
-    let historySheet = ss.getSheetByName(CHANGES_HISTORY_SHEET_NAME);
+    // ChangesHistoryシートを取得
+    const historySheet = ss.getSheetByName(CHANGES_HISTORY_SHEET_NAME);
     if (!historySheet) {
-      historySheet = createChangesHistorySheet(ss);
+      console.error('ChangesHistoryシートが見つかりません。初期設定を実行してください。');
+      return 0;
     }
     
     // 転写用のデータを準備
@@ -98,31 +99,6 @@ function transferChangesToHistory(runId: string): number {
   }
 }
 
-/**
- * ChangesHistoryシートを作成する
- * @param ss スプレッドシート
- * @returns 作成されたシート
- */
-function createChangesHistorySheet(ss: GoogleAppsScript.Spreadsheet.Spreadsheet): GoogleAppsScript.Spreadsheet.Sheet {
-  const sheet = ss.insertSheet(CHANGES_HISTORY_SHEET_NAME);
-  
-  // ヘッダー行を設定
-  const headers = ['保存日時', '実行ID', 'PDFのURL', 'ページURL', '削除予定日時'];
-  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  
-  // ヘッダー行を太字に
-  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
-  
-  // 列幅を調整
-  sheet.setColumnWidth(1, 150); // 保存日時
-  sheet.setColumnWidth(2, 120); // 実行ID
-  sheet.setColumnWidth(3, 300); // PDFのURL
-  sheet.setColumnWidth(4, 300); // ページURL
-  sheet.setColumnWidth(5, 150); // 削除予定日時
-  
-  console.log('ChangesHistoryシートを作成しました');
-  return sheet;
-}
 
 /**
  * 期限切れの履歴データを削除する

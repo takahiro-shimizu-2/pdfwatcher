@@ -66,37 +66,46 @@ graph TD
 
 #### 1. 転写処理（transferChangesToHistory）
 ```typescript
-function transferChangesToHistory(): void {
+function transferChangesToHistory(runId: string): number {
   // 1. Changesシートのデータを読み取り
   // 2. 各行にSavedAt、RunId、ExpiresAtを追加
   // 3. ChangesHistoryシートに追記
   // 4. 処理件数をログ出力
+  // 5. 転写された件数を返す
 }
 ```
 
 #### 2. 期限切れデータ削除（deleteExpiredHistory）
 ```typescript
-function deleteExpiredHistory(): void {
+function deleteExpiredHistory(): number {
   // 1. ChangesHistoryシートの全データ読み取り
   // 2. 現在時刻とExpiresAtを比較
-  // 3. 期限切れデータを削除（バッチ削除で高速化）
+  // 3. 期限切れデータを削除（下から上へ削除）
   // 4. 削除件数をログ出力
+  // 5. 削除された件数を返す
 }
 ```
 
 #### 3. 処理完了時の統合
 ```typescript
-// processGroups関数内、またはrunJudge/runJudgeContinuation内
-if (state.currentGroup >= state.totalGroups) {
-  console.log('すべてのグループの処理が完了しました');
-  
-  // 履歴保存処理を追加
-  transferChangesToHistory();
-  deleteExpiredHistory();
-  
-  // 既存の完了処理
-  updateProcessingState({ status: 'completed' });
-  deleteContinuationTriggers();
+// c-05-main.ts の completeProcessing関数内
+async function completeProcessing(): Promise<void> {
+  try {
+    const state = StateManager.loadState();
+    if (!state || !state.execId) {
+      console.error('処理状態またはexecIdが見つかりません');
+    } else {
+      // 履歴管理処理を実行
+      executeHistoryManagement(state.execId);
+    }
+    
+    // 既存の完了処理
+    StateManager.clearState();
+    deleteContinuationTriggers();
+    // その他の完了処理...
+  } catch (error) {
+    console.error('完了処理中にエラーが発生しました:', error);
+  }
 }
 ```
 
@@ -111,7 +120,7 @@ if (state.currentGroup >= state.totalGroups) {
 
 1. **転写エラー**: ログ出力のみ、処理完了は正常に終了
 2. **削除エラー**: ログ出力のみ、処理は継続
-3. **シート不在**: 自動作成機能を実装
+3. **シート不在**: 初期設定で作成されるため、エラーメッセージを表示
 4. **6分制限時**: 転写は実行されず、最終完了時にのみ実行
 
 ### 将来の拡張性
@@ -123,7 +132,9 @@ if (state.currentGroup >= state.totalGroups) {
 ## 影響範囲
 
 ### 変更対象ファイル
-- client-gas/src/c-05-main.ts: processGroups関数の修正（完了判定部分）
+- client-gas/src/c-00-globals.ts: PDFWatcher.SHEET_NAMESにCHANGES_HISTORYを追加
+- client-gas/src/c-04-setup.ts: 初期設定でChangesHistoryシートを作成
+- client-gas/src/c-05-main.ts: completeProcessing関数でexecuteHistoryManagementを呼び出し
 - client-gas/src/c-13-history-manager.ts: 新規作成（履歴管理モジュール）
 
 ### 影響を受ける機能
