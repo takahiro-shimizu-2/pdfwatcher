@@ -230,6 +230,32 @@ GaxiosError: User has not enabled the Apps Script API
    - クエリパラメータの有無
 3. データベースの重複を手動で削除
 
+### 問題: ChangesHistoryシートが作成されない
+
+**症状:**
+- runJudge実行後もChangesHistoryシートが存在しない
+
+**解決方法:**
+1. 初期設定を再実行:
+   ```javascript
+   setupChangesHistorySheet();
+   ```
+2. 手動でシートを作成（ヘッダーは「保存日時,実行ID,ページURL,PDFのURL,削除予定日時」）
+3. 権限を確認（シート作成権限が必要）
+
+### 問題: 履歴データが保存されない
+
+**症状:**
+- 処理完了してもChangesHistoryに転写されない
+
+**解決方法:**
+1. 6分制限で中断されていないか確認（中断時は保存されない）
+2. エラーログを確認:
+   ```javascript
+   console.log(PropertiesService.getUserProperties().getProperty('LastError'));
+   ```
+3. Changesシートにデータが存在するか確認
+
 ### 問題: 削除されたPDFが「存在」と表示される
 
 **症状:**

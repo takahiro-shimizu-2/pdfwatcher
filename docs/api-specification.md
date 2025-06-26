@@ -14,6 +14,18 @@ Chrome拡張機能 → クライアントGAS → サーバーGASライブラリ 
 
 ### 1.1 基本モデル
 
+#### ChangesHistoryEntry
+変更履歴エントリ
+```typescript
+interface ChangesHistoryEntry {
+  savedAt: Date;     // 保存日時
+  runId: string;     // 実行ID
+  pageUrl: string;   // ページURL
+  pdfUrl: string;    // PDFのURL
+  expiresAt: Date;   // 削除予定日時
+}
+```
+
 #### Page
 ページ情報を表すモデル
 ```typescript
@@ -336,6 +348,21 @@ class GroupProcessor {
 }
 ```
 
+#### HistoryManager
+履歴管理マネージャー
+```typescript
+class HistoryManager {
+  // 変更履歴を転写
+  transferChangesToHistory(): void;
+  
+  // 期限切れ履歴を削除
+  deleteExpiredHistory(): void;
+  
+  // 履歴管理を実行
+  executeHistoryManagement(): void;
+}
+```
+
 ## 5. Chrome拡張機能API（extension）
 
 ### 5.1 メッセージング
@@ -422,9 +449,13 @@ const CONSTANTS = {
     RUN_LOG: 'RunLog',
     CURRENT: 'Current',
     CHANGES: 'Changes',
+    CHANGES_HISTORY: 'ChangesHistory',
     SUMMARY: 'Summary',
     USER_LOG: 'UserLog'
   },
+  
+  // 履歴保存設定
+  HISTORY_RETENTION_DAYS: 5,               // 履歴保持日数
   
   // ロック設定
   LOCK_TIMEOUT_MS: 10000,                  // ロックタイムアウト（10秒）

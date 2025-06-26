@@ -269,11 +269,19 @@ async function runJudgeContinuation(): Promise<void> {
  */
 async function completeProcessing(): Promise<void> {
   try {
+    // 処理状態を取得（execIdを取得するため）
+    const state = StateManager.loadState();
+    if (!state || !state.execId) {
+      console.error('処理状態またはexecIdが見つかりません');
+    } else {
+      // Changes履歴管理を実行（処理完了時）
+      executeHistoryManagement(state.execId);
+    }
+    
     // 処理状態を完了に更新
     StateManager.completeProcessing();
     
     // トリガーを削除
-    const state = StateManager.loadState();
     if (state && state.triggerId) {
       TriggerManager.cancelTrigger(state.triggerId);
     }

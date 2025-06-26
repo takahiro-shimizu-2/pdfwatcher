@@ -61,8 +61,15 @@ pdfwatcher/
 
 - **core**: 型定義、インターフェース、共通ロジック
 - **server-gas**: Googleスプレッドシートのデータ管理
-- **client-gas**: ユーザー向けUI、バッチ処理
+- **client-gas**: ユーザー向けUI、バッチ処理、履歴管理
+  - `c-13-history-manager.ts`: Changes履歴の保存・削除機能
 - **extension**: PDF URLの抽出とTSV生成
+
+### 主要な機能
+
+- PDF監視・差分検出
+- 6分実行時間制限対策
+- Changes履歴保存機能（5日間の自動保存・削除）
 
 ## ブランチ戦略
 

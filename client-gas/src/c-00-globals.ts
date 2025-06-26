@@ -14,7 +14,8 @@ const PDFWatcher = {
     ARCHIVE_PDF: 'ArchivePDF',
     PAGE_HISTORY: 'PageHistory',
     PAGE_SUMMARY: 'PageSummary',
-    RUN_LOG: 'RunLog'
+    RUN_LOG: 'RunLog',
+    CHANGES_HISTORY: 'ChangesHistory'
   },
   
   // NOTE: core/src/constants.tsからビルド時にコピー

@@ -1,7 +1,7 @@
 # PDF Watcher 開発設計書
 
-**最終更新**: 2025-06-25
-**ステータス**: 完成（全機能実装・テスト完了）
+**最終更新**: 2025-06-26
+**ステータス**: 完成（全機能実装・テスト完了・履歴保存機能追加）
 
 ## 1. システムアーキテクチャ概要
 
@@ -16,6 +16,7 @@
 │              Client Spreadsheet                  │
 │  ├─ Current Sheet (TSV貼り付け)                  │
 │  ├─ Changes Sheet (差分表示)                     │
+│  ├─ ChangesHistory Sheet (5日間履歴)             │
 │  ├─ Summary Sheet (3世代履歴)                    │
 │  └─ UserLog Sheet (個人ログ)                     │
 └─────────────────────┬───────────────────────────┘
@@ -105,6 +106,15 @@ interface BatchResult {
   errors: Error[];
   diffResults?: DiffResult[];  // 詳細情報を含む
 }
+
+// Changes履歴エントリ
+interface ChangesHistoryEntry {
+  savedAt: Date;           // 保存日時
+  runId: string;           // 実行ID
+  pageUrl: string;         // ページURL
+  pdfUrl: string;          // PDFのURL
+  expiresAt: Date;         // 削除予定日時
+}
 ```
 
 ### 2.2 リポジトリインターフェース
@@ -170,6 +180,11 @@ interface IRunLogRepository {
    - UserLog追記
    - Currentシートクリア
 
+6. **処理完了時の履歴保存**（6分制限対策の完了時のみ）
+   - 前回のChangesデータをChangesHistoryへ転写
+   - 保存日時、実行ID、削除予定日時を付与
+   - 5日経過したデータを自動削除
+
 ### 3.2 エラーハンドリング
 
 - ロックタイムアウト：10秒待機、3回リトライ
@@ -208,6 +223,7 @@ client-gas/
 │   ├── c-10-state-manager.ts   # 状態管理
 │   ├── c-11-trigger-manager.ts # トリガー管理
 │   ├── c-12-group-processor.ts # グループ処理
+│   ├── c-13-history-manager.ts # 履歴管理
 │   └── c-99-gas-entry.ts  # GASエントリポイント
 ├── clasp.json
 ├── tsconfig.json    # target: ES5, module: none
@@ -404,11 +420,18 @@ core/
   - 自動中断・再開機構
   - トリガーによる継続処理
 
+- **Changes履歴保存機能** (2025-06-26)
+  - 処理完了時の自動履歴転写
+  - 5日間の履歴保持（古いデータ自動削除）
+  - 日本語URLサポート
+  - 実行IDによる一意性管理
+
 ### 12.2 パフォーマンス実績
 - **処理速度**: 1.8-2秒/ページ
 - **最大処理能力**: 150-180ページ/6分
 - **大規模テスト**: 1000ページ（約50,000 PDF）成功
-- **テストカバレッジ**: 100%（200件のテスト項目）
+- **テストカバレッジ**: 100%（210件のテスト項目）
+- **履歴保存性能**: 10,000件を4.3秒で転写
 
 ### 12.3 既知の制限事項
 - **エラー時のページスキップ**: TC-009で確認されたグループ内ページスキップ（発生率<1%）
