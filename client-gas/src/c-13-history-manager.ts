@@ -73,8 +73,8 @@ function transferChangesToHistory(runId: string): number {
       .map(row => [
         now,        // SavedAt
         runId,      // RunId
-        row[0],     // PdfUrl
-        row[1],     // PageUrl
+        row[0],     // PageUrl（Changesの1列目: PageURL）
+        row[1],     // PdfUrl（Changesの2列目: PDFのURL）
         expiresAt   // ExpiresAt
       ]);
     

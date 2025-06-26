@@ -38,7 +38,7 @@ function setupClientSpreadsheet(): void {
   
   // ChangesHistoryシートの作成
   createOrUpdateSheet(spreadsheet, PDFWatcher.SHEET_NAMES.CHANGES_HISTORY, [
-    ['保存日時', '実行ID', 'PDFのURL', 'ページURL', '削除予定日時']
+    ['保存日時', '実行ID', 'ページURL', 'PDFのURL', '削除予定日時']
   ]);
   
   // デフォルトシートを削除（必要に応じて）
