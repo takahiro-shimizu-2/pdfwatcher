@@ -1,7 +1,7 @@
 # PageSummary履歴管理拡張設計書
 
 ## 概要
-PageSummary（クライアントのSummaryシート）の履歴管理を現在の3世代から7日分へ拡張する設計書です。
+PageSummary（クライアントのSummaryシート）の履歴管理を現在の3世代から7世代へ拡張する設計書です。
 
 **関連ドキュメント:**
 - TODO: `summary_history_extension_TODO.md`
@@ -19,8 +19,8 @@ PageSummary（クライアントのSummaryシート）の履歴管理を現在�
 - 週単位での変更パターンを確認できない
 
 ### 目的
-- 7日分の履歴を保持し、より長期的な変更傾向を把握可能にする
-- 日次での変更パターンを確認できるようにする
+- 7世代の履歴を保持し、より長期的な変更傾向を把握可能にする
+- 実行ごとの変更パターンを確認できるようにする
 
 ## システム仕様
 
@@ -41,7 +41,13 @@ export interface PageSummary {
 export interface PageSummary {
   pageUrl: string;
   lastHash?: string;
-  dailyRuns: RunSummary[];  // 最大7日分の履歴を配列で管理
+  run1?: RunSummary;
+  run2?: RunSummary;
+  run3?: RunSummary;
+  run4?: RunSummary;
+  run5?: RunSummary;
+  run6?: RunSummary;
+  run7?: RunSummary;
 }
 ```
 
@@ -55,29 +61,29 @@ export interface PageSummary {
 | G-J | Run-2 |
 | K-N | Run-3 |
 
-**変更後（7日分）:**
+**変更後（7世代）:**
 | 列 | 内容 |
 |---|---|
 | A | PageURL |
 | B | LastHash |
-| C-F | Day-1（Date, PageUpdated, PDFUpdated, AddedCount） |
-| G-J | Day-2 |
-| K-N | Day-3 |
-| O-R | Day-4 |
-| S-V | Day-5 |
-| W-Z | Day-6 |
-| AA-AD | Day-7 |
+| C-F | Run-1（Date, PageUpdated, PDFUpdated, AddedCount） |
+| G-J | Run-2 |
+| K-N | Run-3 |
+| O-R | Run-4 |
+| S-V | Run-5 |
+| W-Z | Run-6 |
+| AA-AD | Run-7 |
 
 ### 2. 実装方針
 
 #### 2.1 履歴管理の変更点
-1. **保持期間**: 3世代 → 7日分
-2. **削除条件**: 古い世代の削除 → 7日以上経過したデータの削除
-3. **並び順**: 新しい順（Day-1が最新、Day-7が最古）
+1. **保持世代数**: 3世代 → 7世代
+2. **削除条件**: 8回目の実行時に最古の世代（run7）を削除
+3. **並び順**: 新しい順（run1が最新、run7が最古）
 
-#### 2.2 日付ベースの管理
-- 各履歴エントリの日付を確認し、7日以内のデータのみを保持
-- 同一日に複数回実行された場合は、その日の最新データのみを保持
+#### 2.2 世代ベースの管理
+- 実行ごとに履歴が1つずつシフト（run1→run2、run2→run3...）
+- 日付に関係なく、最新7回分の実行結果を保持
 
 ### 3. 影響範囲
 
@@ -103,8 +109,8 @@ export interface PageSummary {
 
 #### 4.1 既存データの扱い
 - 既存の3世代データ（run1, run2, run3）は新形式に移行
-- run1 → Day-1、run2 → Day-2、run3 → Day-3として保持
-- Day-4からDay-7は空欄とする
+- run1 → run1、run2 → run2、run3 → run3として保持
+- run4からrun7は空欄とする
 
 #### 4.2 移行処理
 - 初回実行時に自動的に既存データを新形式に変換
@@ -123,8 +129,8 @@ export interface PageSummary {
 ### 6. エラーハンドリング
 
 #### 6.1 データ整合性
-- 日付の重複チェック（同一日の複数データは最新のみ保持）
-- 7日以上経過したデータの自動削除
+- 世代のシフト処理の正確性
+- 8世代目以降のデータの自動削除
 
 #### 6.2 互換性
 - 旧形式のデータを読み込んだ場合の自動変換
@@ -132,9 +138,9 @@ export interface PageSummary {
 
 ### 7. 実装上の注意点
 
-1. **日付の扱い**
-   - すべてJSTで統一
-   - 日付の比較は日単位で実施
+1. **世代の管理**
+   - 実行ごとに確実にシフト処理を実行
+   - 空の世代も適切に管理
 
 2. **既存機能との互換性**
    - IMPORTRANGEの自動調整により、クライアント側の変更は最小限
@@ -171,8 +177,8 @@ export interface PageSummary {
 
 ## 成功基準
 
-1. 7日分の履歴が正しく保存・表示される
+1. 7世代の履歴が正しく保存・表示される
 2. 既存の3世代データが正しく移行される
-3. 7日以上経過したデータが自動削除される
+3. 8回目の実行で最古のデータが自動削除される
 4. 既存機能への影響がない
 5. パフォーマンスの大幅な低下がない
