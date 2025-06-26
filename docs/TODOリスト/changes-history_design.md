@@ -22,14 +22,19 @@ Changesシートに記録された新規PDF URLのデータを、別シートに
 ## 設計方針
 
 ### 転写タイミングの選定
-以下の選択肢を検討した結果、**新規実行時（runJudgeの開始時）**を採用する：
+以下の選択肢を検討した結果、**処理完了時（すべてのグループ処理完了時）**を採用する：
 
 | タイミング | メリット | デメリット | 評価 |
 |-----------|---------|-----------|------|
-| 新規実行時（開始時） | ・実行回数最小<br>・処理シンプル<br>・パフォーマンス影響なし | ・前回データが次回まで保存されない | ◎ |
+| 新規実行時（開始時） | ・実行回数最小<br>・処理シンプル | ・前回データが次回まで保存されない<br>・ユーザー編集が含まれる可能性 | △ |
 | Changes登録と同時 | ・リアルタイム保存 | ・バッチごとに処理<br>・パフォーマンス影響大 | × |
 | バッチ完了時 | ・処理回数少ない | ・エラー時の扱いが複雑 | △ |
-| runJudge完了時 | ・全データまとめて保存 | ・6分制限での中断時の扱いが複雑 | △ |
+| 処理完了時 | ・純粋な実行結果を保存<br>・即座に履歴化<br>・既存の完了判定を活用<br>・ユーザー編集の影響なし | ・特になし | ◎ |
+
+**採用理由**：
+- 既存のコードで完了タイミングを正確に判定できている（currentGroup >= totalGroups）
+- システムが検出した純粋な結果のみを履歴として保存できる
+- ユーザーがChangesシートを編集する前に保存される
 
 ### シート構成
 新しいシート「ChangesHistory」を追加：
@@ -46,13 +51,15 @@ Changesシートに記録された新規PDF URLのデータを、別シートに
 
 ```mermaid
 graph TD
-    A[runJudge開始] --> B{Changesシートに<br>データあり？}
-    B -->|Yes| C[ChangesHistoryへ転写]
-    B -->|No| D[転写スキップ]
-    C --> E[5日経過データ削除]
-    D --> E
-    E --> F[Changesシートクリア]
-    F --> G[通常の処理継続]
+    A[runJudge開始] --> B[Changesシートクリア]
+    B --> C[通常の処理実行]
+    C --> D{すべてのグループ<br>処理完了？}
+    D -->|Yes| E[Changesデータを<br>ChangesHistoryへ転写]
+    D -->|No（6分制限）| F[トリガー設定して中断]
+    E --> G[5日経過データ削除]
+    G --> H[処理完了]
+    F --> I[継続実行]
+    I --> C
 ```
 
 ### 実装詳細
@@ -77,16 +84,19 @@ function deleteExpiredHistory(): void {
 }
 ```
 
-#### 3. runJudgeへの統合
+#### 3. 処理完了時の統合
 ```typescript
-function runJudge(): void {
-  // 新規追加処理
+// processGroups関数内、またはrunJudge/runJudgeContinuation内
+if (state.currentGroup >= state.totalGroups) {
+  console.log('すべてのグループの処理が完了しました');
+  
+  // 履歴保存処理を追加
   transferChangesToHistory();
   deleteExpiredHistory();
   
-  // 既存処理
-  clearChangesSheet();
-  // ...以降の処理
+  // 既存の完了処理
+  updateProcessingState({ status: 'completed' });
+  deleteContinuationTriggers();
 }
 ```
 
@@ -99,9 +109,10 @@ function runJudge(): void {
 
 ### エラーハンドリング
 
-1. **転写エラー**: ログ出力のみ、処理は継続（Changesクリアは実行）
+1. **転写エラー**: ログ出力のみ、処理完了は正常に終了
 2. **削除エラー**: ログ出力のみ、処理は継続
 3. **シート不在**: 自動作成機能を実装
+4. **6分制限時**: 転写は実行されず、最終完了時にのみ実行
 
 ### 将来の拡張性
 
@@ -112,12 +123,13 @@ function runJudge(): void {
 ## 影響範囲
 
 ### 変更対象ファイル
-- client-gas/src/c-05-main.ts: runJudge関数の修正
+- client-gas/src/c-05-main.ts: processGroups関数の修正（完了判定部分）
 - client-gas/src/c-13-history-manager.ts: 新規作成（履歴管理モジュール）
 
 ### 影響を受ける機能
-- runJudge実行時の初期処理時間（+0.5秒程度）
+- 処理完了時の処理時間（+0.5秒程度）
 - スプレッドシートのデータ容量（5日分のChangesデータ）
+- 6分制限での中断時は履歴保存されない（最終完了時のみ）
 
 ### 後方互換性
 - 既存のChangesシートの動作は変更なし
