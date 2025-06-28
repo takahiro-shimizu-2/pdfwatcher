@@ -92,18 +92,29 @@ interface PageHistoryEntry {
 ```
 
 #### PageSummary
-ページサマリ情報
+ページサマリ情報（２０２５年６月拡張：７世代履歴管理）
 ```typescript
+interface RunSummary {
+  date: string;         // 実行日時
+  pageUpdated: boolean; // ページ更新フラグ
+  pdfUpdated: boolean;  // PDF更新フラグ
+  addedCount: number;   // 追加PDF数
+}
+
 interface PageSummary {
-  pageUrl: string;        // ページURL
-  lastChecked: Date;      // 最終チェック日時
-  lastHash: string;       // 最終ハッシュ値
-  totalPdfCount: number;  // 総PDF数
-  activePdfCount: number; // アクティブPDF数
-  deletedPdfCount: number; // 削除済PDF数
-  lastEvent: string;      // 最終イベント
+  pageUrl: string;      // ページURL
+  lastHash?: string;    // 最終ハッシュ値
+  run1?: RunSummary;    // 最新実行
+  run2?: RunSummary;    // 1つ前の実行
+  run3?: RunSummary;    // 2つ前の実行
+  run4?: RunSummary;    // 3つ前の実行
+  run5?: RunSummary;    // 4つ前の実行
+  run6?: RunSummary;    // 5つ前の実行
+  run7?: RunSummary;    // 6つ前の実行（最古）
 }
 ```
+
+**注意**: 8回目の実行で最古のデータ（run7）は自動的に削除され、新しいデータがrun1に入ります。
 
 #### RunLogEntry
 実行ログエントリ
@@ -642,6 +653,7 @@ try {
 
 ## 更新履歴
 
+- 2025-06-28: PageSummaryを7世代履歴管理に拡張
 - 2025-06-25: 初版作成
 - 2025-06-22: 6分実行時間制限対策を追加
 - 2025-06-21: PDFステータスフィールドを追加

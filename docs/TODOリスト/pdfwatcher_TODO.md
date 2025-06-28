@@ -283,7 +283,7 @@
 ### 10.1 DriveArchiveRepo
 - [ ] インターフェース実装
 - [ ] JSON.gzip形式設計
-- [ ] 3世代管理ロジック
+- [ ] 7世代管理ロジック
 
 ### 10.2 Cloud Functions連携
 - [ ] CloudRunner実装

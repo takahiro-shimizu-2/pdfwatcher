@@ -24,10 +24,10 @@ function setupClientSpreadsheet(): void {
     summarySheet = spreadsheet.insertSheet(PDFWatcher.SHEET_NAMES.SUMMARY);
   }
   summarySheet.clear();
-  const importRangeFormula = `=IMPORTRANGE("${masterSpreadsheetId}", "PageSummary!A:N")`;
+  const importRangeFormula = `=IMPORTRANGE("${masterSpreadsheetId}", "PageSummary!A:AD")`;
   summarySheet.getRange('A1').setFormula(importRangeFormula);
   summarySheet.getRange('A1').setNote(
-    'このシートは中央ブックのPageSummaryを参照しています。\n' +
+    'このシートは中央ブックのPageSummaryを参照しています（7世代対応）。\n' +
     '初回アクセス時は承認が必要です。'
   );
   

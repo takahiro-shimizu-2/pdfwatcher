@@ -41,7 +41,7 @@
 │           Master Spreadsheet (中央)              │
 │  ├─ ArchivePDF (PDFマスタ + ステータス管理)        │
 │  ├─ PageHistory (実行履歴)                       │
-│  ├─ PageSummary (3世代サマリ + 最新ハッシュ)      │
+│  ├─ PageSummary (7世代サマリ + 最新ハッシュ)      │
 │  └─ RunLog (実行ログ)                            │
 └─────────────────────────────────────────────────┘
 ```
@@ -171,7 +171,7 @@ interface IRunLogRepository {
 
 4. **データ更新**（DocumentLock内）
    - ArchivePDF更新（80ms/URL）
-   - PageSummary更新（3世代管理 + 最新ハッシュ保存）
+   - PageSummary更新（7世代管理 + 最新ハッシュ保存）
    - PageHistory追記
    - RunLog追記
 

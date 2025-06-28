@@ -75,27 +75,23 @@ interface RunBatchOptions {
 }
 
 // NOTE: core/src/models/PageSummary.tsからビルド時にコピー
+interface RunSummary {
+  date: Date;
+  pageUpdated: boolean;
+  pdfUpdated: boolean;
+  addedCount: number;
+}
+
 interface PageSummary {
   pageUrl: string;
   lastHash?: string;
-  run1?: {
-    date: Date;
-    pageUpdated: boolean;
-    pdfUpdated: boolean;
-    addedCount: number;
-  };
-  run2?: {
-    date: Date;
-    pageUpdated: boolean;
-    pdfUpdated: boolean;
-    addedCount: number;
-  };
-  run3?: {
-    date: Date;
-    pageUpdated: boolean;
-    pdfUpdated: boolean;
-    addedCount: number;
-  };
+  run1?: RunSummary;  // 最新の実行結果
+  run2?: RunSummary;  // 1つ前の実行結果
+  run3?: RunSummary;  // 2つ前の実行結果
+  run4?: RunSummary;  // 3つ前の実行結果
+  run5?: RunSummary;  // 4つ前の実行結果
+  run6?: RunSummary;  // 5つ前の実行結果
+  run7?: RunSummary;  // 6つ前の実行結果（最古）
 }
 
 // NOTE: core/src/models/PageHistoryEntry.tsからビルド時にコピー
