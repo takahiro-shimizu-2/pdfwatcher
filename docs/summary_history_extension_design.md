@@ -3,6 +3,13 @@
 ## 概要
 PageSummary（クライアントのSummaryシート）の履歴管理を現在の3世代から7世代へ拡張する設計書です。
 
+## 実装ステータス
+**ステータス**: ✅ 実装完了・本番稼働中  
+**実装完了日**: 2025年6月28日  
+**実装者**: shimizu  
+**テスト完了日**: 2025年6月28日  
+**本番適用日**: 2025年6月28日
+
 **関連ドキュメント:**
 - TODO: `summary_history_extension_TODO.md`
 - テスト仕様書: `test/summary_history_extension/summary_history_extension_test.md`
