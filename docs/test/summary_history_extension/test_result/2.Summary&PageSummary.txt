@@ -1,0 +1,8 @@
+ページURL	最新ハッシュ	実行1-日時	実行1-ページ	実行1-PDF	実行1-追加数	実行2-日時	実行2-ページ	実行2-PDF	実行2-追加数	実行3-日時	実行3-ページ	実行3-PDF	実行3-追加数	実行4-日時	実行4-ページ	実行4-PDF	実行4-追加数	実行5-日時	実行5-ページ	実行5-PDF	実行5-追加数	実行6-日時	実行6-ページ	実行6-PDF	実行6-追加数	実行7-日時	実行7-ページ	実行7-PDF	実行7-追加数
+https://company-a.example.com/reports/page001	hash1007	2025/06/29 1:03:59	TRUE	TRUE	1	2025/06/29	TRUE	TRUE	0	2025/06/29	TRUE	TRUE	2	2025/06/29	TRUE	TRUE	0	2025/06/29	TRUE	TRUE	1	2025/06/29	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	2
+https://company-b.example.com/docs/page002	hash2005	2025/06/29 1:03:59	TRUE	TRUE	18	2025/06/29	TRUE	TRUE	0	2025/06/29	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	1	2025/06/29	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	16	2025/06/29	FALSE	FALSE	0
+https://company-c.example.com/library/page003	hash3006	2025/06/29 1:04:00	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	1	2025/06/29	TRUE	TRUE	1	2025/06/29	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	0	2025/06/29	TRUE	TRUE	2	2025/06/29	TRUE	FALSE	0
+https://company-d.example.com/resources/page004	hash4006	2025/06/29 1:04:00	TRUE	TRUE	2	2025/06/29	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	0	2025/06/29	TRUE	TRUE	0	2025/06/29	TRUE	TRUE	0	2025/06/29	TRUE	TRUE	0	2025/06/29	FALSE	FALSE	0
+https://company-e.example.com/portal/page005	hash5004	2025/06/29 1:04:02	TRUE	TRUE	1	2025/06/29	TRUE	TRUE	0	2025/06/29	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	2	2025/06/29	FALSE	FALSE	0	2025/06/29	TRUE	TRUE	30				
+https://company-f.example.com/docs/page006	hash6002	2025/06/29 1:04:06	TRUE	TRUE	1	2025/06/29	TRUE	TRUE	1																				
+https://company-g.example.com/archive/page007	hash7001	2025/06/29 1:04:07	TRUE	TRUE	2																								
