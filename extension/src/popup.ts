@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   
   extractBtn.addEventListener('click', async () => {
     try {
+      // eslint-disable-next-line no-console
       console.log('Extract button clicked');
       statusDiv.textContent = 'Extracting...';
       statusDiv.className = 'status';
       
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      // eslint-disable-next-line no-console
       console.log('Active tab:', tab);
       
       if (!tab.id) {
@@ -24,16 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
           target: { tabId: tab.id },
           files: ['dist/content.js']
         });
+        // eslint-disable-next-line no-console
         console.log('Content script injected');
       } catch (injectionError) {
+        // eslint-disable-next-line no-console
         console.log('Content script might already be injected:', injectionError);
       }
       
       // Wait a bit for the script to initialize
       await new Promise(resolve => setTimeout(resolve, 100));
       
+      // eslint-disable-next-line no-console
       console.log('Sending message to tab:', tab.id);
       const response = await chrome.tabs.sendMessage(tab.id, { action: 'extractPageInfo' }) as ExtractResult;
+      // eslint-disable-next-line no-console
       console.log('Received response:', response);
       
       if (!response.success || !response.pageInfo) {

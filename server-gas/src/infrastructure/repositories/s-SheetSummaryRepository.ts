@@ -105,12 +105,13 @@ class SheetSummaryRepository implements ISummaryRepository {
         
         runStarts.forEach((startIdx, runIdx) => {
           if (row[startIdx]) {
-            (summary as any)[runProperties[runIdx]] = {
+            const runKey = runProperties[runIdx] as keyof PageSummary;
+            summary[runKey] = {
               date: new Date(row[startIdx] as string),
               pageUpdated: row[startIdx + 1] as boolean,
               pdfUpdated: row[startIdx + 2] as boolean,
               addedCount: row[startIdx + 3] as number,
-            };
+            } as RunSummary;
           }
         });
         
