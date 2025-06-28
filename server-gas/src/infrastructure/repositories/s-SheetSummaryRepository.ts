@@ -101,8 +101,6 @@ class SheetSummaryRepository implements ISummaryRepository {
           SheetSummaryRepository.COLUMN_INDICES.RUN7_START,
         ];
         
-        const runProperties = ['run1', 'run2', 'run3', 'run4', 'run5', 'run6', 'run7'] as const;
-        
         runStarts.forEach((startIdx, runIdx) => {
           if (row[startIdx]) {
             const runSummary: RunSummary = {
