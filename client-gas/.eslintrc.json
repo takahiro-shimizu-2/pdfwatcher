@@ -19,7 +19,7 @@
       "error",
       {
         "vars": "all",
-        "varsIgnorePattern": "^(onOpen|setupMenu|runJudge|runJudgeContinuation|setupClientSpreadsheet|logTestResult_.*|showDevLogSummary|checkResultsWithStatistics|logTestResult|getDevLogSummary|PDFWatcher|ParsedRow|ServerLibrary|parseCurrentSheet|convertToPages|updateChangesSheet|updateUserLog|clearCurrentSheet|initializeSheets|splitIntoBatches|executeBatchesInParallel|ProcessingState|PageGroup|ProcessingSession|StateManager|TriggerManager|GroupProcessor)$",
+        "varsIgnorePattern": "^(onOpen|setupMenu|runJudge|runJudgeContinuation|setupClientSpreadsheet|logTestResult_.*|showDevLogSummary|checkResultsWithStatistics|logTestResult|getDevLogSummary|PDFWatcher|ParsedRow|ServerLibrary|parseCurrentSheet|convertToPages|updateChangesSheet|updateUserLog|clearCurrentSheet|initializeSheets|splitIntoBatches|executeBatchesInParallel|ProcessingState|PageGroup|ProcessingSession|StateManager|TriggerManager|GroupProcessor|executeHistoryManagement|ChangesHistoryEntry)$",
         "args": "after-used",
         "argsIgnorePattern": "^_",
         "ignoreRestSiblings": false
