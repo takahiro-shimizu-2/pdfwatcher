@@ -44,7 +44,7 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
         pdfsToUpdate.push({
           pageUrl: result.pageUrl,
           pdfUrl,
-          text: pdfInfo?.text || '',
+          subject: pdfInfo?.subject || '',
           firstSeen: now,
           deletedAt: null,
           status: 'ページ内に存在',
@@ -58,7 +58,7 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
           pdfsToUpdate.push({
             pageUrl: result.pageUrl,
             pdfUrl: pdf.url,
-            text: pdf.text,
+            subject: pdf.subject,
             firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
             deletedAt: null, // リポジトリ側で既存のdeletedAtが保持される
             status: 'ページ内に存在',
@@ -68,11 +68,11 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
       
       // 削除されたPDFのステータスを更新
       for (const pdfUrl of result.removedPdfUrls) {
-        // 削除されたPDFのテキスト情報は保持しないので空文字列
+        // 削除されたPDFの件名情報は保持しないので空文字列
         pdfsToUpdate.push({
           pageUrl: result.pageUrl,
           pdfUrl,
-          text: '',
+          subject: '',
           firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
           deletedAt: now, // リポジトリ側で削除時に現在時刻が設定される
           status: 'ページから削除',

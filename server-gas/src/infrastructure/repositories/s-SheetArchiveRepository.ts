@@ -18,7 +18,7 @@ class SheetArchiveRepository implements IArchiveRepository {
       if (row[0] === pageUrl) {
         pdfs.push({
           pageUrl: row[0] as string,
-          text: row[1] as string,
+          subject: row[1] as string,
           pdfUrl: row[2] as string,
           firstSeen: new Date(row[3] as string),
           deletedAt: row[4] ? new Date(row[4] as string) : null,
@@ -69,7 +69,7 @@ class SheetArchiveRepository implements IArchiveRepository {
           row: existing.row,
           values: [
             pdf.pageUrl,
-            pdf.text,
+            pdf.subject,
             pdf.pdfUrl, 
             existingFirstSeen, // 既存のfirstSeenを保持
             newDeletedAt,      // 削除確認日
@@ -78,7 +78,7 @@ class SheetArchiveRepository implements IArchiveRepository {
         });
       } else {
         // 新規追加時はdeletedAtは空
-        appends.push([pdf.pageUrl, pdf.text, pdf.pdfUrl, pdf.firstSeen, '', pdf.status]);
+        appends.push([pdf.pageUrl, pdf.subject, pdf.pdfUrl, pdf.firstSeen, '', pdf.status]);
       }
     }
     
@@ -103,7 +103,7 @@ class SheetArchiveRepository implements IArchiveRepository {
       const row = data[i];
       pdfs.push({
         pageUrl: row[0] as string,
-        text: row[1] as string,
+        subject: row[1] as string,
         pdfUrl: row[2] as string,
         firstSeen: new Date(row[3] as string),
         deletedAt: row[4] ? new Date(row[4] as string) : null,
@@ -120,7 +120,7 @@ class SheetArchiveRepository implements IArchiveRepository {
     if (!sheet) {
       sheet = this.spreadsheet.insertSheet(SHEET_NAMES.ARCHIVE_PDF);
       sheet.getRange(1, 1, 1, 6).setValues([
-        ['ページURL', 'テキスト', 'PDF URL', '初回発見日時', '削除確認日時', 'ステータス']
+        ['ページURL', '件名', 'PDF URL', '初回発見日時', '削除確認日時', 'ステータス']
       ]);
       sheet.getRange(1, 1, 1, 6).setFontWeight('bold');
     }

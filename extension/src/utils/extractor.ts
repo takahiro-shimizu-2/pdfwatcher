@@ -43,8 +43,8 @@ function extractPdfLinks(): PdfLink[] {
     if (isPdfUrl(href)) {
       const absoluteUrl = new URL(href, window.location.href).href;
       if (!pdfLinksMap.has(absoluteUrl)) {
-        const text = extractLinkText(link as HTMLAnchorElement);
-        pdfLinksMap.set(absoluteUrl, { url: absoluteUrl, text });
+        const subject = extractLinkSubject(link as HTMLAnchorElement);
+        pdfLinksMap.set(absoluteUrl, { url: absoluteUrl, subject });
       }
     }
   });
@@ -64,7 +64,7 @@ function extractPdfLinks(): PdfLink[] {
       const absoluteUrl = new URL(src, window.location.href).href;
       if (!pdfLinksMap.has(absoluteUrl)) {
         const filename = getFilenameFromUrl(absoluteUrl);
-        pdfLinksMap.set(absoluteUrl, { url: absoluteUrl, text: filename });
+        pdfLinksMap.set(absoluteUrl, { url: absoluteUrl, subject: filename });
       }
     }
   });
@@ -72,34 +72,34 @@ function extractPdfLinks(): PdfLink[] {
   return Array.from(pdfLinksMap.values());
 }
 
-function extractLinkText(link: HTMLAnchorElement): string {
+function extractLinkSubject(link: HTMLAnchorElement): string {
   // 直接のテキストノードのみを取得
-  const textNodes: string[] = [];
+  const subjectNodes: string[] = [];
   link.childNodes.forEach(node => {
     if (node.nodeType === Node.TEXT_NODE && node.textContent) {
-      const text = node.textContent.trim();
-      if (text && !node.parentElement?.classList.contains('pdfsize')) {
-        textNodes.push(text);
+      const subject = node.textContent.trim();
+      if (subject && !node.parentElement?.classList.contains('pdfsize')) {
+        subjectNodes.push(subject);
       }
     }
   });
   
-  let text = textNodes.join(' ').trim();
+  let subject = subjectNodes.join(' ').trim();
   
-  // テキストが空の場合はファイル名を使用
-  if (!text) {
-    text = getFilenameFromUrl(link.href);
+  // 件名が空の場合はファイル名を使用
+  if (!subject) {
+    subject = getFilenameFromUrl(link.href);
   }
   
   // 特殊文字のエスケープ
-  text = text.replace(/[\t\n\r]/g, ' ');
+  subject = subject.replace(/[\t\n\r]/g, ' ');
   
   // 文字数制限（100文字）
-  if (text.length > 100) {
-    text = text.substring(0, 97) + '...';
+  if (subject.length > 100) {
+    subject = subject.substring(0, 97) + '...';
   }
   
-  return text;
+  return subject;
 }
 
 function getFilenameFromUrl(url: string): string {

@@ -19,7 +19,7 @@ export interface ParsedRow {
   pageUrl: string;
   pageHash: string;
   pdfUrls: string[];
-  pdfs: Array<{url: string; text: string}>;
+  pdfs: Array<{url: string; subject: string}>;
 }
 
 export interface ServerLibrary {

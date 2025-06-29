@@ -1,8 +1,8 @@
-# PDFリンクテキスト取得機能 設計仕様書
+# PDFリンク件名取得機能 設計仕様書
 
 ## 概要
 
-PDF Watcher拡張機能において、PDFリンクのURLに加えてリンクテキストを取得し、複数行形式でクリップボードにコピーする機能を追加する。取得したリンクテキストは、システム全体で保持・活用される。
+PDF Watcher拡張機能において、PDFリンクのURLに加えてリンク件名を取得し、複数行形式でクリップボードにコピーする機能を追加する。取得したリンク件名は、システム全体で保持・活用される。
 
 **関連ドキュメント**: 
 - 実装TODO: `pdf_link_text_TODO.md`
@@ -15,13 +15,13 @@ PDF Watcher拡張機能において、PDFリンクのURLに加えてリンクテ
 - 大量のPDFリンクがある場合、URLだけでは内容の識別が困難
 
 ### 解決方法
-- PDFリンクのテキスト（`<a>`タグ内のテキスト）を取得
-- 複数行形式でURL とリンクテキストを出力
-- 各シートでリンクテキストを保存・表示
+- PDFリンクの件名（`<a>`タグ内のテキスト）を取得
+- 複数行形式でURL とリンク件名を出力
+- 各シートでリンク件名を保存・表示
 
 ## 機能要件
 
-### 1. リンクテキストの取得
+### 1. リンク件名の取得
 - `<a>`タグ内のテキストを取得
 - PDFサイズ情報（例：`(PDF:138.1KB)`）は除外
 - 特殊文字（タブ、改行など）は適切にエスケープ
@@ -35,13 +35,13 @@ PDF Watcher拡張機能において、PDFリンクのURLに加えてリンクテ
 
 #### 新形式（複数行TSV）
 ```
-ページURL[TAB]ハッシュ[TAB]リンクテキスト[TAB]PDF URL
-ページURL[TAB]ハッシュ[TAB]リンクテキスト2[TAB]PDF URL2
+ページURL[TAB]ハッシュ[TAB]件名[TAB]PDF URL
+ページURL[TAB]ハッシュ[TAB]件名2[TAB]PDF URL2
 ...
 ```
 
 ### 3. エッジケースの処理
-- 空のリンクテキスト → URLのファイル名部分を使用
+- 空のリンク件名 → URLのファイル名部分を使用
 - 画像のみのリンク → alt属性またはファイル名を使用
 - 長大なテキスト → 100文字で切り詰め
 
@@ -54,7 +54,7 @@ PDF Watcher拡張機能において、PDFリンクのURLに加えてリンクテ
 // 新規追加
 export interface PdfLink {
   url: string;
-  text: string;
+  subject: string;
 }
 
 // PageInfo型の変更
@@ -70,7 +70,7 @@ export interface PageInfo {
 // PDF型の変更
 export interface PDF {
   url: string;
-  text: string;  // 新規追加
+  subject: string;  // 新規追加
 }
 
 // Page型の変更
@@ -85,8 +85,8 @@ export interface Page {
 
 #### extractor.ts の変更
 ```typescript
-// リンクテキスト抽出の新関数
-function extractLinkText(element: HTMLAnchorElement): string {
+// リンク件名抽出の新関数
+function extractLinkSubject(element: HTMLAnchorElement): string {
   // テキストノードのみを取得（PDFサイズ情報を除外）
   const textNodes = Array.from(element.childNodes)
     .filter(node => node.nodeType === Node.TEXT_NODE)
@@ -109,11 +109,11 @@ function extractPdfUrls(): PdfLink[] {
   links.forEach(link => {
     const href = (link as HTMLAnchorElement).href;
     if (isPdfUrl(href)) {
-      const text = extractLinkText(link as HTMLAnchorElement) || 
+      const subject = extractLinkSubject(link as HTMLAnchorElement) || 
                    getFilenameFromUrl(href);
       const absoluteUrl = new URL(href, window.location.href).href;
       if (!pdfLinks.find(p => p.url === absoluteUrl)) {
-        pdfLinks.push({ url: absoluteUrl, text });
+        pdfLinks.push({ url: absoluteUrl, subject });
       }
     }
   });
@@ -134,7 +134,7 @@ function extractPdfUrls(): PdfLink[] {
     if (src && isPdfUrl(src)) {
       const absoluteUrl = new URL(src, window.location.href).href;
       if (!pdfLinks.find(p => p.url === absoluteUrl)) {
-        pdfLinks.push({ url: absoluteUrl, text: getFilenameFromUrl(absoluteUrl) });
+        pdfLinks.push({ url: absoluteUrl, subject: getFilenameFromUrl(absoluteUrl) });
       }
     }
   });
@@ -153,7 +153,7 @@ export function formatAsTsv(pageInfo: PageInfo): string {
   }
   
   return pageInfo.pdfLinks
-    .map(link => `${pageInfo.url}\t${pageInfo.hash}\t${link.text}\t${link.url}`)
+    .map(link => `${pageInfo.url}\t${pageInfo.hash}\t${link.subject}\t${link.url}`)
     .join('\n');
 }
 ```
@@ -180,7 +180,7 @@ function parseCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): Page[] {
     if (row[3]) {  // PDF URLが存在する場合
       pageMap.get(key)!.pdfs.push({
         url: row[3],
-        text: row[2] || ''  // リンクテキストも保存
+        subject: row[2] || ''  // リンク件名も保存
       });
     }
   });
@@ -212,12 +212,12 @@ function detectChanges(currentPage: Page, previousPage?: Page): DiffResult {
 ###### SheetArchiveRepository.ts
 ```typescript
 // ArchivePDFシートの列構造
-// ページURL | テキスト | PDF URL | 初回発見日時 | 削除確認日時 | ステータス
+// ページURL | 件名 | PDF URL | 初回発見日時 | 削除確認日時 | ステータス
 function upsertPdfs(pageUrl: string, pdfs: PDF[]): void {
   pdfs.forEach(pdf => {
     const row = [
       pageUrl,
-      pdf.text,  // リンクテキストを追加
+      pdf.subject,  // リンク件名を追加
       pdf.url,
       new Date(),
       null,
@@ -237,26 +237,26 @@ function upsertPdfs(pageUrl: string, pdfs: PDF[]): void {
 
 ### 2. Currentシート
 - 構造: 可変列から固定4列へ
-- 列: URL | ハッシュ | リンクテキスト | PDF URL
+- 列: URL | ハッシュ | 件名 | PDF URL
 
 ### 3. Client GAS
 - `parseCurrentSheet`: 複数行をURL+Hashでグループ化
-- `Page`型: `pdfs: PDF[]`に変更（URLとテキストのペア）
+- `Page`型: `pdfs: PDF[]`に変更（URLと件名のペア）
 
 ### 4. Server GAS
 - `DiffService`: `page.pdfs`を使用するように変更
-- 各リポジトリ: PDFテキストも保存するように更新
+- 各リポジトリ: PDF件名も保存するように更新
 
 ### 5. 各シート
-- **ArchivePDF**: ページURL | テキスト | PDF URL | 初回発見日時 | 削除確認日時 | ステータス
-- **Changes**: ページURL | テキスト | PDFのURL
-- **ChangesHistory**: 保存日時 | 実行ID | ページURL | テキスト | PDFのURL | 削除予定日時
+- **ArchivePDF**: ページURL | 件名 | PDF URL | 初回発見日時 | 削除確認日時 | ステータス
+- **Changes**: ページURL | 件名 | PDFのURL
+- **ChangesHistory**: 保存日時 | 実行ID | ページURL | 件名 | PDFのURL | 削除予定日時
 - **PageSummary**: ページ情報のみ（変更不要）
 - **PageHistory**: 履歴情報（変更不要）
 
 ### 重要なポイント
-- リンクテキストはシステム全体で保持・活用
-- PDFの識別がURLだけでなくテキストでも可能に
+- リンク件名はシステム全体で保持・活用
+- PDFの識別がURLだけでなく件名でも可能に
 - ユーザーがPDFの内容を理解しやすくなる
 
 ## 実装計画
@@ -287,8 +287,8 @@ function upsertPdfs(pageUrl: string, pdfs: PDF[]): void {
 ## セキュリティとプライバシー
 
 ### 考慮事項
-1. **XSS対策**: リンクテキストのサニタイズ
-2. **情報漏洩**: 機密情報を含むリンクテキストの扱い
+1. **XSS対策**: リンク件名のサニタイズ
+2. **情報漏洩**: 機密情報を含むリンク件名の扱い
 3. **データサイズ**: 文字数制限による対策
 
 ### 実装

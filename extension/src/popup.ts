@@ -73,7 +73,7 @@ function displayResult(pageInfo: PageInfo): void {
     <ul>
       ${pageInfo.pdfLinks.map(pdfLink => 
         `<li>
-          <strong>${escapeHtml(pdfLink.text)}</strong><br>
+          <strong>${escapeHtml(pdfLink.subject)}</strong><br>
           ${escapeHtml(pdfLink.url)}
         </li>`
       ).join('')}

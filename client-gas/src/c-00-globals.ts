@@ -51,7 +51,7 @@ const PDFWatcher = {
 // NOTE: core/src/types/gas-types.tsからビルド時にコピー
 interface PDF {
   url: string;
-  text: string;
+  subject: string;
 }
 
 interface ParsedRow {

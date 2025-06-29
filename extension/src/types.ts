@@ -1,6 +1,6 @@
 export interface PdfLink {
   url: string;
-  text: string;
+  subject: string;
 }
 
 export interface PageInfo {

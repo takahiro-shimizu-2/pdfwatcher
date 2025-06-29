@@ -1,7 +1,7 @@
 import { PageInfo } from '../types';
 
 export function formatAsTsv(pageInfo: PageInfo): string {
-  // PDFリンクがない場合は、URL、ハッシュ、空のテキスト、空のPDF URLの行を返す
+  // PDFリンクがない場合は、URL、ハッシュ、空の件名、空のPDF URLの行を返す
   if (pageInfo.pdfLinks.length === 0) {
     return [pageInfo.url, pageInfo.hash, '', ''].join('\t');
   }
@@ -10,7 +10,7 @@ export function formatAsTsv(pageInfo: PageInfo): string {
   const lines: string[] = [];
   pageInfo.pdfLinks.forEach(pdfLink => {
     // 特殊文字のエスケープ
-    const escapedText = pdfLink.text
+    const escapedSubject = pdfLink.subject
       .replace(/\t/g, ' ')
       .replace(/\n/g, ' ')
       .replace(/\r/g, ' ');
@@ -18,7 +18,7 @@ export function formatAsTsv(pageInfo: PageInfo): string {
     const parts = [
       pageInfo.url,
       pageInfo.hash,
-      escapedText,
+      escapedSubject,
       pdfLink.url
     ];
     

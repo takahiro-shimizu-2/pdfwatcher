@@ -5,7 +5,7 @@
 function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: DiffResult[], pages?: Page[]): void {
   // ヘッダー行が存在しない場合のみ追加
   if (sheet.getLastRow() === 0) {
-    const headers = ['PageURL', 'テキスト', 'PDFのURL'];
+    const headers = ['PageURL', '件名', 'PDFのURL'];
     sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
     sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   }
@@ -18,16 +18,16 @@ function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: 
   
   for (const result of results) {
     if (result.pdfUpdated && result.addedPdfUrls.length > 0) {
-      // ページ情報から対応するPDFのテキストを取得
+      // ページ情報から対応するPDFの件名を取得
       const page = pages?.find(p => p.url === result.pageUrl);
       
       // 各PDFのURLを個別の行として追加
       for (const pdfUrl of result.addedPdfUrls) {
-        // PDFのテキスト情報を取得
+        // PDFの件名情報を取得
         const pdfInfo = page?.pdfs.find(pdf => pdf.url === pdfUrl);
-        const text = pdfInfo?.text || '';
+        const subject = pdfInfo?.subject || '';
         
-        rows.push([result.pageUrl, text, pdfUrl]);
+        rows.push([result.pageUrl, subject, pdfUrl]);
       }
     }
   }

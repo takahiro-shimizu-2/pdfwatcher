@@ -6,14 +6,14 @@ function parseCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): ParsedRow
   const data = sheet.getDataRange().getValues();
   const parsedRowsMap = new Map<string, ParsedRow>();
   
-  // 新形式: 4列固定（ページURL、ハッシュ、テキスト、PDF URL）
+  // 新形式: 4列固定（ページURL、ハッシュ、件名、PDF URL）
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
     if (!row[0]) continue;
     
     const pageUrl = String(row[0]).trim();
     const pageHash = String(row[1] || '').trim();
-    const text = String(row[2] || '').trim();
+    const subject = String(row[2] || '').trim();
     const pdfUrl = String(row[3] || '').trim();
     
     const key = `${pageUrl}\t${pageHash}`;
@@ -31,7 +31,7 @@ function parseCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): ParsedRow
     
     if (pdfUrl) {
       parsedRow.pdfUrls.push(pdfUrl);
-      parsedRow.pdfs.push({ url: pdfUrl, text });
+      parsedRow.pdfs.push({ url: pdfUrl, subject });
     }
   }
   

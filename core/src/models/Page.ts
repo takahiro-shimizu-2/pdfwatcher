@@ -1,6 +1,6 @@
 export interface SimplePDF {
   url: string;
-  text: string;
+  subject: string;
 }
 
 export interface Page {

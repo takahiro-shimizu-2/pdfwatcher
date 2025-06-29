@@ -11,7 +11,7 @@ interface ChangesHistoryEntry {
   savedAt: Date;      // 保存日時（UTC）
   runId: string;      // 実行ID
   pageUrl: string;    // PDFが存在するページURL
-  text: string;       // PDFリンクのテキスト
+  subject: string;       // PDFリンクの件名
   pdfUrl: string;     // 新規検出されたPDF URL
   expiresAt: Date;    // 削除予定日時（savedAt + 5日）
 }
@@ -75,7 +75,7 @@ function transferChangesToHistory(runId: string): number {
         now,        // SavedAt
         runId,      // RunId
         row[0],     // PageUrl（Changesの1列目: PageURL）
-        row[1],     // Text（Changesの2列目: テキスト）
+        row[1],     // Subject（Changesの2列目: 件名）
         row[2],     // PdfUrl（Changesの3列目: PDFのURL）
         expiresAt   // ExpiresAt
       ]);

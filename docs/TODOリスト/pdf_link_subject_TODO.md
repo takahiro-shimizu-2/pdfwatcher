@@ -1,7 +1,7 @@
-# PDFリンクテキスト取得機能 実装TODOリスト
+# PDFリンク件名取得機能 実装TODOリスト
 
 **関連設計書**: `../pdf_link_text_design.md`  
-**関連テスト仕様**: `../test/pdf_link_text/pdf_link_text_test.md`
+**関連テスト仕様**: `../test/pdf_link_subject/pdf_link_subject_test.md`
 
 ## Phase 1: Chrome拡張機能の実装
 
@@ -12,8 +12,8 @@
   - [ ] `pdfUrls` プロパティは削除不要（Chrome拡張機能内では使用しない）
 - [ ] 型定義のエクスポートを確認
 
-### 2. リンクテキスト取得機能の実装
-- [ ] `extension/src/utils/extractor.ts` に `extractLinkText` 関数を実装
+### 2. リンク件名取得機能の実装
+- [ ] `extension/src/utils/extractor.ts` に `extractLinkSubject` 関数を実装
   - [ ] テキストノードのみを取得する処理
   - [ ] PDFサイズ情報（`.pdfsize` クラス）の除外
   - [ ] 特殊文字のエスケープ処理（タブ、改行）
@@ -22,7 +22,7 @@
 - [ ] `extractPdfUrls` 関数の修正
   - [ ] **既存の関数を拡張して再利用**
   - [ ] 返り値を `string[]` から `PdfLink[]` に変更
-  - [ ] リンクテキスト取得処理を追加
+  - [ ] リンク件名取得処理を追加
   - [ ] 埋め込み要素の処理も同様に拡張
 - [ ] `extractPageInfo` 関数の更新
   - [ ] `pdfLinks` プロパティを追加
@@ -39,7 +39,7 @@
 ### 4. ポップアップUIの更新
 - [ ] `extension/src/popup.ts` の更新
   - [ ] `displayResult` 関数を `pdfLinks` を使用するように変更
-  - [ ] リンクテキストの表示追加
+  - [ ] リンク件名の表示追加
 - [ ] `extension/popup.html` の更新（必要に応じて）
   - [ ] PDFリンク表示部分のスタイル調整
 
@@ -49,14 +49,14 @@
 - [ ] 手動テストの実施
   - [ ] 通常のPDFリンクのテスト
   - [ ] PDFサイズ情報を含むリンクのテスト
-  - [ ] 空のリンクテキストのテスト
+  - [ ] 空のリンク件名のテスト
   - [ ] 画像のみのリンクのテスト
 
 ## Phase 2: Core/GAS対応
 
 ### 6. Core型定義の更新
 - [ ] `core/src/models/PDF.ts` の更新
-  - [ ] `PDF` インターフェースに `text: string` を追加
+  - [ ] `PDF` インターフェースに `subject: string` を追加
 - [ ] `core/src/models/Page.ts` の更新
   - [ ] `Page` インターフェースの `pdfUrls: string[]` を `pdfs: PDF[]` に変更
 - [ ] `core/src/types/gas-types.ts` の更新
@@ -66,8 +66,8 @@
 - [ ] `client-gas/src/c-01-parser.ts` の更新
   - [ ] `parseCurrentSheet` 関数を新形式に対応
   - [ ] 複数行をURL + Hashでグループ化
-  - [ ] 4列形式（URL、ハッシュ、リンクテキスト、PDF URL）のパース
-  - [ ] PDF配列にURLとテキストを格納
+  - [ ] 4列形式（URL、ハッシュ、リンク件名、PDF URL）のパース
+  - [ ] PDF配列にURLと件名を格納
   - [ ] エラーハンドリングの実装
 
 ### 8. Server GASの更新
@@ -77,33 +77,33 @@
   - [ ] 差分検出ロジックの更新
 - [ ] `server-gas/src/infrastructure/repositories/s-SheetArchiveRepository.ts` の更新
   - [ ] 列構造を新形式に変更
-  - [ ] リンクテキストも保存するように修正
+  - [ ] リンク件名も保存するように修正
   - [ ] 列インデックスの調整
 
 ### 9. Client GAS UIの更新
 - [ ] `client-gas/src/c-02-ui.ts` の更新
   - [ ] Changesシートへの書き込み処理を更新
-  - [ ] ページURL | テキスト | PDFのURL 形式に変更
+  - [ ] ページURL | 件名 | PDFのURL 形式に変更
 - [ ] `client-gas/src/c-04-setup.ts` の更新
   - [ ] Changesシートのヘッダー定義を新形式に更新
   - [ ] 列構造の変更に対応
 - [ ] `client-gas/src/c-13-history-manager.ts` の更新
   - [ ] ChangesHistoryシートの列構造を更新
-  - [ ] 保存日時 | 実行ID | ページURL | テキスト | PDFのURL | 削除予定日時
+  - [ ] 保存日時 | 実行ID | ページURL | 件名 | PDFのURL | 削除予定日時
   - [ ] transferChangesToHistory関数で新しい列構造に対応
 
 ### 10. スプレッドシート対応
 - [ ] Current シートの構造変更
   - [ ] 可変列構造から4列固定構造へ
-  - [ ] 列: ページURL | ハッシュ | リンクテキスト | PDF URL
+  - [ ] 列: ページURL | ハッシュ | リンク件名 | PDF URL
   - [ ] ヘッダー行の更新（必要に応じて）
 - [ ] ArchivePDFシートの構造変更
-  - [ ] 列: ページURL | テキスト | PDF URL | 初回発見日時 | 削除確認日時 | ステータス
+  - [ ] 列: ページURL | 件名 | PDF URL | 初回発見日時 | 削除確認日時 | ステータス
   - [ ] 既存データのマイグレーション（必要に応じて）
 - [ ] Changesシートの構造変更
-  - [ ] 列: ページURL | テキスト | PDFのURL
+  - [ ] 列: ページURL | 件名 | PDFのURL
 - [ ] ChangesHistoryシートの構造変更
-  - [ ] 列: 保存日時 | 実行ID | ページURL | テキスト | PDFのURL | 削除予定日時
+  - [ ] 列: 保存日時 | 実行ID | ページURL | 件名 | PDFのURL | 削除予定日時
 
 ## Phase 3: 統合テストと検証
 
@@ -112,7 +112,7 @@
 - [ ] クリップボード経由でのデータ貼り付けテスト
 - [ ] GASでのパース処理テスト
 - [ ] 各シートへの書き込みテスト
-- [ ] リンクテキストが正しく表示されることの確認
+- [ ] リンク件名が正しく表示されることの確認
 
 ### 12. パフォーマンステスト
 - [ ] 大量のPDFリンク（100個以上）でのテスト
@@ -121,8 +121,8 @@
 - [ ] 10%以内の性能劣化であることの確認
 
 ### 13. エッジケーステスト
-- [ ] 特殊文字を含むリンクテキスト
-- [ ] 非常に長いリンクテキスト
+- [ ] 特殊文字を含むリンク件名
+- [ ] 非常に長いリンク件名
 - [ ] マルチバイト文字（日本語、絵文字）
 - [ ] HTMLタグを含むテキスト
 
