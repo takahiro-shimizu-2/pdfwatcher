@@ -1,0 +1,24 @@
+PDFリンク件名 & PageSummary 統合検証レポート
+2025/6/30 1:32:20
+使用テストデータ
+新形式データ（ページURL | ハッシュ | 件名 | PDF URL）
+※ 1ページに複数PDFがある場合は、PDFごとに1行ずつ記載
+
+各シートの件名表示検証
+
+【Changesシート】
+列数: 3
+ヘッダー: PageURL | 件名 | PDFのURL
+  件名: "最終001" (https://company-a.example.com/reports/2025/01/final_001.pdf)
+  件名: "ガイド002_v3" (https://company-b.example.com/docs/2025/01/guide_002_v3.pdf)
+  件名: "マニュアル002_v3" (https://company-b.example.com/docs/2025/01/manual_002_v3.pdf)
+
+
+
+PageSummary 7世代拡張検証
+
+PageSummary 世代シフト検証レポート
+
+総ページ数: 7
+最大世代数: 7
+7世代フルのページ数: 4
