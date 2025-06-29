@@ -18,10 +18,11 @@ class SheetArchiveRepository implements IArchiveRepository {
       if (row[0] === pageUrl) {
         pdfs.push({
           pageUrl: row[0] as string,
-          pdfUrl: row[1] as string,
-          firstSeen: new Date(row[2] as string),
-          deletedAt: row[3] ? new Date(row[3] as string) : null,
-          status: (row[4] as string) === 'ページから削除' ? 'ページから削除' : 'ページ内に存在',
+          text: row[1] as string,
+          pdfUrl: row[2] as string,
+          firstSeen: new Date(row[3] as string),
+          deletedAt: row[4] ? new Date(row[4] as string) : null,
+          status: (row[5] as string) === 'ページから削除' ? 'ページから削除' : 'ページ内に存在',
         });
       }
     }
@@ -37,7 +38,7 @@ class SheetArchiveRepository implements IArchiveRepository {
     const existingMap = new Map<string, { row: number; data: unknown[] }>();
     
     for (let i = 1; i < existingData.length; i++) {
-      const key = `${existingData[i][0]}|${existingData[i][1]}`;
+      const key = `${existingData[i][0]}|${existingData[i][2]}`; // ページURL|PDF URL
       existingMap.set(key, { row: i + 1, data: existingData[i] });
     }
     
@@ -50,9 +51,9 @@ class SheetArchiveRepository implements IArchiveRepository {
       
       if (existing) {
         // 既存レコードの場合
-        const existingFirstSeen = existing.data[2]; // 既存のfirstSeenを保持
-        const existingDeletedAt = existing.data[3]; // 既存のdeletedAt
-        const existingStatus = existing.data[4];    // 既存のstatus
+        const existingFirstSeen = existing.data[3]; // 既存のfirstSeenを保持
+        const existingDeletedAt = existing.data[4]; // 既存のdeletedAt
+        const existingStatus = existing.data[5];    // 既存のstatus
         
         // deletedAtは「ページから削除」への変更時のみ更新
         let newDeletedAt = existingDeletedAt;
@@ -67,7 +68,8 @@ class SheetArchiveRepository implements IArchiveRepository {
         updates.push({
           row: existing.row,
           values: [
-            pdf.pageUrl, 
+            pdf.pageUrl,
+            pdf.text,
             pdf.pdfUrl, 
             existingFirstSeen, // 既存のfirstSeenを保持
             newDeletedAt,      // 削除確認日
@@ -76,17 +78,17 @@ class SheetArchiveRepository implements IArchiveRepository {
         });
       } else {
         // 新規追加時はdeletedAtは空
-        appends.push([pdf.pageUrl, pdf.pdfUrl, pdf.firstSeen, '', pdf.status]);
+        appends.push([pdf.pageUrl, pdf.text, pdf.pdfUrl, pdf.firstSeen, '', pdf.status]);
       }
     }
     
     for (const update of updates) {
-      sheet.getRange(update.row, 1, 1, 5).setValues([update.values]);
+      sheet.getRange(update.row, 1, 1, 6).setValues([update.values]);
     }
     
     if (appends.length > 0) {
       const lastRow = sheet.getLastRow();
-      sheet.getRange(lastRow + 1, 1, appends.length, 5).setValues(appends);
+      sheet.getRange(lastRow + 1, 1, appends.length, 6).setValues(appends);
     }
   }
 
@@ -101,10 +103,11 @@ class SheetArchiveRepository implements IArchiveRepository {
       const row = data[i];
       pdfs.push({
         pageUrl: row[0] as string,
-        pdfUrl: row[1] as string,
-        firstSeen: new Date(row[2] as string),
-        deletedAt: row[3] ? new Date(row[3] as string) : null,
-        status: (row[4] as string) === 'ページから削除' ? 'ページから削除' : 'ページ内に存在',
+        text: row[1] as string,
+        pdfUrl: row[2] as string,
+        firstSeen: new Date(row[3] as string),
+        deletedAt: row[4] ? new Date(row[4] as string) : null,
+        status: (row[5] as string) === 'ページから削除' ? 'ページから削除' : 'ページ内に存在',
       });
     }
     
@@ -116,10 +119,10 @@ class SheetArchiveRepository implements IArchiveRepository {
     
     if (!sheet) {
       sheet = this.spreadsheet.insertSheet(SHEET_NAMES.ARCHIVE_PDF);
-      sheet.getRange(1, 1, 1, 5).setValues([
-        ['ページURL', 'PDF URL', '初回発見日時', '削除確認日時', 'ステータス']
+      sheet.getRange(1, 1, 1, 6).setValues([
+        ['ページURL', 'テキスト', 'PDF URL', '初回発見日時', '削除確認日時', 'ステータス']
       ]);
-      sheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+      sheet.getRange(1, 1, 1, 6).setFontWeight('bold');
     }
     
     return sheet;

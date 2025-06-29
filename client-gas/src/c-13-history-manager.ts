@@ -10,8 +10,9 @@
 interface ChangesHistoryEntry {
   savedAt: Date;      // 保存日時（UTC）
   runId: string;      // 実行ID
-  pdfUrl: string;     // 新規検出されたPDF URL
   pageUrl: string;    // PDFが存在するページURL
+  text: string;       // PDFリンクのテキスト
+  pdfUrl: string;     // 新規検出されたPDF URL
   expiresAt: Date;    // 削除予定日時（savedAt + 5日）
 }
 
@@ -51,7 +52,7 @@ function transferChangesToHistory(runId: string): number {
       return 0;
     }
     
-    const changesData = changesSheet.getRange(2, 1, lastRow - 1, 2).getValues();
+    const changesData = changesSheet.getRange(2, 1, lastRow - 1, 3).getValues();
     if (changesData.length === 0) {
       console.log('転写するデータがありません');
       return 0;
@@ -69,12 +70,13 @@ function transferChangesToHistory(runId: string): number {
     const expiresAt = new Date(now.getTime() + HISTORY_RETENTION_DAYS * 24 * 60 * 60 * 1000);
     
     const historyEntries = changesData
-      .filter(row => row[0] && row[1]) // URLとページURLが両方存在する行のみ
+      .filter(row => row[0] && row[2]) // ページURLとPDF URLが両方存在する行のみ
       .map(row => [
         now,        // SavedAt
         runId,      // RunId
         row[0],     // PageUrl（Changesの1列目: PageURL）
-        row[1],     // PdfUrl（Changesの2列目: PDFのURL）
+        row[1],     // Text（Changesの2列目: テキスト）
+        row[2],     // PdfUrl（Changesの3列目: PDFのURL）
         expiresAt   // ExpiresAt
       ]);
     
@@ -85,7 +87,7 @@ function transferChangesToHistory(runId: string): number {
     
     // ChangesHistoryシートに追記
     const lastHistoryRow = historySheet.getLastRow();
-    historySheet.getRange(lastHistoryRow + 1, 1, historyEntries.length, 5)
+    historySheet.getRange(lastHistoryRow + 1, 1, historyEntries.length, 6)
       .setValues(historyEntries);
     
     const elapsedTime = Date.now() - startTime;
@@ -123,13 +125,13 @@ function deleteExpiredHistory(): number {
     }
     
     // すべてのデータを取得
-    const data = historySheet.getRange(2, 1, lastRow - 1, 5).getValues();
+    const data = historySheet.getRange(2, 1, lastRow - 1, 6).getValues();
     const now = new Date();
     
     // 削除対象の行を特定（下から上へ）
     const rowsToDelete: number[] = [];
     for (let i = data.length - 1; i >= 0; i--) {
-      const expiresAt = data[i][4];
+      const expiresAt = data[i][5]; // ExpiresAtは6列目
       if (expiresAt instanceof Date && expiresAt.getTime() <= now.getTime()) {
         rowsToDelete.push(i + 2); // シート上の行番号（1始まり、ヘッダー含む）
       }

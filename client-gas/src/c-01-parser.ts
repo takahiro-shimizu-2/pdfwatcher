@@ -4,27 +4,38 @@
 
 function parseCurrentSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet): ParsedRow[] {
   const data = sheet.getDataRange().getValues();
-  const parsedRows: ParsedRow[] = [];
+  const parsedRowsMap = new Map<string, ParsedRow>();
   
+  // 新形式: 4列固定（ページURL、ハッシュ、テキスト、PDF URL）
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
     if (!row[0]) continue;
     
     const pageUrl = String(row[0]).trim();
     const pageHash = String(row[1] || '').trim();
-    const pdfUrls: string[] = [];
+    const text = String(row[2] || '').trim();
+    const pdfUrl = String(row[3] || '').trim();
     
-    for (let j = 2; j < row.length; j++) {
-      const pdfUrl = String(row[j] || '').trim();
-      if (pdfUrl) {
-        pdfUrls.push(pdfUrl);
-      }
+    const key = `${pageUrl}\t${pageHash}`;
+    
+    if (!parsedRowsMap.has(key)) {
+      parsedRowsMap.set(key, {
+        pageUrl,
+        pageHash,
+        pdfUrls: [],
+        pdfs: []
+      });
     }
     
-    parsedRows.push({ pageUrl, pageHash, pdfUrls });
+    const parsedRow = parsedRowsMap.get(key)!;
+    
+    if (pdfUrl) {
+      parsedRow.pdfUrls.push(pdfUrl);
+      parsedRow.pdfs.push({ url: pdfUrl, text });
+    }
   }
   
-  return parsedRows;
+  return Array.from(parsedRowsMap.values());
 }
 
 function convertToPages(parsedRows: ParsedRow[]): Page[] {
@@ -32,5 +43,6 @@ function convertToPages(parsedRows: ParsedRow[]): Page[] {
     url: row.pageUrl,
     hash: row.pageHash,
     pdfUrls: row.pdfUrls,
+    pdfs: row.pdfs,
   }));
 }

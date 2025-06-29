@@ -2,10 +2,10 @@
  * UI関連関数（グローバル関数として定義）
  */
 
-function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: DiffResult[]): void {
+function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: DiffResult[], pages?: Page[]): void {
   // ヘッダー行が存在しない場合のみ追加
   if (sheet.getLastRow() === 0) {
-    const headers = ['PageURL', 'PDFのURL'];
+    const headers = ['PageURL', 'テキスト', 'PDFのURL'];
     sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
     sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   }
@@ -18,15 +18,22 @@ function updateChangesSheet(sheet: GoogleAppsScript.Spreadsheet.Sheet, results: 
   
   for (const result of results) {
     if (result.pdfUpdated && result.addedPdfUrls.length > 0) {
+      // ページ情報から対応するPDFのテキストを取得
+      const page = pages?.find(p => p.url === result.pageUrl);
+      
       // 各PDFのURLを個別の行として追加
       for (const pdfUrl of result.addedPdfUrls) {
-        rows.push([result.pageUrl, pdfUrl]);
+        // PDFのテキスト情報を取得
+        const pdfInfo = page?.pdfs.find(pdf => pdf.url === pdfUrl);
+        const text = pdfInfo?.text || '';
+        
+        rows.push([result.pageUrl, text, pdfUrl]);
       }
     }
   }
   
   if (rows.length > 0) {
-    sheet.getRange(startRow, 1, rows.length, 2).setValues(rows);
+    sheet.getRange(startRow, 1, rows.length, 3).setValues(rows);
   }
 }
 

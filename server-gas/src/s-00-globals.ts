@@ -40,10 +40,16 @@ const CONSTANTS = {
 
 // 型定義
 // NOTE: core/src/types/gas-types.tsからビルド時にコピー
+interface SimplePDF {
+  url: string;
+  text: string;
+}
+
 interface Page {
   url: string;
   hash: string;
   pdfUrls: string[];
+  pdfs: SimplePDF[];
 }
 
 interface DiffResult {
@@ -124,6 +130,7 @@ type PDFStatus = 'ページ内に存在' | 'ページから削除';
 interface PDF {
   pageUrl: string;
   pdfUrl: string;
+  text: string;
   firstSeen: Date;
   deletedAt: Date | null;  // 削除確認日時（削除されていない場合はnull）
   status: PDFStatus;
