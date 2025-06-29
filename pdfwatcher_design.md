@@ -1,7 +1,7 @@
 # PDF Watcher 開発設計書
 
-**最終更新**: 2025-06-26
-**ステータス**: 完成（全機能実装・テスト完了・履歴保存機能追加）
+**最終更新**: 2025-06-30
+**ステータス**: 完成（全機能実装・テスト完了・PDFリンク件名取得機能追加）
 
 ## 1. システムアーキテクチャ概要
 
@@ -72,12 +72,13 @@
 interface Page {
   url: string;
   hash: string;
-  pdfUrls: string[];
+  pdfs: PDF[];  // PDFリンク件名対応のため変更
 }
 
 // PDF情報
 interface PDF {
   pageUrl: string;
+  subject: string;           // リンク件名（2025-06-30追加）
   pdfUrl: string;
   firstSeen: Date;
   lastSeen: Date;
@@ -152,8 +153,8 @@ interface IRunLogRepository {
 
 1. **データ入力**
    - ユーザーがChrome拡張でページを開く
-   - 拡張機能がPage URL、Hash、PDF URLsを抽出
-   - TSV形式でクリップボードにコピー
+   - 拡張機能がPage URL、Hash、PDF件名、PDF URLsを抽出
+   - 複数行TSV形式でクリップボードにコピー（1PDF1行）
 
 2. **バッチ処理起動**
    - CurrentシートにTSVを貼り付け
@@ -425,6 +426,17 @@ core/
   - 5日間の履歴保持（古いデータ自動削除）
   - 日本語URLサポート
   - 実行IDによる一意性管理
+
+- **PageSummary 7世代拡張** (2025-06-28)
+  - 3世代から7世代への拡張
+  - 自動世代シフト機能
+  - より長期間の変更傾向把握
+
+- **PDFリンク件名取得機能** (2025-06-30)
+  - Chrome拡張でリンクテキスト抽出
+  - PDFサイズ情報の自動除外
+  - 複数行TSV形式（1PDF1行）
+  - 全シートで件名表示
 
 ### 12.2 パフォーマンス実績
 - **処理速度**: 1.8-2秒/ページ

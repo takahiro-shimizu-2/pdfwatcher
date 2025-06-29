@@ -32,7 +32,8 @@ git diff 開発ガイド.md | head -100
 
 # ステータス記載の確認
 grep -n "完成\|完了" README.md
-grep -n "2025-06-25" README.md 要件定義書.md 開発ガイド.md
+grep -n "2025-06-30" README.md 要件定義書.md 開発ガイド.md
+grep -n "PDFリンク件名" README.md 要件定義書.md 開発ガイド.md
 
 # ライセンス情報の確認
 grep -n -i "license\|ライセンス" README.md
@@ -53,6 +54,9 @@ grep -n "1.8-2秒\|150-180ページ" docs/*.md
 
 # PDFステータス機能の確認
 grep -n "ステータス\|削除確認" pdfwatcher_design.md
+
+# PDFリンク件名機能の確認
+grep -n "subject\|件名" pdfwatcher_design.md docs/api-specification.md
 ```
 
 ### タスク3: テスト関連ドキュメント確認用
@@ -125,6 +129,7 @@ grep -r "test-specification_TODO" docs/
 # 特定のキーワードを含むファイルを検索
 find . -type f -name "*.md" | xargs grep -l "6分制限"
 find . -type f -name "*.md" | xargs grep -l "ステータス管理"
+find . -type f -name "*.md" | xargs grep -l "PDFリンク件名\|件名取得"
 
 # 最近更新されたファイルの確認
 find docs -type f -name "*.md" -mtime -7 | sort

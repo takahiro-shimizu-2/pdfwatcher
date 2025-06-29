@@ -63,13 +63,15 @@ pdfwatcher/
 - **server-gas**: Googleスプレッドシートのデータ管理
 - **client-gas**: ユーザー向けUI、バッチ処理、履歴管理
   - `c-13-history-manager.ts`: Changes履歴の保存・削除機能
-- **extension**: PDF URLの抽出とTSV生成
+- **extension**: PDF URLとリンク件名の抽出、TSV生成（複数行形式）
 
 ### 主要な機能
 
 - PDF監視・差分検出
 - 6分実行時間制限対策
 - Changes履歴保存機能（5日間の自動保存・削除）
+- PageSummary 7世代履歴管理（2025年6月28日拡張）
+- PDFリンク件名取得機能（2025年6月30日実装）
 
 ## ブランチ戦略
 
@@ -172,6 +174,7 @@ Google Apps Script環境での動作に注意してください:
 feat: PDFハッシュ値による高速化を実装
 fix: 6分制限エラーの修正
 docs: READMEに使用方法を追加
+feat: PDFリンク件名取得機能を実装
 ```
 
 明確で簡潔なコミットメッセージを心がけてください：

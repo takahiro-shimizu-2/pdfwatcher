@@ -1,54 +1,47 @@
 # Document Inventory Verification Report
 
-**Date**: 2025-06-28  
+**Date**: 2025-06-30  
 **Purpose**: Verify all markdown files are included in document inventory
 
 ## Summary
 
-Found **52 total .md files** in the project (excluding node_modules).  
-Document inventory lists **33 documents**.  
-**19 files are missing** from the inventory.
+Found **57 total .md files** in the project (excluding node_modules).  
+Document inventory lists **58 documents** (including 1 .gs file).  
+**All files are now properly documented** in the inventory.
 
-## Missing Files from Inventory
+## Updated Status (2025-06-30)
 
-### Test-related documents missing:
+### Previously Missing Files
 
-1. `/docs/test/Fixed_duplicate_cleanup_TODO.md`
-2. `/docs/test/Fixed_status_field_test_TODO.md`
-3. `/docs/test/eslint-fix-test-cases.md`
-4. `/docs/test/eslint-fix-test_TODO.md`
-5. `/docs/test/execution-time-limit/Fixed_test-specification.md`
-6. `/docs/test/execution-time-limit/Fixed_test-specification_TODO.md`
-7. `/docs/test/execution-time-limit/test-results-summary.md`
-8. `/docs/test/status-field/Fixed_test-instructions.md`
-9. `/docs/test/status-field/Fixed_test-results.md`
-10. `/docs/test/changes-history/TC-005-test-procedure.md`
-11. `/docs/test/changes-history/TC-005-test-result-detail.md`
-12. `/docs/test/changes-history/TC-005-test-result.md`
-13. `/docs/test/changes-history/changes-history_test_TODO.md`
-14. `/docs/test/changes-history/test-execution-guide.md`
-15. `/docs/test/changes-history/test-execution-log.md`
-16. `/docs/test/summary_history_extension/test_result/test_scenarios.md`
-17. `/docs/test/summary_history_extension/test_result/test_scenarios_v2.md`
+The previous verification report (2025-06-28) identified 19 missing files. Since then, all missing files have been added to the inventory, and additionally, **5 new PDF link subject feature documents** were created and added:
 
-### Extension documents missing:
+1. `/docs/pdf_link_text_design.md` - PDFリンク件名取得機能の設計書
+2. `/docs/TODOリスト/pdf_link_subject_TODO.md` - PDFリンク件名取得機能のTODOリスト
+3. `/docs/test/pdf_link_subject/pdf_link_subject_test.md` - PDFリンク件名取得機能のテスト仕様書
+4. `/docs/test/pdf_link_subject/pdf_link_subject_test_TODO.md` - PDFリンク件名取得機能のテストTODOリスト
+5. `/docs/test/pdf_link_subject/integrated-verification-guide.md` - 統合検証ガイド
 
-18. `/extension/DISTRIBUTION.md`
+プラス:
+- `/docs/test/pdf_link_subject/pdf-subject-verification-tool.gs` - Google Apps Script検証ツール（.gsファイル）
 
-### TODOリスト documents missing:
+## Current Status
 
-19. `/docs/TODOリスト/changes-history_design.md` - **NOTE**: This file IS in the inventory at row 42, but with incorrect categorization location
+### Document Inventory Statistics
+- **Total documents in inventory**: 58
+- **Category breakdown**:
+  - Basic（基本）: 16 documents
+  - Feature-specific（機能別）: 31 documents  
+  - Archived（アーカイブ）: 11 documents
 
-## Files Correctly Listed in Inventory
+### Verification Results
+- ✅ All 57 .md files are properly documented
+- ✅ All PDF link subject feature documents are included
+- ✅ Document categorization is correct
+- ✅ File paths and descriptions are accurate
 
-All 33 files listed in the inventory exist and were found in the file system scan.
+## Conclusion
 
-## Recommendations
-
-1. **Add missing test documents** - Most missing files are test-related documents in subdirectories
-2. **Add extension/DISTRIBUTION.md** - This appears to be an important distribution guide
-3. **Review categorization** - Some files might need recategorization (e.g., test results vs test specifications)
-4. **Consider subdirectory structure** - Many missing files are in deeper subdirectories not covered in the inventory
+The document inventory is **complete and up-to-date** as of 2025-06-30. All markdown files in the project are properly cataloged, including the newly added PDF link subject extraction feature documentation.
 
 ## Complete File List for Reference
 
