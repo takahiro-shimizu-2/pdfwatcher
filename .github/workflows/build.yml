@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   push:
-    branches: [ main, develop, feature/extend-summary-history ]
+    branches: [ main, develop, feature/extend-summary-history, feature/pdf-link-text ]
   pull_request:
     branches: [ main, develop ]
 
