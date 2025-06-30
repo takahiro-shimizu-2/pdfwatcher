@@ -41,9 +41,9 @@ async function createDistribution() {
     }
   }
 
-  // zipファイルを作成
+  // zipファイルを作成（ディレクトリ内から直接圧縮）
   try {
-    execSync(`zip -r ${zipFile} ${distDir}`);
+    execSync(`cd ${distDir} && zip -r ../${zipFile} .`);
     console.log(`\nCreated ${zipFile} successfully!`);
     
     // 配布用ディレクトリを削除（zipのみ残す）
