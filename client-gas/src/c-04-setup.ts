@@ -15,7 +15,7 @@ function setupClientSpreadsheet(): void {
   
   // Changesシートの作成
   createOrUpdateSheet(spreadsheet, PDFWatcher.SHEET_NAMES.CHANGES, [
-    ['ページURL', '追加数', '新規PDF']
+    ['PageURL', '件名', 'PDFのURL']
   ]);
   
   // Summaryシートの作成（IMPORTRANGE設定）
@@ -38,7 +38,7 @@ function setupClientSpreadsheet(): void {
   
   // ChangesHistoryシートの作成
   createOrUpdateSheet(spreadsheet, PDFWatcher.SHEET_NAMES.CHANGES_HISTORY, [
-    ['保存日時', '実行ID', 'ページURL', 'PDFのURL', '削除予定日時']
+    ['保存日時', '実行ID', 'ページURL', '件名', 'PDFのURL', '削除予定日時']
   ]);
   
   // デフォルトシートを削除（必要に応じて）

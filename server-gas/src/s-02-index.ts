@@ -35,11 +35,20 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
     
     // 新規PDFと既存PDFの更新を処理
     for (const result of diffResults) {
+      const page = options.pages.find(p => p.url === result.pageUrl);
+      if (!page) continue;
+      
       // 新規PDFを追加
       for (const pdfUrl of result.addedPdfUrls) {
+        const pdfInfo = page.pdfs.find(p => p.url === pdfUrl);
+        if (!pdfInfo) {
+          console.error(`PDF情報が見つかりません: ${pdfUrl}`);
+          continue; // PDFの情報がない場合はスキップ
+        }
         pdfsToUpdate.push({
           pageUrl: result.pageUrl,
           pdfUrl,
+          subject: pdfInfo.subject,
           firstSeen: now,
           deletedAt: null,
           status: 'ページ内に存在',
@@ -47,31 +56,32 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
       }
       
       // 現在存在するPDFのステータスを更新（削除確認日時は変更しない）
-      const page = options.pages.find(p => p.url === result.pageUrl);
-      if (page) {
-        for (const pdfUrl of page.pdfUrls) {
-          if (!result.addedPdfUrls.includes(pdfUrl)) {
-            // 既存のPDFのステータスを維持
-            pdfsToUpdate.push({
-              pageUrl: result.pageUrl,
-              pdfUrl,
-              firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
-              deletedAt: null, // リポジトリ側で既存のdeletedAtが保持される
-              status: 'ページ内に存在',
-            });
-          }
+      for (const pdf of page.pdfs) {
+        if (!result.addedPdfUrls.includes(pdf.url)) {
+          // 既存のPDFのステータスを維持
+          pdfsToUpdate.push({
+            pageUrl: result.pageUrl,
+            pdfUrl: pdf.url,
+            subject: pdf.subject,
+            firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
+            deletedAt: null, // リポジトリ側で既存のdeletedAtが保持される
+            status: 'ページ内に存在',
+          });
         }
       }
       
       // 削除されたPDFのステータスを更新
-      for (const pdfUrl of result.removedPdfUrls) {
-        pdfsToUpdate.push({
-          pageUrl: result.pageUrl,
-          pdfUrl,
-          firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
-          deletedAt: now, // リポジトリ側で削除時に現在時刻が設定される
-          status: 'ページから削除',
-        });
+      if (result.removedPdfs) {
+        for (const removedPdf of result.removedPdfs) {
+          pdfsToUpdate.push({
+            pageUrl: result.pageUrl,
+            pdfUrl: removedPdf.pdfUrl,
+            subject: removedPdf.subject, // 既存の件名をそのまま使用
+            firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
+            deletedAt: now, // リポジトリ側で削除時に現在時刻が設定される
+            status: 'ページから削除',
+          });
+        }
       }
     }
     

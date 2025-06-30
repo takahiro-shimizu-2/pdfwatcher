@@ -97,7 +97,7 @@ class GroupProcessor {
         const userLogSheet = spreadsheet.getSheetByName(PDFWatcher.SHEET_NAMES.USER_LOG);
         
         if (changesSheet && batchResults[0].diffResults) {
-          updateChangesSheet(changesSheet, batchResults[0].diffResults);
+          updateChangesSheet(changesSheet, batchResults[0].diffResults, miniBatch);
         }
         
         if (userLogSheet) {

@@ -21,6 +21,7 @@ interface ChangesHistoryEntry {
   savedAt: Date;     // 保存日時
   runId: string;     // 実行ID
   pageUrl: string;   // ページURL
+  subject: string;   // 件名（2025-06-30追加）
   pdfUrl: string;    // PDFのURL
   expiresAt: Date;   // 削除予定日時
 }
@@ -32,7 +33,7 @@ interface ChangesHistoryEntry {
 interface Page {
   url: string;        // ページURL
   hash: string;       // ページコンテンツのハッシュ値
-  pdfUrls: string[];  // ページ内のPDF URLリスト
+  pdfs: PDF[];        // ページ内のPDF情報リスト（2025-06-30変更）
 }
 ```
 
@@ -41,6 +42,7 @@ PDF追跡情報を表すモデル
 ```typescript
 interface PDF {
   pageUrl: string;                              // ページURL
+  subject: string;                              // 件名（2025-06-30追加）
   pdfUrl: string;                               // PDF URL
   firstSeen: Date;                              // 初回検出日時
   deletedAt: Date | null;                       // 削除確認日時
@@ -57,10 +59,13 @@ interface DiffResult {
   pdfUpdated: boolean;   // PDF更新フラグ
   addedPdfUrls: string[]; // 追加されたPDF URLリスト
   removedPdfUrls: string[]; // 削除されたPDF URLリスト
+  removedPdfs?: PDF[];   // 削除されたPDFの詳細情報（2025-06-30追加）
   addedCount: number;    // 追加されたPDF数
   pageHash?: string;     // ページハッシュ値
 }
 ```
+
+**注意**: `removedPdfs`フィールドは削除されたPDFの件名を保持するために追加されました。これにより、ArchivePDFシートで削除済みPDFの件名が表示され続けます。
 
 #### BatchResult
 バッチ実行結果を表すモデル
@@ -393,7 +398,12 @@ interface Message {
 interface PageInfo {
   url: string;        // ページURL
   hash: string;       // ハッシュ値
-  pdfUrls: string[];  // PDF URLリスト
+  pdfLinks: PdfLink[]; // PDFリンク情報リスト（2025-06-30変更）
+}
+
+interface PdfLink {
+  url: string;        // PDF URL
+  subject: string;    // リンク件名（2025-06-30追加）
 }
 ```
 
@@ -413,8 +423,11 @@ interface ExtractResult {
 PDF URL抽出ユーティリティ
 ```typescript
 class PDFExtractor {
-  // ページからPDF URLを抽出
-  extractPdfUrls(): string[];
+  // ページからPDFリンク情報を抽出（2025-06-30変更）
+  extractPdfUrls(): PdfLink[];
+  
+  // リンク件名を抽出（2025-06-30追加）
+  extractLinkSubject(element: HTMLElement): string;
   
   // URLを正規化
   normalizeUrl(url: string, baseUrl: string): string;
@@ -428,11 +441,14 @@ class PDFExtractor {
 フォーマットユーティリティ
 ```typescript
 class Formatter {
-  // TSV形式にフォーマット
+  // TSV形式にフォーマット（2025-06-30変更）
   formatAsTsv(pageInfo: PageInfo): string;
   
-  // ページ情報を解析
+  // ページ情報を解析（2025-06-30変更）
   parsePageInfo(tsvData: string): PageInfo;
+  
+  // タブと改行をエスケープ（2025-06-30追加）
+  escapeForTsv(text: string): string;
 }
 ```
 
@@ -614,13 +630,21 @@ INotificationインターフェースの実装により：
 ### 12.1 基本的な使用例
 
 ```typescript
-// サーバー側：バッチ処理の実行
+// サーバー側：バッチ処理の実行（2025-06-30変更）
 const result = await ServerLib.runBatch({
   pages: [
     {
       url: 'https://example.com/page1',
       hash: 'abc123',
-      pdfUrls: ['https://example.com/doc1.pdf']
+      pdfs: [
+        {
+          pageUrl: 'https://example.com/page1',
+          subject: '重要なお知らせ',
+          pdfUrl: 'https://example.com/doc1.pdf',
+          firstSeen: new Date(),
+          lastSeen: new Date()
+        }
+      ]
     }
   ],
   user: 'user@example.com',
@@ -653,6 +677,12 @@ try {
 
 ## 更新履歴
 
+- 2025-06-30: PDFリンク件名取得機能を追加
+  - PdfLinkインターフェースに`subject`フィールド追加
+  - PageInfoを`pdfUrls`から`pdfLinks`へ変更
+  - PDF、ChangesHistoryEntryに`subject`フィールド追加
+  - PDFExtractorに`extractLinkSubject`メソッド追加
+  - Formatterに`escapeForTsv`メソッド追加
 - 2025-06-28: PageSummaryを7世代履歴管理に拡張
 - 2025-06-25: 初版作成
 - 2025-06-22: 6分実行時間制限対策を追加

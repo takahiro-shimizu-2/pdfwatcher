@@ -69,9 +69,14 @@ function displayResult(pageInfo: PageInfo): void {
     <h3>Extracted Information:</h3>
     <p><strong>URL:</strong> ${escapeHtml(pageInfo.url)}</p>
     <p><strong>Hash:</strong> ${escapeHtml(pageInfo.hash)}</p>
-    <p><strong>PDF URLs (${pageInfo.pdfUrls.length}):</strong></p>
+    <p><strong>PDF Links (${pageInfo.pdfLinks.length}):</strong></p>
     <ul>
-      ${pageInfo.pdfUrls.map(url => `<li>${escapeHtml(url)}</li>`).join('')}
+      ${pageInfo.pdfLinks.map(pdfLink => 
+        `<li>
+          <strong>${escapeHtml(pdfLink.subject)}</strong><br>
+          ${escapeHtml(pdfLink.url)}
+        </li>`
+      ).join('')}
     </ul>
   `;
 }

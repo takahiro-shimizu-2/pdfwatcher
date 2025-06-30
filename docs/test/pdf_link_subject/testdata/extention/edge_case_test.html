@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>PDFリンク件名取得 エッジケーステスト</title>
+</head>
+<body>
+    <h1>PDFリンク件名取得 エッジケーステスト</h1>
+    
+    <h2>1. 空のリンクテキスト</h2>
+    <a href="empty_text.pdf"></a>
+    <a href="only_spaces.pdf">   </a>
+    
+    <h2>2. 画像のみのリンク</h2>
+    <a href="image_only.pdf"><img src="pdf_icon.png" alt="PDFアイコン"></a>
+    <a href="image_with_pdfsize.pdf"><img src="document.png" alt="文書"><span class="pdfsize">(PDF:256KB)</span></a>
+    
+    <h2>3. 長い件名（100文字以上）</h2>
+    <a href="long_text.pdf">これは非常に長いPDFリンクのテキストで、100文字を超えるような長さのテキストです。このようなケースでは、拡張機能が適切に文字数制限を適用して、最後に「...」を付けて切り詰める必要があります。完全なテキストはここまでです。</a>
+    
+    <h2>4. 特殊文字を含むテキスト</h2>
+    <a href="tab_text.pdf">タブ	を含む	テキスト</a>
+    <a href="newline_text.pdf">改行
+を含む
+テキスト</a>
+    <a href="special_chars.pdf">特殊文字 &lt;&gt;&amp;"' を含むテキスト</a>
+    
+    <h2>5. HTMLタグを含むテキスト</h2>
+    <a href="html_tags.pdf"><strong>太字</strong>と<em>斜体</em>を含むテキスト</a>
+    <a href="nested_tags.pdf">通常テキストと<span style="color:red">赤文字</span>の混在</a>
+    
+    <h2>6. PDFサイズ情報との組み合わせ</h2>
+    <a href="text_with_size.pdf">通常のテキスト<span class="pdfsize">(PDF:1.2MB)</span></a>
+    <a href="multiple_pdfsize.pdf">テキスト<span class="pdfsize">(PDF:500KB)</span>追加テキスト<span class="pdfsize">(更新版)</span></a>
+    
+    <h2>7. 埋め込みPDF</h2>
+    <embed src="embedded1.pdf" type="application/pdf">
+    <object data="embedded2.pdf" type="application/pdf"></object>
+    <iframe src="embedded3.pdf"></iframe>
+    
+    <h2>8. 混在ケース</h2>
+    <a href="mixed_content.pdf">
+        通常テキスト
+        <img src="icon.png" alt="アイコン">
+        <span class="pdfsize">(PDF:3.5MB)</span>
+        追加テキスト
+    </a>
+    
+    <h2>9. 大量のPDFリンク（パフォーマンステスト用）</h2>
+    <div id="many-pdfs">
+        <!-- JavaScriptで100個のPDFリンクを生成 -->
+    </div>
+    
+    <script>
+        // 100個のPDFリンクを動的に生成
+        const container = document.getElementById('many-pdfs');
+        for (let i = 1; i <= 100; i++) {
+            const link = document.createElement('a');
+            link.href = `performance_test_${i}.pdf`;
+            link.textContent = `パフォーマンステスト用PDFファイル ${i} - これは${i}番目のテストファイルです`;
+            const span = document.createElement('span');
+            span.className = 'pdfsize';
+            span.textContent = `(PDF:${Math.floor(Math.random() * 5000) + 100}KB)`;
+            link.appendChild(span);
+            container.appendChild(link);
+            container.appendChild(document.createElement('br'));
+        }
+    </script>
+</body>
+</html>

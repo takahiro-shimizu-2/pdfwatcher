@@ -95,7 +95,7 @@ async function initializeProcessing(pages: Page[], user: string): Promise<void> 
   if (changesSheet) {
     changesSheet.clear();
     // ヘッダーを設定
-    const headers = ['PageURL', 'PDFのURL'];
+    const headers = ['PageURL', '件名', 'PDFのURL'];
     changesSheet.getRange(1, 1, 1, headers.length).setValues([headers]);
     changesSheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
     console.log('Changesシートをクリアしました（新規処理のため）');

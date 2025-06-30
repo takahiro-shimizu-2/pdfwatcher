@@ -34,20 +34,23 @@ class DiffService {
     
     const existingPdfs = await this.archiveRepo.getPdfsByPage(currentPage.url);
     const existingPdfUrls = new Set(existingPdfs.map(pdf => pdf.pdfUrl));
-    const currentPdfUrls = new Set(currentPage.pdfUrls);
+    // pdfsから現在のPDF URLを取得
+    const currentPdfUrls = new Set(currentPage.pdfs.map(pdf => pdf.url));
     
     const addedPdfUrls: string[] = [];
     const removedPdfUrls: string[] = [];
+    const removedPdfs: PDF[] = [];
     
-    for (const url of currentPdfUrls) {
-      if (!existingPdfUrls.has(url)) {
-        addedPdfUrls.push(url);
+    for (const pdf of currentPage.pdfs) {
+      if (!existingPdfUrls.has(pdf.url)) {
+        addedPdfUrls.push(pdf.url);
       }
     }
     
-    for (const url of existingPdfUrls) {
-      if (!currentPdfUrls.has(url)) {
-        removedPdfUrls.push(url);
+    for (const existingPdf of existingPdfs) {
+      if (!currentPdfUrls.has(existingPdf.pdfUrl)) {
+        removedPdfUrls.push(existingPdf.pdfUrl);
+        removedPdfs.push(existingPdf);
       }
     }
     
@@ -60,6 +63,7 @@ class DiffService {
       pdfUpdated,
       addedPdfUrls,
       removedPdfUrls,
+      removedPdfs,
       addedCount: addedPdfUrls.length,
       pageHash: currentPage.hash,
     };

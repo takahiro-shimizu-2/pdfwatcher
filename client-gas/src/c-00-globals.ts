@@ -49,16 +49,23 @@ const PDFWatcher = {
 
 // 型定義（TypeScript用）
 // NOTE: core/src/types/gas-types.tsからビルド時にコピー
+interface PDF {
+  url: string;
+  subject: string;
+}
+
 interface ParsedRow {
   pageUrl: string;
   pageHash: string;
   pdfUrls: string[];
+  pdfs: PDF[];
 }
 
 interface Page {
   url: string;
   hash: string;
   pdfUrls: string[];
+  pdfs: PDF[];
 }
 
 interface BatchResult {

@@ -1,7 +1,13 @@
+export interface PdfLink {
+  url: string;
+  subject: string;
+}
+
 export interface PageInfo {
   url: string;
   hash: string;
   pdfUrls: string[];
+  pdfLinks: PdfLink[];
 }
 
 export interface Message {

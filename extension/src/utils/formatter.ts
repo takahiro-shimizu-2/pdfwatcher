@@ -1,13 +1,31 @@
 import { PageInfo } from '../types';
 
 export function formatAsTsv(pageInfo: PageInfo): string {
-  const parts = [
-    pageInfo.url,
-    pageInfo.hash,
-    ...pageInfo.pdfUrls
-  ];
+  // PDFリンクがない場合は、URL、ハッシュ、空の件名、空のPDF URLの行を返す
+  if (pageInfo.pdfLinks.length === 0) {
+    return [pageInfo.url, pageInfo.hash, '', ''].join('\t');
+  }
   
-  return parts.join('\t');
+  // 複数行形式: 各PDFリンクごとに1行
+  const lines: string[] = [];
+  pageInfo.pdfLinks.forEach(pdfLink => {
+    // 特殊文字のエスケープ
+    const escapedSubject = pdfLink.subject
+      .replace(/\t/g, ' ')
+      .replace(/\n/g, ' ')
+      .replace(/\r/g, ' ');
+    
+    const parts = [
+      pageInfo.url,
+      pageInfo.hash,
+      escapedSubject,
+      pdfLink.url
+    ];
+    
+    lines.push(parts.join('\t'));
+  });
+  
+  return lines.join('\n');
 }
 
 export function formatMultipleAsTsv(pageInfos: PageInfo[]): string {
