@@ -151,3 +151,14 @@ npm run build
 - [開発ガイド](./%E9%96%8B%E7%99%BA%E3%82%AC%E3%82%A4%E3%83%89.md) - 開発セットアップと手順
 - [pdfwatcher_design.md](./pdfwatcher_design.md) - システム設計書
 - [docs/](./docs/) - 各種仕様書・テスト関連ドキュメント
+
+## Googleリソースへの直接アクセス
+
+### スプレッドシート
+- **クライアント用スプレッドシート（テンプレート）**: [PDF_Watcher_Client_Template](https://docs.google.com/spreadsheets/d/16U9YPSGOOmp9ahTNpkVvpMwDjcoZ0iryBB9WKdhZJ04/edit?gid=2133975684#gid=2133975684)
+- **マスター用スプレッドシート**: [PDF_Watcher_Master](https://docs.google.com/spreadsheets/d/1Sk2Z2eDbj-LRspGzIB4zg6X1ERNELdUz3TdWwEZEUa0/edit?gid=1693328433#gid=1693328433)
+
+### Google Apps Script
+- **サーバー用GAS（ライブラリ）**: [PDF_Watcher_ServerLib](https://script.google.com/home/projects/14oyw3dxeRB04LpXdn9fsU45V1QZ_rJsEwBZ-2PRNSsSIIMb-kyYbO0tM/edit)
+- **クライアント用GAS**: [PDF_Watcher_Client_GAS](https://script.google.com/u/0/home/projects/18r9JpA-m18Uq5Z4UW58T8bCcjSmanGFtQHr7FyIQFgoUdkZftFeaEFLt/edit)
+- **マスター用GAS**: [PDF_Watcher_Master_GAS](https://script.google.com/u/0/home/projects/17caTA6pp3A-66WwdvXZWd8i9HDe-MMJrm_ODvkK-jUsTV0G5HfrroXC0/edit)
