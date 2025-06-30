@@ -336,7 +336,7 @@ https://www.mod.go.jp/rdb/s-kanto/contract/procurement/index.html	1144xa	厚木�
 
 ##### 2. 件名処理 ✅
 - すべてのシートで件名が正しく表示
-- 削除されたPDFの件名は空欄（仕様通り）
+- **削除されたPDFも件名を保持（2025/06/30仕様変更）**
 - 特殊文字のエスケープが正常動作
 
 ##### 3. PageSummary 7世代管理 ✅

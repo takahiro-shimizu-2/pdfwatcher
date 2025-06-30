@@ -203,9 +203,15 @@ function detectChanges(currentPage: Page, previousPage?: Page): DiffResult {
   const removed = previousPage ? 
     previousPage.pdfs.filter(pdf => !currentPdfUrls.includes(pdf.url)) : [];
   
-  return { added, removed };
+  // 削除されたPDFの詳細情報（件名を含む）も保持
+  const removedPdfs = previousPage ? 
+    previousPage.pdfs.filter(pdf => !currentPdfUrls.includes(pdf.url)) : [];
+  
+  return { added, removed, removedPdfs };
 }
 ```
+
+**重要な仕様変更（2025/06/30）**: 削除されたPDFの件名を保持するため、`removedPdfs`フィールドを追加。これにより、ArchivePDFシートで削除済みPDFの件名が表示され続ける。
 
 ##### 各リポジトリの更新
 

@@ -59,10 +59,13 @@ interface DiffResult {
   pdfUpdated: boolean;   // PDF更新フラグ
   addedPdfUrls: string[]; // 追加されたPDF URLリスト
   removedPdfUrls: string[]; // 削除されたPDF URLリスト
+  removedPdfs?: PDF[];   // 削除されたPDFの詳細情報（2025-06-30追加）
   addedCount: number;    // 追加されたPDF数
   pageHash?: string;     // ページハッシュ値
 }
 ```
+
+**注意**: `removedPdfs`フィールドは削除されたPDFの件名を保持するために追加されました。これにより、ArchivePDFシートで削除済みPDFの件名が表示され続けます。
 
 #### BatchResult
 バッチ実行結果を表すモデル

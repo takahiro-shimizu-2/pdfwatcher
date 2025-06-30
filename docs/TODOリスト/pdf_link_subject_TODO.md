@@ -80,6 +80,7 @@
   - [x] `page.pdfUrls` を `page.pdfs` に変更 ✅
   - [x] PDF配列からURLを抽出して比較 ✅
   - [x] 差分検出ロジックの更新 ✅
+  - [x] **削除されたPDFの詳細情報（件名を含む）を保持する`removedPdfs`フィールドを追加** ✅ 2025/6/30 完了
 - [x] `server-gas/src/infrastructure/repositories/s-SheetArchiveRepository.ts` の更新 ✅ 2025/6/30 完了
   - [x] 列構造を新形式に変更 ✅
   - [x] リンク件名も保存するように修正 ✅

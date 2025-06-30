@@ -41,10 +41,14 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
       // 新規PDFを追加
       for (const pdfUrl of result.addedPdfUrls) {
         const pdfInfo = page.pdfs.find(p => p.url === pdfUrl);
+        if (!pdfInfo) {
+          console.error(`PDF情報が見つかりません: ${pdfUrl}`);
+          continue; // PDFの情報がない場合はスキップ
+        }
         pdfsToUpdate.push({
           pageUrl: result.pageUrl,
           pdfUrl,
-          subject: pdfInfo?.subject || '',
+          subject: pdfInfo.subject,
           firstSeen: now,
           deletedAt: null,
           status: 'ページ内に存在',
@@ -67,16 +71,17 @@ async function runBatch(options: RunBatchOptions): Promise<BatchResult> {
       }
       
       // 削除されたPDFのステータスを更新
-      for (const pdfUrl of result.removedPdfUrls) {
-        // 削除されたPDFの件名情報は保持しないので空文字列
-        pdfsToUpdate.push({
-          pageUrl: result.pageUrl,
-          pdfUrl,
-          subject: '',
-          firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
-          deletedAt: now, // リポジトリ側で削除時に現在時刻が設定される
-          status: 'ページから削除',
-        });
+      if (result.removedPdfs) {
+        for (const removedPdf of result.removedPdfs) {
+          pdfsToUpdate.push({
+            pageUrl: result.pageUrl,
+            pdfUrl: removedPdf.pdfUrl,
+            subject: removedPdf.subject, // 既存の件名をそのまま使用
+            firstSeen: now, // リポジトリ側で既存のfirstSeenが保持される
+            deletedAt: now, // リポジトリ側で削除時に現在時刻が設定される
+            status: 'ページから削除',
+          });
+        }
       }
     }
     

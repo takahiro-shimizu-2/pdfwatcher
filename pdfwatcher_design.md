@@ -93,6 +93,7 @@ interface DiffResult {
   pdfUpdated: boolean;
   addedPdfUrls: string[];
   removedPdfUrls: string[];
+  removedPdfs?: PDF[];      // 削除されたPDFの詳細情報（2025-06-30追加）
   addedCount: number;
   pageHash?: string;  // ページハッシュ値
 }

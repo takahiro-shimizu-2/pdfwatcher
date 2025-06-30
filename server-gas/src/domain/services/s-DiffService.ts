@@ -39,6 +39,7 @@ class DiffService {
     
     const addedPdfUrls: string[] = [];
     const removedPdfUrls: string[] = [];
+    const removedPdfs: PDF[] = [];
     
     for (const pdf of currentPage.pdfs) {
       if (!existingPdfUrls.has(pdf.url)) {
@@ -46,9 +47,10 @@ class DiffService {
       }
     }
     
-    for (const url of existingPdfUrls) {
-      if (!currentPdfUrls.has(url)) {
-        removedPdfUrls.push(url);
+    for (const existingPdf of existingPdfs) {
+      if (!currentPdfUrls.has(existingPdf.pdfUrl)) {
+        removedPdfUrls.push(existingPdf.pdfUrl);
+        removedPdfs.push(existingPdf);
       }
     }
     
@@ -61,6 +63,7 @@ class DiffService {
       pdfUpdated,
       addedPdfUrls,
       removedPdfUrls,
+      removedPdfs,
       addedCount: addedPdfUrls.length,
       pageHash: currentPage.hash,
     };
