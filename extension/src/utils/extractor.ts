@@ -73,31 +73,19 @@ function extractPdfLinks(): PdfLink[] {
 }
 
 function extractLinkSubject(link: HTMLAnchorElement): string {
-  // 直接のテキストノードのみを取得
-  const subjectNodes: string[] = [];
-  link.childNodes.forEach(node => {
-    if (node.nodeType === Node.TEXT_NODE && node.textContent) {
-      const subject = node.textContent.trim();
-      if (subject && !node.parentElement?.classList.contains('pdfsize')) {
-        subjectNodes.push(subject);
-      }
-    }
-  });
-  
-  let subject = subjectNodes.join(' ').trim();
+  // Webページに表示されているテキストをそのまま取得
+  let subject = link.textContent?.trim() || '';
   
   // 件名が空の場合はファイル名を使用
   if (!subject) {
     subject = getFilenameFromUrl(link.href);
   }
   
-  // 特殊文字のエスケープ
+  // 特殊文字のエスケープ（TSV形式のため）
   subject = subject.replace(/[\t\n\r]/g, ' ');
   
-  // 文字数制限（100文字）
-  if (subject.length > 100) {
-    subject = subject.substring(0, 97) + '...';
-  }
+  // 連続する空白を単一の空白に正規化
+  subject = subject.replace(/\s+/g, ' ').trim();
   
   return subject;
 }
