@@ -1,6 +1,12 @@
 /**
  * GAS用グローバル定義
  * import/exportを使わずにすべてグローバル変数として定義
+ * 
+ * スクリプトプロパティの設定方法：
+ * 1. Google Apps Script エディタで「プロジェクトの設定」を開く
+ * 2. 「スクリプト プロパティ」セクションで以下を追加：
+ *    - MASTER_SPREADSHEET_ID: マスタースプレッドシートのID
+ *    - SERVER_LIBRARY_ID: サーバーライブラリのスクリプトID
  */
 
 // PDFWatcher名前空間の定義
@@ -29,8 +35,8 @@ const PDFWatcher = {
     MAX_ERROR_MESSAGE_LENGTH: 255,
     SCRIPT_VERSION: '1.0.0',
     DEFAULT_SHEET_CONFIG: 'sheet' as const,
-    MASTER_SPREADSHEET_ID: '1Sk2Z2eDbj-LRspGzIB4zg6X1ERNELdUz3TdWwEZEUa0',
-    SERVER_LIBRARY_ID: 'AKfycbzjRwtPTCkHPy-D54w0ZDXgfctL89-FO82keskf5XFr81BUnETtDEFVTDEuXIwuuSRX',
+    MASTER_SPREADSHEET_ID: PropertiesService.getScriptProperties().getProperty('MASTER_SPREADSHEET_ID') || '',
+    SERVER_LIBRARY_ID: PropertiesService.getScriptProperties().getProperty('SERVER_LIBRARY_ID') || '',
     SERVER_LIBRARY_VERSION: 'HEAD',
     // 6分制限対策用の定数
     MAX_EXECUTION_TIME_MS: 5 * 60 * 1000,      // 5分（安全マージン1分）
