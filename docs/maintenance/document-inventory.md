@@ -4,7 +4,7 @@
 このドキュメントは、PDF Watcherプロジェクトの全ドキュメントを管理するための一覧です。
 各ドキュメントのカテゴリ、更新要否、作成目的を記載しています。
 
-**最終更新日**: 2025-06-30  
+**最終更新日**: 2025-07-02  
 **管理者**: shimizu
 
 ## カテゴリ定義
@@ -49,6 +49,7 @@
 | future-enhancements.md | Feature-specific | /docs/future-enhancements.md | 将来の機能拡張案と最適化提案（現在保留中） | 2025-06-26 |
 | dev-menu-removal-impact-analysis.md | Feature-specific | /docs/dev-menu-removal-impact-analysis.md | スプレッドシートから開発メニューを削除する影響分析 | 2025-06-26 |
 | pdf_link_text_design.md | Feature-specific | /docs/pdf_link_text_design.md | PDFリンク件名取得機能の設計書 | 2025-06-30 |
+| link_text_extraction_design.md | Feature-specific | /docs/link_text_extraction_design.md | リンクテキスト抽出機能改善設計書（テスト完了） | 2025-07-02 |
 
 ## TODOリスト（/docs/TODOリスト/）
 
@@ -60,6 +61,7 @@
 | Fixed_execution_time_limit_TODO.md | Archived | /docs/TODOリスト/Fixed_execution_time_limit_TODO.md | 6分実行制限機能の完了済みTODO | 2025-06-26 |
 | initial-implementation_TODO.md | Archived | /docs/TODOリスト/initial-implementation_TODO.md | 初期実装TODOリスト（完了） | 2025-06-26 |
 | pdf_link_subject_TODO.md | Feature-specific | /docs/TODOリスト/pdf_link_subject_TODO.md | PDFリンク件名取得機能のTODOリスト（Chrome拡張機能完了） | 2025-06-30 |
+| link_text_extraction_TODO.md | Feature-specific | /docs/TODOリスト/link_text_extraction_TODO.md | リンクテキスト抽出機能改善TODOリスト（完了） | 2025-07-02 |
 
 ## テストドキュメント（/docs/test/）
 
@@ -122,6 +124,15 @@
 | integrated-verification-guide.md | Feature-specific | /docs/test/pdf_link_subject/integrated-verification-guide.md | 統合検証ガイド | 2025-06-30 |
 | pdf-subject-verification-tool.gs | Feature-specific | /docs/test/pdf_link_subject/pdf-subject-verification-tool.gs | Google Apps Script検証ツール | 2025-06-30 |
 
+### リンクテキスト抽出テスト（/docs/test/link_text_extraction/）
+
+| ドキュメント名 | カテゴリ | ファイルパス | 役割・説明 | 作成日 |
+|--------------|----------|-----------|-----------|--------|
+| link_text_extraction_test.md | Feature-specific | /docs/test/link_text_extraction/link_text_extraction_test.md | リンクテキスト抽出機能改善のテスト仕様書 | 2025-07-02 |
+| link_text_extraction_test_TODO.md | Feature-specific | /docs/test/link_text_extraction/link_text_extraction_test_TODO.md | リンクテキスト抽出機能のテストTODOリスト（完了） | 2025-07-02 |
+| test_link_extraction.html | Feature-specific | /docs/test/link_text_extraction/test_link_extraction.html | 統合テスト用HTMLファイル | 2025-07-02 |
+| test_performance.html | Feature-specific | /docs/test/link_text_extraction/test_performance.html | パフォーマンステスト用HTML（100個のPDFリンク） | 2025-07-02 |
+
 ## メンテナンスドキュメント（/docs/maintenance/）
 
 | ドキュメント名 | カテゴリ | ファイルパス | 役割・説明 | 作成日 |
@@ -140,11 +151,11 @@
 
 ## 統計サマリー
 
-**総ドキュメント数**: 58
+**総ドキュメント数**: 64
 
 **カテゴリ別内訳**:
 - **Basic（基本）**: 16ドキュメント - 主要機能変更時に必ず更新が必要
-- **Feature-specific（機能別）**: 31ドキュメント - 特定機能のために作成されたドキュメント
+- **Feature-specific（機能別）**: 37ドキュメント - 特定機能のために作成されたドキュメント
 - **Archived（アーカイブ）**: 11ドキュメント - 完了済みまたは更新不要な歴史的ドキュメント
 
 ## 更新ガイドライン

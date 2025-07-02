@@ -92,6 +92,55 @@
     </div>
 
     <div class="test-section">
+        <h2>9. 空白のみのリンクテスト（UT-06）</h2>
+        <p>期待値: "test8.pdf"（ファイル名フォールバック）</p>
+        <a href="test8.pdf">   </a>
+        <p>↑ 3つの空白文字のみを含むリンク</p>
+    </div>
+
+    <h1 style="margin-top: 40px;">回帰テスト（RT）</h1>
+    
+    <div class="test-section">
+        <h2>RT-01: 基本的なPDF URL抽出</h2>
+        <p>期待値: すべてのPDFリンクが正しく抽出される</p>
+        <a href="regression1.pdf">通常のPDFリンク</a><br>
+        <a href="https://example.com/document.pdf">絶対URLのPDF</a><br>
+        <a href="../folder/file.pdf">相対パスのPDF</a>
+    </div>
+
+    <div class="test-section">
+        <h2>RT-02: クエリパラメータ付きPDF</h2>
+        <p>期待値: URLにクエリパラメータが含まれていても正しく検出</p>
+        <a href="document.php?file=report.pdf">PHPクエリパラメータ</a><br>
+        <a href="download?type=pdf&id=123">パスにpdfを含まないがクエリにpdfを含む</a>
+    </div>
+
+    <div class="test-section">
+        <h2>RT-03: 非PDFリンクの除外テスト</h2>
+        <p>期待値: これらのリンクは抽出されない</p>
+        <a href="document.doc">Wordドキュメント</a><br>
+        <a href="spreadsheet.xlsx">Excelファイル</a><br>
+        <a href="image.jpg">画像ファイル</a>
+    </div>
+
+    <div class="test-section">
+        <h2>RT-04: 重複URLの処理</h2>
+        <p>期待値: 同じURLは1回だけ抽出される（最初のリンクテキストを使用）</p>
+        <a href="duplicate.pdf">最初のリンクテキスト</a><br>
+        <a href="duplicate.pdf">2番目のリンクテキスト（無視される）</a><br>
+        <a href="duplicate.pdf">3番目のリンクテキスト（無視される）</a>
+    </div>
+
+    <div class="test-section">
+        <h2>RT-05: エラーケース - 不正なURL</h2>
+        <p>期待値: エラーが発生せず、他のリンクは正常に処理される</p>
+        <a href="javascript:void(0)">JavaScriptリンク</a><br>
+        <a href="mailto:test@example.com">メールリンク</a><br>
+        <a href="#anchor">アンカーリンク</a><br>
+        <a href="valid.pdf">正常なPDFリンク（これは抽出される）</a>
+    </div>
+
+    <div class="test-section">
         <h2>テスト手順</h2>
         <ol>
             <li>Chrome拡張機能を開発者モードで読み込む</li>
@@ -103,10 +152,43 @@
     </div>
 
     <div class="test-section">
-        <h2>期待されるTSV出力例（最初の3行）</h2>
-        <pre>file:///path/to/test_link_extraction.html	[hash]	重要な文書のお知らせ	file:///path/to/test1.pdf
-file:///path/to/test_link_extraction.html	[hash]	決算報告書(PDF:2.5MB)	file:///path/to/test2.pdf
-file:///path/to/test_link_extraction.html	[hash]	これは非常に長いPDFリンクのテキストで、以前は100文字で切り詰められていましたが、今回の修正により完全なテキストが取得できるようになりました。このテキストは101文字以上あります。	file:///path/to/test3.pdf</pre>
+        <h2>期待されるTSV出力（主要なテストケース）</h2>
+        <pre>
+単体テスト:
+file:///path/to/test_link_extraction.html	[hash]	重要な文書のお知らせ	file:///path/to/test1.pdf
+file:///path/to/test_link_extraction.html	[hash]	test8.pdf	file:///path/to/test8.pdf  ← UT-06: 空白のみのリンク
+
+回帰テスト:
+file:///path/to/test_link_extraction.html	[hash]	通常のPDFリンク	file:///path/to/regression1.pdf
+file:///path/to/test_link_extraction.html	[hash]	絶対URLのPDF	https://example.com/document.pdf
+file:///path/to/test_link_extraction.html	[hash]	相対パスのPDF	file:///path/to/folder/file.pdf
+file:///path/to/test_link_extraction.html	[hash]	PHPクエリパラメータ	file:///path/to/document.php?file=report.pdf
+file:///path/to/test_link_extraction.html	[hash]	パスにpdfを含まないがクエリにpdfを含む	file:///path/to/download?type=pdf&id=123
+file:///path/to/test_link_extraction.html	[hash]	最初のリンクテキスト	file:///path/to/duplicate.pdf
+file:///path/to/test_link_extraction.html	[hash]	正常なPDFリンク（これは抽出される）	file:///path/to/valid.pdf
+
+注意: 非PDFファイル（.doc, .xlsx, .jpg）やjavascript:、mailto:、#アンカーリンクは抽出されない</pre>
+    </div>
+
+    <div class="test-section">
+        <h2>チェックリスト</h2>
+        <h3>単体テスト</h3>
+        <ul>
+            <li>□ UT-01〜UT-05, UT-07〜UT-10: すべて実施済み（テストケース1〜8）</li>
+            <li>□ UT-06: 空白のみのリンク（テストケース9）</li>
+        </ul>
+        <h3>統合テスト</h3>
+        <ul>
+            <li>□ IT-01〜IT-04: すべて実施済み</li>
+        </ul>
+        <h3>回帰テスト</h3>
+        <ul>
+            <li>□ RT-01: 基本的なPDF URL抽出（3種類のパス形式）</li>
+            <li>□ RT-02: クエリパラメータ付きPDF検出</li>
+            <li>□ RT-03: 非PDFファイルの除外</li>
+            <li>□ RT-04: 重複URLの処理（最初のテキストのみ使用）</li>
+            <li>□ RT-05: エラーハンドリング（不正なURLでもクラッシュしない）</li>
+        </ul>
     </div>
 </body>
 </html>

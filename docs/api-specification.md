@@ -426,7 +426,8 @@ class PDFExtractor {
   // ページからPDFリンク情報を抽出（2025-06-30変更）
   extractPdfUrls(): PdfLink[];
   
-  // リンク件名を抽出（2025-06-30追加）
+  // リンク件名を抽出（2025-06-30追加、2025-07-02改善）
+  // textContentプロパティで全テキストを取得（文字数制限なし）
   extractLinkSubject(element: HTMLElement): string;
   
   // URLを正規化

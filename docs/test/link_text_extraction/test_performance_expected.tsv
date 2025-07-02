@@ -1,0 +1,101 @@
+URL	HashValue	PageURL	Subject
+sample-001.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	研究報告書 2024年第1四半期
+sample-002.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	技術仕様書 バージョン1.0
+sample-003.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	ユーザーマニュアル 初版
+sample-004.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	プロジェクト計画書
+sample-005.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	品質管理ガイドライン
+sample-006.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	セキュリティポリシー文書
+sample-007.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	業務フロー図
+sample-008.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	システム設計書
+sample-009.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	テスト計画書
+sample-010.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	運用マニュアル
+sample-011.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	API仕様書
+sample-012.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	データベース設計書
+sample-013.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	ネットワーク構成図
+sample-014.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	リスク管理表
+sample-015.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	進捗報告書
+sample-016.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	課題管理表
+sample-017.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	要件定義書
+sample-018.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	基本設計書
+sample-019.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	詳細設計書
+sample-020.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	結合テスト仕様書
+sample-021.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	重要: システム移行計画書
+sample-022.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	新機能リリース v2.0 説明資料
+sample-023.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	緊急 セキュリティパッチ適用手順
+sample-024.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	月次レポート 2024年3月度
+sample-025.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	最新版 開発ガイドライン
+sample-026.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	プレゼンテーション資料 (2.5MB)
+sample-027.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	改訂版: コーディング規約 (1.2MB)
+sample-028.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	ユーザー調査結果 （機密）
+sample-029.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	新規追加 API エンドポイント一覧
+sample-030.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	パフォーマンステスト結果 最終版
+sample-031.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	Draft 次期バージョン企画書
+sample-032.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	障害対応手順書 更新済
+sample-033.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	必読: 情報セキュリティ教育資料
+sample-034.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	アーキテクチャ図 レビュー済み
+sample-035.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	v3.0 ソフトウェア仕様書
+sample-036.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	営業資料 （社外秘）
+sample-037.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	最優先 バグ修正リスト
+sample-038.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	教育用資料 NEW!
+sample-039.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	確定版 リリースノート
+sample-040.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	契約書テンプレート 法務確認済
+sample-041.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	人工知能技術を活用した次世代型業務自動化システムの導入における技術的課題と解決策に関する包括的調査研究報告書
+sample-042.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	クラウドネイティブアプリケーション開発におけるマイクロサービスアーキテクチャの設計パターンとベストプラクティスガイド
+sample-043.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	大規模分散システムにおける障害検知・自動復旧メカニズムの実装と運用に関する技術文書およびケーススタディ集
+sample-044.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	機械学習モデルの本番環境デプロイメントにおけるMLOpsパイプライン構築手法と継続的改善プロセスの確立について
+sample-045.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	エンタープライズシステムにおけるゼロトラストセキュリティモデルの段階的導入計画と実装ロードマップ詳細版
+sample-046.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	ブロックチェーン技術を活用したサプライチェーン管理システムの概念実証から本番運用までの完全実装ガイド
+sample-047.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	次世代モバイルアプリケーション開発フレームワークの比較検証と選定基準に関する技術評価レポート2024年版
+sample-048.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	IoTデバイス大量接続環境におけるエッジコンピューティングアーキテクチャの設計と実装に関する技術仕様書
+sample-049.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	コンテナオーケストレーションプラットフォームKubernetesを活用した大規模システムの構築・運用ベストプラクティス集
+sample-050.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	量子コンピューティング時代に向けた暗号技術の移行戦略とポスト量子暗号アルゴリズムの実装ガイドライン
+sample-051.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	自然言語処理技術を活用したドキュメント自動分類・要約システムの開発と評価に関する研究開発報告書最終版
+sample-052.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	サイバーセキュリティインシデント対応における組織横断的な情報共有プラットフォームの構築と運用マニュアル
+sample-053.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	データドリブン経営を実現するためのビッグデータ分析基盤の設計・構築・運用に関する包括的ガイドブック
+sample-054.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	アジャイル開発手法とDevOpsプラクティスを統合したソフトウェア開発ライフサイクルの最適化に関する実践ガイド
+sample-055.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	5G/6Gネットワーク時代のモバイルエッジコンピューティングアーキテクチャとアプリケーション設計パターン集
+sample-056.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	持続可能なITインフラストラクチャ構築のためのグリーンコンピューティング技術導入ガイドラインと評価指標
+sample-057.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	API駆動型エコシステムにおけるマイクロサービス間通信の最適化とサービスメッシュ技術の活用方法について
+sample-058.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	リアルタイムストリーミングデータ処理基盤の設計と実装におけるスケーラビリティとレジリエンスの確保手法
+sample-059.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	フルスタックWebアプリケーション開発における最新フレームワークの比較評価と技術選定ガイドライン2024
+sample-060.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	企業システムのクラウドマイグレーションにおける段階的移行戦略とハイブリッドクラウド環境の最適化手法
+sample-061.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	プログラミング入門: if/else文と&&/||演算子の使い方
+sample-062.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	データ分析レポート [2024/03/15更新]
+sample-063.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	売上データ（1月～3月）集計表.xlsx→PDF変換版
+sample-064.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	FAQ: よくある質問と回答 Q&A形式
+sample-065.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	価格表　¥10,000～¥50,000 (税込)
+sample-066.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	メールアドレス一覧 @example.com ドメイン
+sample-067.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	正規表現パターン集 ^[a-zA-Z0-9]+$ サンプル付き
+sample-068.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	HTMLタグリファレンス <div> <span> <p>要素解説
+sample-069.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	数式集: x² + y² = r² などの基本公式
+sample-070.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	特殊記号一覧 ™ © ® の使用方法
+sample-071.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	パス指定方法 C:\Users\Documents\file.pdf
+sample-072.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	検索クエリ: "キーワード" AND (条件1 OR 条件2)
+sample-073.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	バージョン管理 git diff HEAD~1..HEAD
+sample-074.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	配列操作 array[0] ～ array[n-1] の説明
+sample-075.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	関数定義 function_name(param1, param2) {...}
+sample-076.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	SQL文サンプル SELECT * FROM table WHERE id > 100
+sample-077.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	JSON形式データ {"key": "value"} の扱い方
+sample-078.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	エスケープシーケンス \n \t \\ の使い方
+sample-079.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	数値範囲指定 100 <= x < 200 の条件式
+sample-080.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	コメント記法 // 単行 /* 複数行 */ の使い分け
+sample-081.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	技術文書 【重要】 システムアップグレード手順書 (5.2MB)
+sample-082.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	カテゴリ: セキュリティ 脆弱性対策ガイド v2.1
+sample-083.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	プロジェクト Phoenix 　 フェーズ3 完了報告書
+sample-084.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	● 定例会議資料 （毎週水曜日更新） 最新版: 3/20
+sample-085.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	【営業部】 顧客提案資料 更新日: 2024/03/15
+sample-086.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	研修資料: 新入社員向け ビジネスマナー講座 (全120ページ)
+sample-087.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	✓承認済 予算計画書 2024年度 （経理部確認済）
+sample-088.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	システム仕様書 Ver.3.5.2 (安定版) リリース候補
+sample-089.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	📊 売上分析レポート Q4 2023 総括編
+sample-090.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	開発ドキュメント: 認証モジュール (Auth v2) 実装ガイド
+sample-091.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	優先度: 高 障害報告書 #12345 至急対応要
+sample-092.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	ユーザーマニュアル [日本語版] 　印刷用PDF (8.7MB)
+sample-093.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	作成者: 山田太郎 　 更新: 本日 プロジェクト進捗表
+sample-094.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	契約書 [契約番号: CTR-2024-0315] （法務部承認済）
+sample-095.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	タグ: AI, 機械学習 研究論文: 深層学習アルゴリズムの最適化
+sample-096.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	監査報告書 対象期間: 2023/04～2024/03 【機密】
+sample-097.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	承認フロー: 申請→承認中→完了 経費申請書
+sample-098.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	製品カタログ 2024年春季 新商品ラインナップ （全32ページ）
+sample-099.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	第15回 技術委員会 議事録 （2024/03/18開催）
+sample-100.pdf		file:///home/shimizu/project/okada/pdfwatccher/docs/test/link_text_extraction/test_performance.html	【最終版】 総合評価報告書 全ステークホルダー確認済 (12.4MB)
