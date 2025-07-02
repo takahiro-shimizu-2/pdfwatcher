@@ -99,7 +99,7 @@ npm ERR! ERESOLVE unable to resolve dependency tree
    - テキストリンク: 件名取得可能
    - 画像リンク: 件名なし
    - JavaScriptで動的生成: 取得できない場合あり
-3. PDFサイズ情報が含まれている場合は自動除外される
+3. Chrome拡張機能がtextContentプロパティを使用して全テキストを取得
 
 ### 問題: 拡張機能のアイコンが表示されない
 

@@ -1,51 +1,49 @@
 # Document Inventory Verification Report
 
-**Date**: 2025-06-30  
+**Date**: 2025-07-02  
 **Purpose**: Verify all markdown files are included in document inventory
 
 ## Summary
 
-Found **57 total .md files** in the project (excluding node_modules).  
-Document inventory lists **58 documents** (including 1 .gs file).  
+Found **61 total .md files** in the project (excluding node_modules).  
+Document inventory lists **64 documents** (including 1 .gs file).  
 **All files are now properly documented** in the inventory.
 
-## Updated Status (2025-06-30)
+## Updated Status (2025-07-02)
 
-### Previously Missing Files
+### Recent Updates
 
-The previous verification report (2025-06-28) identified 19 missing files. Since then, all missing files have been added to the inventory, and additionally, **5 new PDF link subject feature documents** were created and added:
+Since the last update (2025-06-30), **6 new link text extraction feature documents** were created and added:
 
-1. `/docs/pdf_link_text_design.md` - PDFリンク件名取得機能の設計書
-2. `/docs/TODOリスト/pdf_link_subject_TODO.md` - PDFリンク件名取得機能のTODOリスト
-3. `/docs/test/pdf_link_subject/pdf_link_subject_test.md` - PDFリンク件名取得機能のテスト仕様書
-4. `/docs/test/pdf_link_subject/pdf_link_subject_test_TODO.md` - PDFリンク件名取得機能のテストTODOリスト
-5. `/docs/test/pdf_link_subject/integrated-verification-guide.md` - 統合検証ガイド
-
-プラス:
-- `/docs/test/pdf_link_subject/pdf-subject-verification-tool.gs` - Google Apps Script検証ツール（.gsファイル）
+1. `/docs/link_text_extraction_design.md` - リンクテキスト抽出機能改善設計書
+2. `/docs/TODOリスト/link_text_extraction_TODO.md` - リンクテキスト抽出機能改善TODOリスト
+3. `/docs/test/link_text_extraction/link_text_extraction_test.md` - リンクテキスト抽出機能改善のテスト仕様書
+4. `/docs/test/link_text_extraction/link_text_extraction_test_TODO.md` - リンクテキスト抽出機能のテストTODOリスト
+5. `/docs/test/link_text_extraction/test_link_extraction.html` - 統合テスト用HTMLファイル
+6. `/docs/test/link_text_extraction/test_performance.html` - パフォーマンステスト用HTMLファイル
 
 ## Current Status
 
 ### Document Inventory Statistics
-- **Total documents in inventory**: 58
+- **Total documents in inventory**: 64
 - **Category breakdown**:
   - Basic（基本）: 16 documents
-  - Feature-specific（機能別）: 31 documents  
+  - Feature-specific（機能別）: 37 documents  
   - Archived（アーカイブ）: 11 documents
 
 ### Verification Results
-- ✅ All 57 .md files are properly documented
-- ✅ All PDF link subject feature documents are included
+- ✅ All 61 .md files are properly documented
+- ✅ All link text extraction feature documents are included
 - ✅ Document categorization is correct
 - ✅ File paths and descriptions are accurate
 
 ## Conclusion
 
-The document inventory is **complete and up-to-date** as of 2025-06-30. All markdown files in the project are properly cataloged, including the newly added PDF link subject extraction feature documentation.
+The document inventory is **complete and up-to-date** as of 2025-07-02. All markdown files in the project are properly cataloged, including the newly added link text extraction feature documentation and test results.
 
 ## Complete File List for Reference
 
-All 52 .md files found (sorted alphabetically):
+All 61 .md files found (sorted alphabetically):
 
 ```
 /home/shimizu/project/okada/pdfwatccher/CONTRIBUTING.md

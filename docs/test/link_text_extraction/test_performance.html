@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDFWatcher Link Text Extraction Performance Test - 100 PDFs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 10px;
+        }
+        .test-info {
+            background-color: #e7f3ff;
+            border: 1px solid #0066cc;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .pdf-links-container {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .pdf-section {
+            margin: 20px 0;
+        }
+        .pdf-section h2 {
+            color: #555;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .pdf-link {
+            display: block;
+            margin: 8px 0;
+            padding: 5px 10px;
+            background-color: #f8f8f8;
+            border-left: 3px solid #0066cc;
+            text-decoration: none;
+            color: #0066cc;
+            transition: background-color 0.2s;
+        }
+        .pdf-link:hover {
+            background-color: #e7f3ff;
+        }
+        .timer-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .stats {
+            background-color: #f0f0f0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDFWatcher リンクテキスト抽出 パフォーマンステスト</h1>
+    
+    <div class="test-info">
+        <h2>テスト概要</h2>
+        <p><strong>テストID:</strong> PT-01</p>
+        <p><strong>目的:</strong> 100個のPDFリンクを含むページでの処理時間とメモリ使用量の測定</p>
+        <p><strong>測定項目:</strong></p>
+        <ul>
+            <li>全PDFリンクの抽出処理時間</li>
+            <li>TSVデータ生成時間</li>
+            <li>メモリ使用量</li>
+        </ul>
+        <p><strong>期待値:</strong> 100個のPDFリンクすべてが正しく抽出され、処理時間が妥当な範囲内（目安: 1秒以内）</p>
+    </div>
+
+    <div class="stats">
+        <p><strong>総PDFリンク数:</strong> 100個</p>
+        <p><strong>リンクタイプ内訳:</strong></p>
+        <ul>
+            <li>シンプルなテキストリンク: 20個</li>
+            <li>ネストされた要素を含むリンク: 20個</li>
+            <li>長いテキストのリンク: 20個</li>
+            <li>特殊文字を含むリンク: 20個</li>
+            <li>複雑な構造のリンク: 20個</li>
+        </ul>
+    </div>
+
+    <div class="pdf-links-container">
+        <div class="pdf-section">
+            <h2>セクション1: シンプルなテキストリンク (1-20)</h2>
+            <a href="sample-001.pdf" class="pdf-link">研究報告書 2024年第1四半期</a>
+            <a href="sample-002.pdf" class="pdf-link">技術仕様書 バージョン1.0</a>
+            <a href="sample-003.pdf" class="pdf-link">ユーザーマニュアル 初版</a>
+            <a href="sample-004.pdf" class="pdf-link">プロジェクト計画書</a>
+            <a href="sample-005.pdf" class="pdf-link">品質管理ガイドライン</a>
+            <a href="sample-006.pdf" class="pdf-link">セキュリティポリシー文書</a>
+            <a href="sample-007.pdf" class="pdf-link">業務フロー図</a>
+            <a href="sample-008.pdf" class="pdf-link">システム設計書</a>
+            <a href="sample-009.pdf" class="pdf-link">テスト計画書</a>
+            <a href="sample-010.pdf" class="pdf-link">運用マニュアル</a>
+            <a href="sample-011.pdf" class="pdf-link">API仕様書</a>
+            <a href="sample-012.pdf" class="pdf-link">データベース設計書</a>
+            <a href="sample-013.pdf" class="pdf-link">ネットワーク構成図</a>
+            <a href="sample-014.pdf" class="pdf-link">リスク管理表</a>
+            <a href="sample-015.pdf" class="pdf-link">進捗報告書</a>
+            <a href="sample-016.pdf" class="pdf-link">課題管理表</a>
+            <a href="sample-017.pdf" class="pdf-link">要件定義書</a>
+            <a href="sample-018.pdf" class="pdf-link">基本設計書</a>
+            <a href="sample-019.pdf" class="pdf-link">詳細設計書</a>
+            <a href="sample-020.pdf" class="pdf-link">結合テスト仕様書</a>
+        </div>
+
+        <div class="pdf-section">
+            <h2>セクション2: ネストされた要素を含むリンク (21-40)</h2>
+            <a href="sample-021.pdf" class="pdf-link"><strong>重要:</strong> システム移行計画書</a>
+            <a href="sample-022.pdf" class="pdf-link">新機能リリース <em>v2.0</em> 説明資料</a>
+            <a href="sample-023.pdf" class="pdf-link"><span style="color: red;">緊急</span> セキュリティパッチ適用手順</a>
+            <a href="sample-024.pdf" class="pdf-link">月次レポート <strong>2024年3月度</strong></a>
+            <a href="sample-025.pdf" class="pdf-link"><strong><em>最新版</em></strong> 開発ガイドライン</a>
+            <a href="sample-026.pdf" class="pdf-link">プレゼンテーション資料 <span class="pdfsize">(2.5MB)</span></a>
+            <a href="sample-027.pdf" class="pdf-link"><strong>改訂版:</strong> コーディング規約 <span class="pdfsize">(1.2MB)</span></a>
+            <a href="sample-028.pdf" class="pdf-link">ユーザー調査結果 <em>（機密）</em></a>
+            <a href="sample-029.pdf" class="pdf-link"><span class="highlight">新規追加</span> API エンドポイント一覧</a>
+            <a href="sample-030.pdf" class="pdf-link">パフォーマンステスト結果 <strong>最終版</strong></a>
+            <a href="sample-031.pdf" class="pdf-link"><em>Draft</em> 次期バージョン企画書</a>
+            <a href="sample-032.pdf" class="pdf-link">障害対応手順書 <span style="color: orange;">更新済</span></a>
+            <a href="sample-033.pdf" class="pdf-link"><strong>必読:</strong> 情報セキュリティ教育資料</a>
+            <a href="sample-034.pdf" class="pdf-link">アーキテクチャ図 <em>レビュー済み</em></a>
+            <a href="sample-035.pdf" class="pdf-link"><span class="version">v3.0</span> ソフトウェア仕様書</a>
+            <a href="sample-036.pdf" class="pdf-link">営業資料 <strong>（社外秘）</strong></a>
+            <a href="sample-037.pdf" class="pdf-link"><em>最優先</em> バグ修正リスト</a>
+            <a href="sample-038.pdf" class="pdf-link">教育用資料 <span class="new">NEW!</span></a>
+            <a href="sample-039.pdf" class="pdf-link"><strong>確定版</strong> リリースノート</a>
+            <a href="sample-040.pdf" class="pdf-link">契約書テンプレート <em>法務確認済</em></a>
+        </div>
+
+        <div class="pdf-section">
+            <h2>セクション3: 長いテキストのリンク (41-60)</h2>
+            <a href="sample-041.pdf" class="pdf-link">人工知能技術を活用した次世代型業務自動化システムの導入における技術的課題と解決策に関する包括的調査研究報告書</a>
+            <a href="sample-042.pdf" class="pdf-link">クラウドネイティブアプリケーション開発におけるマイクロサービスアーキテクチャの設計パターンとベストプラクティスガイド</a>
+            <a href="sample-043.pdf" class="pdf-link">大規模分散システムにおける障害検知・自動復旧メカニズムの実装と運用に関する技術文書およびケーススタディ集</a>
+            <a href="sample-044.pdf" class="pdf-link">機械学習モデルの本番環境デプロイメントにおけるMLOpsパイプライン構築手法と継続的改善プロセスの確立について</a>
+            <a href="sample-045.pdf" class="pdf-link">エンタープライズシステムにおけるゼロトラストセキュリティモデルの段階的導入計画と実装ロードマップ詳細版</a>
+            <a href="sample-046.pdf" class="pdf-link">ブロックチェーン技術を活用したサプライチェーン管理システムの概念実証から本番運用までの完全実装ガイド</a>
+            <a href="sample-047.pdf" class="pdf-link">次世代モバイルアプリケーション開発フレームワークの比較検証と選定基準に関する技術評価レポート2024年版</a>
+            <a href="sample-048.pdf" class="pdf-link">IoTデバイス大量接続環境におけるエッジコンピューティングアーキテクチャの設計と実装に関する技術仕様書</a>
+            <a href="sample-049.pdf" class="pdf-link">コンテナオーケストレーションプラットフォームKubernetesを活用した大規模システムの構築・運用ベストプラクティス集</a>
+            <a href="sample-050.pdf" class="pdf-link">量子コンピューティング時代に向けた暗号技術の移行戦略とポスト量子暗号アルゴリズムの実装ガイドライン</a>
+            <a href="sample-051.pdf" class="pdf-link">自然言語処理技術を活用したドキュメント自動分類・要約システムの開発と評価に関する研究開発報告書最終版</a>
+            <a href="sample-052.pdf" class="pdf-link">サイバーセキュリティインシデント対応における組織横断的な情報共有プラットフォームの構築と運用マニュアル</a>
+            <a href="sample-053.pdf" class="pdf-link">データドリブン経営を実現するためのビッグデータ分析基盤の設計・構築・運用に関する包括的ガイドブック</a>
+            <a href="sample-054.pdf" class="pdf-link">アジャイル開発手法とDevOpsプラクティスを統合したソフトウェア開発ライフサイクルの最適化に関する実践ガイド</a>
+            <a href="sample-055.pdf" class="pdf-link">5G/6Gネットワーク時代のモバイルエッジコンピューティングアーキテクチャとアプリケーション設計パターン集</a>
+            <a href="sample-056.pdf" class="pdf-link">持続可能なITインフラストラクチャ構築のためのグリーンコンピューティング技術導入ガイドラインと評価指標</a>
+            <a href="sample-057.pdf" class="pdf-link">API駆動型エコシステムにおけるマイクロサービス間通信の最適化とサービスメッシュ技術の活用方法について</a>
+            <a href="sample-058.pdf" class="pdf-link">リアルタイムストリーミングデータ処理基盤の設計と実装におけるスケーラビリティとレジリエンスの確保手法</a>
+            <a href="sample-059.pdf" class="pdf-link">フルスタックWebアプリケーション開発における最新フレームワークの比較評価と技術選定ガイドライン2024</a>
+            <a href="sample-060.pdf" class="pdf-link">企業システムのクラウドマイグレーションにおける段階的移行戦略とハイブリッドクラウド環境の最適化手法</a>
+        </div>
+
+        <div class="pdf-section">
+            <h2>セクション4: 特殊文字を含むリンク (61-80)</h2>
+            <a href="sample-061.pdf" class="pdf-link">プログラミング入門: if/else文と&&/||演算子の使い方</a>
+            <a href="sample-062.pdf" class="pdf-link">データ分析レポート [2024/03/15更新]</a>
+            <a href="sample-063.pdf" class="pdf-link">売上データ（1月～3月）集計表.xlsx→PDF変換版</a>
+            <a href="sample-064.pdf" class="pdf-link">FAQ: よくある質問と回答 Q&A形式</a>
+            <a href="sample-065.pdf" class="pdf-link">価格表　¥10,000～¥50,000 (税込)</a>
+            <a href="sample-066.pdf" class="pdf-link">メールアドレス一覧 @example.com ドメイン</a>
+            <a href="sample-067.pdf" class="pdf-link">正規表現パターン集 ^[a-zA-Z0-9]+$ サンプル付き</a>
+            <a href="sample-068.pdf" class="pdf-link">HTMLタグリファレンス <div> <span> <p>要素解説</a>
+            <a href="sample-069.pdf" class="pdf-link">数式集: x² + y² = r² などの基本公式</a>
+            <a href="sample-070.pdf" class="pdf-link">特殊記号一覧 ™ © ® の使用方法</a>
+            <a href="sample-071.pdf" class="pdf-link">パス指定方法 C:\Users\Documents\file.pdf</a>
+            <a href="sample-072.pdf" class="pdf-link">検索クエリ: "キーワード" AND (条件1 OR 条件2)</a>
+            <a href="sample-073.pdf" class="pdf-link">バージョン管理 git diff HEAD~1..HEAD</a>
+            <a href="sample-074.pdf" class="pdf-link">配列操作 array[0] ～ array[n-1] の説明</a>
+            <a href="sample-075.pdf" class="pdf-link">関数定義 function_name(param1, param2) {...}</a>
+            <a href="sample-076.pdf" class="pdf-link">SQL文サンプル SELECT * FROM table WHERE id > 100</a>
+            <a href="sample-077.pdf" class="pdf-link">JSON形式データ {"key": "value"} の扱い方</a>
+            <a href="sample-078.pdf" class="pdf-link">エスケープシーケンス \n \t \\ の使い方</a>
+            <a href="sample-079.pdf" class="pdf-link">数値範囲指定 100 <= x < 200 の条件式</a>
+            <a href="sample-080.pdf" class="pdf-link">コメント記法 // 単行 /* 複数行 */ の使い分け</a>
+        </div>
+
+        <div class="pdf-section">
+            <h2>セクション5: 複雑な構造のリンク (81-100)</h2>
+            <a href="sample-081.pdf" class="pdf-link">
+                <span class="doc-type">技術文書</span>
+                <strong>【重要】</strong>
+                システム<em>アップグレード</em>手順書
+                <span class="pdfsize">(5.2MB)</span>
+            </a>
+            <a href="sample-082.pdf" class="pdf-link">
+                <div style="display: inline;">
+                    <span class="category">カテゴリ: セキュリティ</span>
+                    <br>
+                    脆弱性対策ガイド <strong>v2.1</strong>
+                </div>
+            </a>
+            <a href="sample-083.pdf" class="pdf-link">
+                プロジェクト
+                <span class="project-name">Phoenix</span>
+                　
+                フェーズ<strong>3</strong>
+                完了報告書
+            </a>
+            <a href="sample-084.pdf" class="pdf-link">
+                <span style="color: blue;">●</span>
+                定例会議資料
+                <em>（毎週水曜日更新）</em>
+                最新版: <strong>3/20</strong>
+            </a>
+            <a href="sample-085.pdf" class="pdf-link">
+                【<span class="dept">営業部</span>】
+                顧客提案資料
+                <br>
+                <small>更新日: 2024/03/15</small>
+            </a>
+            <a href="sample-086.pdf" class="pdf-link">
+                研修資料:
+                <span class="title">
+                    <strong>新入社員向け</strong>
+                    ビジネスマナー講座
+                </span>
+                <span class="pdfsize">(全120ページ)</span>
+            </a>
+            <a href="sample-087.pdf" class="pdf-link">
+                <span class="status">✓承認済</span>
+                予算計画書
+                <strong>2024年度</strong>
+                <em>（経理部確認済）</em>
+            </a>
+            <a href="sample-088.pdf" class="pdf-link">
+                システム仕様書
+                <span class="version-info">
+                    Ver.<strong>3.5.2</strong>
+                    <em>(安定版)</em>
+                </span>
+                リリース候補
+            </a>
+            <a href="sample-089.pdf" class="pdf-link">
+                <span class="icon">📊</span>
+                売上分析レポート
+                <br>
+                <strong>Q4 2023</strong>
+                総括編
+            </a>
+            <a href="sample-090.pdf" class="pdf-link">
+                開発ドキュメント:
+                <span class="module">
+                    認証モジュール
+                    <strong>(Auth v2)</strong>
+                </span>
+                実装ガイド
+            </a>
+            <a href="sample-091.pdf" class="pdf-link">
+                <span class="priority high">優先度: 高</span>
+                障害報告書
+                #<strong>12345</strong>
+                <em>至急対応要</em>
+            </a>
+            <a href="sample-092.pdf" class="pdf-link">
+                ユーザーマニュアル
+                <span class="lang">
+                    [<strong>日本語版</strong>]
+                </span>
+                　印刷用PDF
+                <span class="pdfsize">(8.7MB)</span>
+            </a>
+            <a href="sample-093.pdf" class="pdf-link">
+                <span class="doc-meta">
+                    作成者: 山田太郎
+                    　
+                    更新: <strong>本日</strong>
+                </span>
+                <br>
+                プロジェクト進捗表
+            </a>
+            <a href="sample-094.pdf" class="pdf-link">
+                契約書
+                <span class="contract-info">
+                    [契約番号: <strong>CTR-2024-0315</strong>]
+                </span>
+                <em>（法務部承認済）</em>
+            </a>
+            <a href="sample-095.pdf" class="pdf-link">
+                <span class="tag">タグ: AI, 機械学習</span>
+                <br>
+                <strong>研究論文:</strong>
+                深層学習アルゴリズムの最適化
+            </a>
+            <a href="sample-096.pdf" class="pdf-link">
+                監査報告書
+                <span class="audit-period">
+                    対象期間: <strong>2023/04～2024/03</strong>
+                </span>
+                <span class="confidential">【機密】</span>
+            </a>
+            <a href="sample-097.pdf" class="pdf-link">
+                <span class="workflow">
+                    承認フロー:
+                    申請→<strong>承認中</strong>→完了
+                </span>
+                <br>
+                経費申請書
+            </a>
+            <a href="sample-098.pdf" class="pdf-link">
+                製品カタログ
+                <span class="product-line">
+                    <strong>2024年春季</strong>
+                    新商品ラインナップ
+                </span>
+                <em>（全32ページ）</em>
+            </a>
+            <a href="sample-099.pdf" class="pdf-link">
+                <span class="meeting-info">
+                    第<strong>15</strong>回
+                    技術委員会
+                </span>
+                議事録
+                <span class="date">（2024/03/18開催）</span>
+            </a>
+            <a href="sample-100.pdf" class="pdf-link">
+                <span class="final">
+                    【<strong>最終版</strong>】
+                </span>
+                総合評価報告書
+                <br>
+                <em>全ステークホルダー確認済</em>
+                <span class="pdfsize">(12.4MB)</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="timer-info">
+        <h3>パフォーマンステスト手順</h3>
+        <ol>
+            <li>Chrome DevToolsを開く (F12)</li>
+            <li>Performanceタブで記録開始</li>
+            <li>PDFWatcher拡張機能を実行</li>
+            <li>記録を停止し、処理時間を確認</li>
+            <li>Memory タブでヒープスナップショットを取得</li>
+        </ol>
+    </div>
+
+</body>
+</html>
